@@ -1,4 +1,4 @@
-[![Docker Pulls](https://badgen.net/docker/pulls/monius/Docker-Warp-Socks)](https://hub.docker.com/r/monius/Docker-Warp-Socks)
+[![Docker Pulls](https://badgen.net/docker/pulls/monius/docker-warp-socks)](https://hub.docker.com/r/monius/docker-warp-socks)
 
 ## Docker-Warp-Socks
 
