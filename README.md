@@ -33,8 +33,7 @@ Test it
 curl -4 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
 curl -6 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
 
-# or
-
+# or connect to container
 docker exec -it warp_socks /bin/bash
 curl -4 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
 curl -6 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
