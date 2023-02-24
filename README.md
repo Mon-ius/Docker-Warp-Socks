@@ -57,6 +57,28 @@ docker run --privileged --restart=always -itd \
     monius/Docker-Warp-Socks
 ```
 
+### Tips
+
+For those who has `amd64` remote machine and dont need to use docker to secure network connection, simple use the official `warp-cli` but with a little changes as I [suggeted](https://github.com/cloudflare/cloudflare-docs/pull/7644)
+
+``` bash
+# install 
+curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ focal main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+apt -y update && apt -y install cloudflare-warp
+
+# run
+warp-cli register
+warp-cli set-mode proxy
+warp-cli set-proxy-port 9091
+warp-cli connect
+
+# test
+curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
+
+# See`warp=on` means success. 
+```
+
 ### Source
 
 https://github.com/Mon-ius/Docker-Warp-Socks
