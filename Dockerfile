@@ -9,3 +9,5 @@ RUN apt-get -y update \
 
 COPY entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
+
+STOPSIGNAL SIGQUIT
