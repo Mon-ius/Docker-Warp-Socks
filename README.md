@@ -29,21 +29,15 @@ Test it
 
 ``` bash
 
-#Host
-curl -4 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
-curl -6 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
+# Host
+curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
 
-# or connect to container
-docker exec -it warp_socks /bin/bash
-curl -4 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
-curl -6 --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
-
-# See `warp=on` means success.
+# See`warp=on` means success. 
 ```
 
 #### Advanced
 
-It will also recognize the prepared `warp.conf` and `danted.conf` if they are located in `~/wireguard/`.
+It will also recognize the prepared `wgcf-profile.conf` and `danted.conf` if they are located in `~/wireguard/`.
 
 ``` bash
 docker run --privileged --restart=always -itd \
@@ -53,7 +47,7 @@ docker run --privileged --restart=always -itd \
     --cap-add NET_ADMIN --cap-add SYS_MODULE \
     -p 9091:9091 \
     -v /lib/modules:/lib/modules \
-    -v ~/wireguard/:/etc/wireguard/:ro \
+    -v ~/wireguard/:/opt/wireguard/:ro \
     monius/Docker-Warp-Socks
 ```
 
