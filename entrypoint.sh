@@ -40,7 +40,4 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
-wg-quick up warp && /usr/sbin/danted -f /opt/danted.conf -D
-
-curl --proxy socks5h://"${IPv4}":9091 https://www.cloudflare.com/cdn-cgi/trace 
-exec "$@"
+wg-quick up warp && /usr/sbin/danted -f /opt/danted.conf
