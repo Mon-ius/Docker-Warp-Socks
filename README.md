@@ -1,7 +1,7 @@
 # Docker-Warp-Socks
 
-[![CI Status](https://github.com/monius/docker-warp-socks/workflows/publish/badge.svg)](https://github.com/monius/docker-warp-socks/actions?query=workflow%3Apublish)
-[![Docker Pulls](https://badgen.net/docker/pulls/monius/docker-warp-socks.svg?logo=docker)](https://hub.docker.com/r/monius/docker-warp-socks)
+[![CI Status](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/pub/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:pub)
+[![Docker Pulls](https://badgen.net/docker/pulls/monius/docker-warp-socks?icon=docker)](https://hub.docker.com/r/monius/docker-warp-socks)
 
 > A lightweight Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
 
