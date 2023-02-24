@@ -1,7 +1,7 @@
 # Docker-Warp-Socks
 
 [![CI Status](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/pub/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:pub)
-[![Docker Pulls](https://badgen.net/docker/pulls/monius/docker-warp-socks?icon=docker)](https://hub.docker.com/r/monius/docker-warp-socks)
+[![Docker Pulls](https://flat.badgen.net/docker/pulls/monius/docker-warp-socks?icon=docker)](https://hub.docker.com/r/monius/docker-warp-socks)
 
 > A lightweight Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
 
@@ -27,7 +27,7 @@ docker run --privileged --restart=always -itd \
     --cap-add NET_ADMIN --cap-add SYS_MODULE \
     -p 9091:9091 \
     -v /lib/modules:/lib/modules \
-    monius/Docker-Warp-Socks
+    monius/docker-warp-socks
 ```
 
 The above command will create a background service that allows the entire container network to join the dual-stack cloudflare network pool without disconnecting from the host.
@@ -55,17 +55,17 @@ docker run --privileged --restart=always -itd \
     -p 9091:9091 \
     -v /lib/modules:/lib/modules \
     -v ~/wireguard/:/opt/wireguard/:ro \
-    monius/Docker-Warp-Socks
+    monius/docker-warp-socks
 ```
 
 ### Tips
 
-For those who has `amd64` remote machine and dont need to use `docker` to secure network connection, simple use the official `warp-cli`, but with a little changes as I [suggeted](https://github.com/cloudflare/cloudflare-docs/pull/7644)
+For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
 
 ``` bash
 # install 
-curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ focal main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+curl "https://pkg.cloudflareclient.com/pubkey.gpg" | sudo gpg --yes --dearmor --output "/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg"
+echo "deb [arch=amd64 signed-by="/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg"] "https://pkg.cloudflareclient.com/" focal main" | sudo tee "/etc/apt/sources.list.d/cloudflare-client.list"
 apt -y update && apt -y install cloudflare-warp
 
 # run
@@ -75,14 +75,14 @@ warp-cli set-proxy-port 9091
 warp-cli connect
 
 # test
-curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
+curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace "
 
 # See`warp=on` means success. 
 ```
 
 ### Source
 
-https://github.com/Mon-ius/Docker-Warp-Socks
+[Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
 
 ### Credits
 
