@@ -1,14 +1,20 @@
+# Docker-Warp-Socks
+
 [![Docker Pulls](https://badgen.net/docker/pulls/monius/docker-warp-socks)](https://hub.docker.com/r/monius/docker-warp-socks)
 
-## Docker-Warp-Socks
+A lightweight Docker image designed for easy connection to CloudFlare WARP, exposing `socks5` proxy wihout extra configuration.
 
-The official `warp-cli` exclusively supports amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container. Otherwise, you will be forced to start it via the panel.
+Multiple platform support: `linux_386`(*86), `linux_amd64`(x86_64 | amd64), `linux_arm64`(aarch64 | arm64), `linux_armv7`(arm*);
 
-It is not necessary to have any knowledge of `Cloudflare`, `Warp`, `wireguard`, and `wgcf` before using this image. All that is required is the ability to unblock content, such as `chatgpt`, `google scholar`, and `netflix`, using certain existing services on your remote machine.
+## Why to use
 
-### Usage
+The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
 
-#### Docker cli
+With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `ChatGPT`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
+
+## Usage
+
+### Docker cli
 
 The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues.
 
@@ -35,7 +41,7 @@ curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
 # See`warp=on` means success. 
 ```
 
-#### Advanced
+### Advanced
 
 It will also recognize the prepared `wgcf-profile.conf` and `danted.conf` if they are located in `~/wireguard/`.
 
@@ -51,11 +57,11 @@ docker run --privileged --restart=always -itd \
     monius/Docker-Warp-Socks
 ```
 
-#### Source
+### Source
 
 https://github.com/Mon-ius/Docker-Warp-Socks
 
-#### Credits
+### Credits
 
 - [warp](https://developers.cloudflare.com/warp-client/get-started/linux/)
 - [wgcf-docker](https://github.com/Neilpang/wgcf-docker)
