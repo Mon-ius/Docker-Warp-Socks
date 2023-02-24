@@ -59,7 +59,7 @@ docker run --privileged --restart=always -itd \
 
 ### Tips
 
-For those who has `amd64` remote machine and dont need to use docker to secure network connection, simple use the official `warp-cli`, but with a little changes as I [suggeted](https://github.com/cloudflare/cloudflare-docs/pull/7644)
+For those who has `amd64` remote machine and dont need to use `docker` to secure network connection, simple use the official `warp-cli`, but with a little changes as I [suggeted](https://github.com/cloudflare/cloudflare-docs/pull/7644)
 
 ``` bash
 # install 
