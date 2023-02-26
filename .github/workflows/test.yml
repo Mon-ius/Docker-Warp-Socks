@@ -22,7 +22,7 @@ jobs:
         id: test
         with:
           arch: ${{ matrix.arch }}
-          distro: ubuntu-latest
+          distro: ubuntu20.04
           githubToken: ${{ github.token }}
           shell: /bin/sh
           install: |
