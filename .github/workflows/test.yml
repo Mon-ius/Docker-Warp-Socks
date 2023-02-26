@@ -29,29 +29,16 @@ jobs:
           githubToken: ${{ github.token }}
           shell: /bin/sh
           install: |
-            case "${{ matrix.distro }}" in
-              ubuntu*|jessie|stretch|buster|bullseye)
-                apt-get update -q -y
-                apt-get install -q -y git curl sudo
-                ;;
-              fedora*)
-                dnf -y update
-                dnf -y install git which
-                ;;
-              alpine*)
-                apk update
-                apk add git
-                ;;
-            esac
+              apt-get update -q -y
+              apt-get install -q -y git curl sudo gnupg ca-certificates software-properties-common
 
           run: |
             uname -a
             echo ::set-output name=uname::$(uname -a)
             curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-            add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu focal stable"
+            add-apt-repository "$(dpkg --print-architecture) https://download.docker.com/linux/ubuntu focal stable"
+            apt-get update -q -y && apt-get install -q -y docker-ce
       - name: Check proxy status
-        # Items placed in /artifacts in the container will be in
-        # ${PWD}/artifacts on the host.
         run: |
           echo "The uname output was ${{ steps.test.outputs.uname }}"
           apt-get update -q -y
