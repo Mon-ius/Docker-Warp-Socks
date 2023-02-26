@@ -13,8 +13,11 @@ jobs:
       matrix:
         include:
           - arch: aarch64
+            distro: ubuntu20.04
           - arch: ppc64le
+            distro: ubuntu20.04
           - arch: s390x
+            distro: ubuntu20.04
     steps:
       - uses: actions/checkout@v3
       - uses: uraimo/run-on-arch-action@v2
@@ -22,7 +25,7 @@ jobs:
         id: test
         with:
           arch: ${{ matrix.arch }}
-          distro: ubuntu20.04
+          distro: ${{ matrix.distro }}
           githubToken: ${{ github.token }}
           shell: /bin/sh
           install: |
@@ -42,19 +45,10 @@ jobs:
             esac
 
           run: |
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-            sudo add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu focal stable"
-            sudo apt-get update -q -y 
-            apt-get install -q -y docker-ce
-            sudo usermod -aG docker '${USER}'
-            docker run --privileged --restart=always -itd \
-                --name warp_socks \
-                --sysctl net.ipv6.conf.all.disable_ipv6=0 \
-                --sysctl net.ipv4.conf.all.src_valid_mark=1 \
-                --cap-add NET_ADMIN --cap-add SYS_MODULE \
-                -p 9091:9091 \
-                -v /lib/modules:/lib/modules \
-                monius/docker-warp-socks
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+            add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu focal stable"
       - name: Check proxy status
         # Items placed in /artifacts in the container will be in
         # ${PWD}/artifacts on the host.
