@@ -1,0 +1,62 @@
+name: test
+
+on:
+  workflow_run:
+    workflows: ["pub"]
+    types:
+      - completed
+
+jobs:
+  testx:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+          - arch: ppc64le
+          - arch: s390x
+    steps:
+      - uses: actions/checkout@v3
+      - uses: uraimo/run-on-arch-action@v2
+        name: Test release
+        id: test
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ubuntu-latest
+          githubToken: ${{ github.token }}
+          shell: /bin/sh
+          install: |
+            case "${{ matrix.distro }}" in
+              ubuntu*|jessie|stretch|buster|bullseye)
+                apt-get update -q -y
+                apt-get install -q -y git curl sudo
+                ;;
+              fedora*)
+                dnf -y update
+                dnf -y install git which
+                ;;
+              alpine*)
+                apk update
+                apk add git
+                ;;
+            esac
+
+          run: |
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+            sudo add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu focal stable"
+            sudo apt-get update -q -y 
+            apt-get install -q -y docker-ce
+            sudo usermod -aG docker '${USER}'
+            docker run --privileged --restart=always -itd \
+                --name warp_socks \
+                --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+                --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+                --cap-add NET_ADMIN --cap-add SYS_MODULE \
+                -p 9091:9091 \
+                -v /lib/modules:/lib/modules \
+                monius/docker-warp-socks
+      - name: Check proxy status
+        # Items placed in /artifacts in the container will be in
+        # ${PWD}/artifacts on the host.
+        run: |
+          curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
