@@ -30,6 +30,9 @@ jobs:
               -p 9091:9091 \
               -v /lib/modules:/lib/modules \
               monius/docker-warp-socks
+      - 
+        name: Debug Mode
+        uses: lhotari/action-upterm@v1
       - name: Check proxy status
         id: check
         run: |
