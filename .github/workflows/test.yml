@@ -30,11 +30,10 @@ jobs:
               --cap-add NET_ADMIN --cap-add SYS_MODULE \
               -p 9091:9091 \
               -v /lib/modules:/lib/modules \
-              -v ~/wireguard/:/opt/wireguard/:ro \
               monius/docker-warp-socks
 
       - name: Check proxy status
         run: |
-          echo "The uname output was ${{ steps.test.outputs.uname }}"
-          apt-get update -q -y && apt-get install -q -y curl
+          sudo docker ps -a
+          sudo apt-get update -q -y && sudo apt-get install -q -y curl
           curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
