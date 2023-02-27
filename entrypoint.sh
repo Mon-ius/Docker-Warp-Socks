@@ -9,7 +9,7 @@ ARCH=$(dpkg --print-architecture)
 URL=$(curl -fsSL ${TAR} | grep 'browser_download_url' | cut -d'"' -f4 | grep linux | grep "${ARCH}")
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
-	curl -LS "${URL}" -o wgcf && chmod +x wgcf && mv wgcf /usr/bin
+	curl -LS "${URL}" -o ./wgcf && chmod +x ./wgcf && mv ./wgcf /usr/bin
 	wgcf register --accept-tos && wgcf generate && mv wgcf-profile.conf /opt
 	sed -i "/\[Interface\]/a PostDown = ip -6 rule delete from ${IPv6}  lookup main" /opt/wgcf-profile.conf
 	sed -i "/\[Interface\]/a PostUp = ip -6 rule add from ${IPv6} lookup main" /opt/wgcf-profile.conf
