@@ -36,8 +36,8 @@ jobs:
         run: |
           set -x
           curl --version
-          curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace > 1.txt
-          curl https://www.cloudflare.com/cdn-cgi/trace
+          curl --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" > 1.txt
+          curl "https://www.cloudflare.com/cdn-cgi/trace"
           echo ::set-output name=trace::yes
       - name: Show proxy status
         run: |
