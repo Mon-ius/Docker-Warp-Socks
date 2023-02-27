@@ -13,35 +13,27 @@ jobs:
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu20.04
-          - arch: ppc64le
-            distro: ubuntu20.04
-          - arch: s390x
-            distro: ubuntu20.04
+            cpu: cortex-a53
+            base_image: raspios_lite_arm64:latest
+            cpu_info: raspberrypi_zero2_w_arm64_w
     steps:
-      - uses: actions/checkout@v3
-      - uses: uraimo/run-on-arch-action@v2
-        name: Test release
-        id: test
-        with:
-          arch: ${{ matrix.arch }}
-          distro: ${{ matrix.distro }}
-          githubToken: ${{ github.token }}
-          shell: /bin/sh
-          install: |
-              apt-get update -q -y
-              apt-get install -q -y git curl sudo gnupg ca-certificates software-properties-common
-
-          run: |
-            uname -a
-            echo ::set-output name=uname::$(uname -a)
+    - uses: pguyot/arm-runner-action@v2
+      name: Test release on RPI
+      with:
+        base_image: ${{ matrix.base_image }}
+        cpu: ${{ matrix.cpu }}
+        cpu_info: ${{ matrix.cpu_info }}
+        commands: |
+            apt-get update -q -y
+            apt-get install -q -y git curl sudo gnupg ca-certificates software-properties-common
             curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
             add-apt-repository "$(dpkg --print-architecture) https://download.docker.com/linux/ubuntu focal stable"
             apt-get update -q -y && apt-get install -q -y docker-ce
-      - name: Check proxy status
-        run: |
-          echo "The uname output was ${{ steps.test.outputs.uname }}"
-          apt-get update -q -y
-          apt-get install -q -y curl
+            echo ::set-output name=uname::$(uname -a)
 
-          curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
+    - name: Check proxy status
+      run: |
+        echo "The uname output was ${{ steps.test.outputs.uname }}"
+        apt-get update -q -y
+        apt-get install -q -y curl
+        curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
