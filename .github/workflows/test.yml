@@ -35,9 +35,11 @@ jobs:
         id: check
         run: |
           set +e
-          curl --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace"
-          curl "https://www.cloudflare.com/cdn-cgi/trace"
-          echo ::set-output name=trace::yes
+          curl --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" > 1.txt
+          curl "https://www.cloudflare.com/cdn-cgi/trace" > 2.txt
+          trace=$(cat 1.txt | grep -w "warp=on")
+          echo ::set-output name=trace::$trace
+          set -e
       - name: Show proxy status
         run: |
           echo "The proxy status is ${{ steps.check.outputs.trace }}"
