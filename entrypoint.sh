@@ -4,9 +4,12 @@ set -e
 IFACE=$(ip route show | grep default | awk '{print $5}')
 IPv4=$(ip -4 address show dev "$IFACE" | awk '/inet/{print $2}' | cut -d/ -f1)
 IPv6=$(ip -6 address show dev "$IFACE" | awk '/inet/{print $2}' | cut -d/ -f1)
+TAR='https://api.github.com/repos/ViRb3/wgcf/releases/latest'
+ARCH=$(dpkg --print-architecture)
+URL=$(curl -fsSL ${TAR} | grep 'browser_download_url' | cut -d'"' -f4 | grep linux | grep "${ARCH}")
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
-	curl -fsSL git.io/wgcf.sh | bash
+	curl -LS "${URL}" -o wgcf && chmod +x && ln -sf wgcf /usr/bin/wgcf
 	wgcf register --accept-tos && wgcf generate && mv wgcf-profile.conf /opt
 	sed -i "/\[Interface\]/a PostDown = ip -6 rule delete from ${IPv6}  lookup main" /opt/wgcf-profile.conf
 	sed -i "/\[Interface\]/a PostUp = ip -6 rule add from ${IPv6} lookup main" /opt/wgcf-profile.conf

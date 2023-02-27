@@ -5,7 +5,7 @@
 
 > A lightweight Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
 
-Multi-platform: `linux/amd64`, `linux/arm64`, `linux/ppc64le`, `linux/s390x`;
+Multi-platform: `linux/amd64`, `linux/386`, `linux/amd64`, `linux/arm`, `linux/s390x`;
 
 ## Why to use
 
