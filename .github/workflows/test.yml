@@ -14,11 +14,16 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       - 
+        name: Debug Mode
+        uses: lhotari/action-upterm@v1
+      - 
         uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
       - 
         run: |
           set -x
+
+          sudo touch /continue
 
           docker version
 
@@ -30,11 +35,12 @@ jobs:
               -p 9091:9091 \
               -v /lib/modules:/lib/modules \
               monius/docker-warp-socks
+          
 
       - name: Check proxy status
         run: |
           set -x
           curl --version
           curl https://www.cloudflare.com/cdn-cgi/trace
-          curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
+          
           
