@@ -34,5 +34,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          platforms: linux/amd64, linux/arm64, linux/s390x, linux/386,linux/arm
+          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:latest
