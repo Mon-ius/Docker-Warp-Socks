@@ -36,6 +36,10 @@ jobs:
         run: |
           set +e
           sudo iptables -P INPUT ACCEPT
+          sudo iptables -P FORWARD ACCEPT
+          sudo iptables -P OUTPUT ACCEPT
+          sudo iptables -F
+          sudo iptables-save
           curl --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" > 1.txt
           curl "https://www.cloudflare.com/cdn-cgi/trace" > 2.txt
           trace=$(cat 1.txt | grep -w "warp=on")
