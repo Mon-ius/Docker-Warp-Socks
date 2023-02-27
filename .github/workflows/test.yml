@@ -9,39 +9,32 @@ on:
 jobs:
   testx:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - arch: aarch64
-            cpu: cortex-a53
-            base_image: raspios_lite_arm64:latest
-            cpu_info: raspberrypi_zero2_w_arm64_w
     steps:
-    - uses: pguyot/arm-runner-action@v2
-      name: Test release on RPI
-      with:
-        base_image: ${{ matrix.base_image }}
-        cpu: ${{ matrix.cpu }}
-        cpu_info: ${{ matrix.cpu_info }}
-        commands: |
-            apt-get update -q -y
-            apt-get install -q -y git curl sudo gnupg ca-certificates software-properties-common
-            curl -sSL https://get.docker.com | sh
-            sudo usermod -aG docker pi
-            docker run --privileged --restart=always -itd \
-                --name warp_socks \
-                --sysctl net.ipv6.conf.all.disable_ipv6=0 \
-                --sysctl net.ipv4.conf.all.src_valid_mark=1 \
-                --cap-add NET_ADMIN --cap-add SYS_MODULE \
-                -p 9091:9091 \
-                -v /lib/modules:/lib/modules \
-                -v ~/wireguard/:/opt/wireguard/:ro \
-                monius/docker-warp-socks
-            echo ::set-output name=uname::$(uname -a)
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 12
 
-    - name: Check proxy status
-      run: |
-        echo "The uname output was ${{ steps.test.outputs.uname }}"
-        apt-get update -q -y
-        apt-get install -q -y curl
-        curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
+      - 
+        run: |
+          set -x
+
+          docker version
+
+          docker run --privileged --restart=always -itd \
+              --name warp_socks \
+              --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+              --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+              --cap-add NET_ADMIN --cap-add SYS_MODULE \
+              -p 9091:9091 \
+              -v /lib/modules:/lib/modules \
+              -v ~/wireguard/:/opt/wireguard/:ro \
+              monius/docker-warp-socks
+
+      - name: Check proxy status
+        run: |
+          echo "The uname output was ${{ steps.test.outputs.uname }}"
+          apt-get update -q -y && apt-get install -q -y curl
+          curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
