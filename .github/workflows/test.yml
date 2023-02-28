@@ -15,10 +15,6 @@ jobs:
         uses: actions/checkout@v3
 
       - 
-        name: Debug Mode
-        uses: lhotari/action-upterm@v1
-
-      - 
         uses: docker-practice/actions-setup-docker@master
         timeout-minutes: 12
       - 
@@ -41,6 +37,8 @@ jobs:
               -p 9091:9091 \
               -v /lib/modules:/lib/modules \
               monius/docker-warp-socks
+          
+          curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace"
 
       - name: Check proxy status
         id: check
@@ -48,7 +46,7 @@ jobs:
           set +e
 
           curl "https://www.cloudflare.com/cdn-cgi/trace"
-          curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace"
+          
           curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" > 1.txt
           export http_proxy=socks5://127.0.0.1:9091 https_proxy=socks5://127.0.0.1:9091
           curl -v "https://www.cloudflare.com/cdn-cgi/trace" > 2.txt
@@ -58,3 +56,7 @@ jobs:
       - name: Show proxy status
         run: |
           echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - 
+        name: Debug Mode
+        uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=on' }}
