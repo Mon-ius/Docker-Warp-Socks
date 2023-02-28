@@ -20,6 +20,12 @@ jobs:
         run: |
           set -x
 
+          sudo iptables -P INPUT ACCEPT
+          sudo iptables -P FORWARD ACCEPT
+          sudo iptables -P OUTPUT ACCEPT
+          sudo iptables -F
+          sudo iptables-save
+
           docker version
 
           docker run --privileged --restart=always -itd \
@@ -35,11 +41,6 @@ jobs:
         id: check
         run: |
           set +e
-          sudo iptables -P INPUT ACCEPT
-          sudo iptables -P FORWARD ACCEPT
-          sudo iptables -P OUTPUT ACCEPT
-          sudo iptables -F
-          sudo iptables-save
           curl "https://www.cloudflare.com/cdn-cgi/trace"
           curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace"
           export http_proxy=socks5://127.0.0.1:9091 https_proxy=socks5://127.0.0.1:9091
