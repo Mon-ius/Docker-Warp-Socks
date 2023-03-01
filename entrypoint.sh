@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-sleep 2
+sleep 255
 
 IFACE=$(ip route show | grep default | awk '{print $5}')
 IPv4=$(ip -4 address show dev "$IFACE" | awk '/inet/{print $2}' | cut -d/ -f1)
