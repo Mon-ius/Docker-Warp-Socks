@@ -34,7 +34,7 @@ jobs:
           set +e
 
           sudo docker ps -a
-          sudo docker logs warp_socks
+          sudo docker logs --follow warp_socks
 
       - name: Check proxy status
         id: check

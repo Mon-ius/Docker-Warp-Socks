@@ -50,10 +50,12 @@ echo "ENV LOG=${LOG}"
 if [[ $LOG -ne 0 ]]; then
 	echo "Log enabled."
 	echo "Current addr: ${IPv4}, ${IPv6}"
-	echo "WireGuard conf file:"
+	echo "----- WireGuard conf file: -----"
 	cat "/etc/wireguard/warp.conf"
 
-	echo "Dante conf file:"
+	echo "*******************"
+
+	echo "----- Dante conf file: -----"
 	cat "/opt/danted.conf"
 fi
 
