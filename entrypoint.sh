@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+sleep 2
+
 IFACE=$(ip route show | grep default | awk '{print $5}')
 IPv4=$(ip -4 address show dev "$IFACE" | awk '/inet/{print $2}' | cut -d/ -f1)
 IPv6=$(ip -6 address show dev "$IFACE" | awk '/inet/{print $2}' | cut -d/ -f1)
@@ -43,4 +45,14 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
-wg-quick up warp && /usr/sbin/danted -f /opt/danted.conf
+if [[ $LOG -ne 0 ]]; then
+	echo "Log enabled."
+	echo "Current addr: ${IPv4}, ${IPv6}"
+	echo "WireGuard conf file:"
+	cat "/etc/wireguard/warp.conf"
+
+	echo "Dante conf file:"
+	cat "/opt/danted.conf"
+fi
+
+wg-quick up warp && /usr/sbin/danted -f "/opt/danted.conf"
