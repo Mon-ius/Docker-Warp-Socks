@@ -32,7 +32,7 @@ jobs:
               -v /lib/modules:/lib/modules \
               monius/docker-warp-socks
 
-          sudo docker log warp_socks
+          sudo docker logs warp_socks
 
       - name: Check proxy status
         id: check
