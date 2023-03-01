@@ -63,5 +63,5 @@ if [[ $LOG -ne 0 ]]; then
 
 	exec "$@"
 fi
-
+echo "Log disabled."
 sleep infinity & wait
