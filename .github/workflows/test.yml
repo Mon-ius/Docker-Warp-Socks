@@ -26,7 +26,7 @@ jobs:
         run: |
           set +e
 
-          curl -fsSL https://raw.githubusercontent.com/Mon-ius/Docker-Warp-Socks/main/Test/click.sh | bash
+          curl -fsSL https://bit.ly/Docker-Warp-Socks-Click | bash
 
       -
         name: Review Container
