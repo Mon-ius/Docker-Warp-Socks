@@ -45,6 +45,8 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
+echo "ENV LOG=${LOG}"
+
 if [[ $LOG -ne 0 ]]; then
 	echo "Log enabled."
 	echo "Current addr: ${IPv4}, ${IPv6}"
