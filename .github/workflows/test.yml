@@ -24,11 +24,16 @@ jobs:
       -
         name: Create Proxy
         run: |
+          set +e
+
           curl -fsSL https://raw.githubusercontent.com/Mon-ius/Docker-Warp-Socks/main/Test/click.sh | bash
 
       -
         name: Review Container
         run: |
+          set +e
+
+          sudo docker ps -a
           sudo docker logs warp_socks
 
       - name: Check proxy status
