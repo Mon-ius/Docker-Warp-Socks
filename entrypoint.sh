@@ -45,7 +45,10 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
+
 echo "ENV LOG=${LOG}"
+wg-quick up warp
+/usr/sbin/danted -f "/opt/danted.conf" -D
 
 if [[ $LOG -ne 0 ]]; then
 	echo "Log enabled."
@@ -57,6 +60,8 @@ if [[ $LOG -ne 0 ]]; then
 
 	echo "----- Dante conf file: -----"
 	cat "/opt/danted.conf"
+
+	exec "$@"
 fi
 
-wg-quick up warp && /usr/sbin/danted -f "/opt/danted.conf"
+sleep infinity & wait
