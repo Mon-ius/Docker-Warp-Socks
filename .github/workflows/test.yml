@@ -20,11 +20,10 @@ jobs:
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
           sudo add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
           sudo apt -y update && sudo apt -y install docker-ce
-          sudo usermod -aG docker '${USER}'
       -
         name: Create Proxy
         run: |
-          docker run --privileged --restart=always -itd \
+          sudo docker run --privileged --restart=always -itd \
               --name warp_socks \
               --sysctl net.ipv6.conf.all.disable_ipv6=0 \
               --sysctl net.ipv4.conf.all.src_valid_mark=1 \
