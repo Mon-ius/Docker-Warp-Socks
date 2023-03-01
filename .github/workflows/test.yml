@@ -20,6 +20,7 @@ jobs:
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
           sudo add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
           sudo apt -y update && sudo apt -y install docker-ce
+          sudo docker pull monius/docker-warp-socks
       -
         name: Create Proxy
         run: |
