@@ -5,4 +5,3 @@ COPY entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
 
 EXPOSE 9091
-CMD ["danted"]
