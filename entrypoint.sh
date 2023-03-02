@@ -45,10 +45,6 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
-if [ ! -e "/etc/danted.conf" ]; then
-    cp /opt/danted.conf /etc/danted.conf
-fi
-
 wg-quick up warp
 danted -c /opt/danted.conf -D
 exec "$@"
