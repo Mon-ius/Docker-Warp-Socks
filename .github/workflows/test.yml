@@ -20,7 +20,7 @@ jobs:
         run: |
           curl -fsSL bit.ly/warp_socks | bash
           
-          sleep 30 && docker ps -a && docker logs warp_socks
+          date && sleep 15 && docker ps -a && docker logs warp_socks && date
 
       - name: Check proxy status
         id: check
