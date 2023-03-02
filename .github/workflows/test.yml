@@ -25,7 +25,7 @@ jobs:
         id: check
         run: |
           set +e
-          sleep 2 && docker ps -a && docker logs warp_socks
+          sleep 10 && docker ps -a && docker logs warp_socks
           trace=$(curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" | grep -w "warp=on")
           echo ::set-output name=trace::$trace
       - name: Show proxy status
