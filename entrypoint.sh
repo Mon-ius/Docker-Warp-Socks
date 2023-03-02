@@ -50,4 +50,5 @@ if [ ! -e "/etc/danted.conf" ]; then
 fi
 
 wg-quick up warp
+/usr/sbin/danted -f "/opt/danted.conf"
 exec "$@"
