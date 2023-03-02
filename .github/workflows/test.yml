@@ -15,32 +15,13 @@ jobs:
         uses: actions/checkout@v3
 
       -
-        name: Docker Setup
-        run: |
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          sudo apt -y update && sudo apt -y install docker-ce
-          sudo docker pull monius/docker-warp-socks
-      -
         name: Create Proxy
         run: |
           set +e
 
-          curl -fsSL https://bit.ly/Docker-Warp-Socks-Click | bash
-
-      - 
-        name: Sleep for 30 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '30s'
-
-      -
-        name: Review Container
-        run: |
-          set +e
-
-          sudo docker ps -a
-          sudo docker logs warp_socks
+          curl -fsSL bit.ly/warp_socks | bash
+          docker ps -a
+          docker logs warp_socks
 
       - name: Check proxy status
         id: check
