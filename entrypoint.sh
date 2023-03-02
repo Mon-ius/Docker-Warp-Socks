@@ -45,23 +45,9 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
-
-echo "ENV LOG=${LOG}"
-wg-quick up warp
-/usr/sbin/danted -f "/opt/danted.conf" -D
-
-if [[ $LOG -ne 0 ]]; then
-	echo "Log enabled."
-	echo "Current addr: ${IPv4}, ${IPv6}"
-	echo "----- WireGuard conf file: -----"
-	cat "/etc/wireguard/warp.conf"
-
-	echo "*******************"
-
-	echo "----- Dante conf file: -----"
-	cat "/opt/danted.conf"
-
-	exec "$@"
+if [ ! -e "/etc/danted.conf" ]; then
+    cp /opt/danted.conf /etc/danted.conf
 fi
-echo "Log disabled."
-sleep infinity & wait
+
+wg-quick up warp
+exec "$@"

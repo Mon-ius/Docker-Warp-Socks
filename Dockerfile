@@ -4,4 +4,5 @@ ENV LOG=0
 COPY entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
 
-STOPSIGNAL SIGQUIT
+EXPOSE 9091
+CMD ["danted"]
