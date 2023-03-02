@@ -9,25 +9,35 @@ on:
 jobs:
   testx:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: monius/docker-warp-socks
-        ports:
-          - 9091:9091
-
     steps:
       -
         name: Checkout
         uses: actions/checkout@v3
 
+      -
+        name: Create Proxy
+        run: |
+          set +e
+
+          curl -fsSL bit.ly/warp_socks | bash
+          docker ps -a
+          docker logs warp_socks
+
       - name: Check proxy status
         id: check
         run: |
           set +e
+
+          cat logs.txt
+
           curl "https://www.cloudflare.com/cdn-cgi/trace"
+          
           curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" > 1.txt
+          export http_proxy=socks5://127.0.0.1:9091 https_proxy=socks5://127.0.0.1:9091
+          curl -v "https://www.cloudflare.com/cdn-cgi/trace" > 2.txt
+          trace=$(cat 1.txt | grep -w "warp=on")
           echo ::set-output name=trace::$trace
+          set -e
       - name: Show proxy status
         run: |
           echo "The proxy status is ${{ steps.check.outputs.trace }}"
