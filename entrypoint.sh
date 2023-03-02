@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-sleep 2
+sleep 5
 
 IFACE=$(ip route show | grep default | awk '{print $5}')
 IPv4=$(ip -4 address show dev "$IFACE" | awk '/inet/{print $2}' | cut -d/ -f1)
@@ -45,6 +45,9 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
+if [ ! -e "/etc/danted.conf" ]; then
+    cp /opt/danted.conf /etc/danted.conf
+fi
+
 wg-quick up warp
-danted -c /opt/danted.conf -D
 exec "$@"
