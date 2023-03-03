@@ -4,6 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ="Europe/London"
 
 RUN apt-get -y update \
-    && apt-get -y install curl \
-    && apt-get -y install --no-install-recommends net-tools dante-server wireguard-tools iproute2 procps iptables openresolv kmod \
+    && apt-get -y install curl net-tools \
+    && apt-get -y install --no-install-recommends dante-server wireguard-tools iproute2 procps iptables openresolv kmod \
     && apt-get -qq autoremove --purge && apt-get clean && rm -rf /var/lib/apt/lists/*
