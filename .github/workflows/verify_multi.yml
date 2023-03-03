@@ -22,7 +22,7 @@ jobs:
       -
         name: Clean Table
         run:
-          docker system prune
+          docker stop $(docker ps -aq) && yes | docker system prune -a
       -
         name: QEMU
         run: docker run --privileged --rm tonistiigi/binfmt --install all
@@ -30,7 +30,7 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
-          curl -fsSL bit.ly/warp_socks | bash -s ${{ matrix.arch }}
+          curl -fsSL bit.ly/warp_socks | bash -s linux/arm64 ${{ matrix.arch }}
           date && sleep 60 && docker ps -a && date && docker logs warp_socks
 
       - name: Check proxy status
@@ -42,7 +42,3 @@ jobs:
       - name: Show proxy status
         run: |
           echo "The proxy status is ${{ steps.check.outputs.trace }}"
-      - 
-        name: Debug Mode
-        uses: lhotari/action-upterm@v1
-        if: ${{ steps.check.outputs.trace != 'warp=on' }}
