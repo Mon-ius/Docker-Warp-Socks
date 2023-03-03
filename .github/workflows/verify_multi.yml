@@ -1,25 +1,36 @@
-name: verify
+name: verify_multi
 
 on:
   workflow_run:
-    workflows: ["pub"]
+    workflows: ["verify"]
     types:
       - completed
 
 jobs:
-  general:
+  cross-platform:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - arch: linux/arm64
+          - arch: linux/arm
+          - arch: linux/s390x
     steps:
       -
         name: Checkout
         uses: actions/checkout@v3
-
+      -
+        name: Clean Table
+        run:
+          docker system prune
+      -
+        name: QEMU
+        run: docker run --privileged --rm tonistiigi/binfmt --install all
       -
         name: Create Proxy
         shell: bash
         run: |
-          curl -fsSL bit.ly/warp_socks | bash
-          
+          curl -fsSL bit.ly/warp_socks | bash -s ${{ matrix.arch }}
           date && sleep 60 && docker ps -a && date && docker logs warp_socks
 
       - name: Check proxy status
