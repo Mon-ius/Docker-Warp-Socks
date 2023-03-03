@@ -54,10 +54,8 @@ jobs:
       -
         name: Create Proxy
         shell: bash
-        with: 
-          platform: ${{ matrix.arch }}
         run: |
-          curl -fsSL bit.ly/warp_socks | bash -s $platform
+          curl -fsSL bit.ly/warp_socks | bash -s ${{ matrix.arch }}
           date && sleep 60 && docker ps -a && date && docker logs warp_socks
 
       - name: Check proxy status
