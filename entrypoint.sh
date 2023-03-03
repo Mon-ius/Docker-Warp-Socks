@@ -19,10 +19,6 @@ if [ ! -e "/opt/wgcf-profile.conf" ]; then
 	sed -i "/\[Interface\]/a PostUp = ip -4 rule add from ${IPv4} lookup main" /opt/wgcf-profile.conf
 fi
 
-if [ ! -e "/etc/wireguard/warp.conf" ]; then
-    cp /opt/wgcf-profile.conf /etc/wireguard/warp.conf
-fi
-
 if [ ! -e "/opt/danted.conf" ]; then
 	cat > /opt/danted.conf <<-EOF
 		logoutput: stderr
@@ -45,10 +41,8 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
-if [ ! -e "/etc/danted.conf" ]; then
-    cp /opt/danted.conf /etc/danted.conf
-fi
 
+mv /opt/wgcf-profile.conf /etc/wireguard/warp.conf && mv /opt/danted.conf /etc/danted.conf
 modprobe ip6table_raw && wg-quick up warp
-/usr/sbin/danted -f "/opt/danted.conf"
+
 exec "$@"
