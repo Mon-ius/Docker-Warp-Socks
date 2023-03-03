@@ -49,6 +49,6 @@ if [ ! -e "/etc/danted.conf" ]; then
     cp /opt/danted.conf /etc/danted.conf
 fi
 
-wg-quick up warp
+modprobe ip6table_raw && wg-quick up warp
 /usr/sbin/danted -f "/opt/danted.conf"
 exec "$@"
