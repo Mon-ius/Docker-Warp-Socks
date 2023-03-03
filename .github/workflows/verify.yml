@@ -1,0 +1,75 @@
+name: Warp_Verify
+
+on:
+  workflow_run:
+    workflows: ["pub"]
+    types:
+      - completed
+
+jobs:
+  general:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+
+      -
+        name: Create Proxy
+        shell: bash
+        run: |
+          curl -fsSL bit.ly/warp_socks | bash
+          
+          date && sleep 60 && docker ps -a && date && docker logs warp_socks
+
+      - name: Check proxy status
+        id: check
+        run: |
+          set +e
+          trace=$(curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" | grep -w "warp=on")
+          echo ::set-output name=trace::$trace
+      - name: Show proxy status
+        run: |
+          echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - 
+        name: Debug Mode
+        uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=on' }}
+
+  cross-platform:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - arch: linux/arm64
+          - arch: linux/arm
+          - arch: linux/s390x
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: QEMU
+        run: docker run --privileged --rm tonistiigi/binfmt --install all
+      -
+        name: Create Proxy
+        shell: bash
+        with: 
+          platform: ${{ matrix.arch }}
+        run: |
+          curl -fsSL bit.ly/warp_socks | bash -s $platform
+          date && sleep 60 && docker ps -a && date && docker logs warp_socks
+
+      - name: Check proxy status
+        id: check
+        run: |
+          set +e
+          trace=$(curl -v --proxy "socks5h://127.0.0.1:9091" "https://www.cloudflare.com/cdn-cgi/trace" | grep -w "warp=on")
+          echo ::set-output name=trace::$trace
+      - name: Show proxy status
+        run: |
+          echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - 
+        name: Debug Mode
+        uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=on' }}
