@@ -1,10 +1,12 @@
 name: pub
 
 on:
-  workflow_run:
-    workflows: ["meta"]
-    types:
-      - completed
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+  schedule:
+    - cron: '0 8 */8 * *'
 
 
 jobs:

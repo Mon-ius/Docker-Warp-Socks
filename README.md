@@ -1,6 +1,7 @@
 # Docker-Warp-Socks
 
 [![CI Status](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/pub/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:pub)
+[![CI Status](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/verify/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:verify)
 [![Docker Pulls](https://flat.badgen.net/docker/pulls/monius/docker-warp-socks?icon=docker)](https://hub.docker.com/r/monius/docker-warp-socks)
 
 > A lightweight Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
@@ -14,6 +15,13 @@ The official `warp-cli` only support amd64 machines, and its [guide](https://git
 With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `ChatGPT`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
 
 ## Usage
+
+### Prerequisites
+
+```bash
+# in case, you have no docker-ce installed;
+curl -fsSL https://get.docker.com | sudo bash
+```
 
 ### Docker cli
 

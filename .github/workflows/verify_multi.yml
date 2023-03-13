@@ -1,10 +1,7 @@
 name: verify_multi
 
 on:
-  workflow_run:
-    workflows: ["verify"]
-    types:
-      - completed
+  workflow_dispatch:
 
 jobs:
   cross-platform:
