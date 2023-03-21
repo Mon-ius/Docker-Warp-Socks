@@ -68,6 +68,12 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
+### Use Cases
+
+- use behind the proxy services to extend the accessibility and avoid potential restriction
+- use to proxy the API calling to prevent being banned
+- use to develop app with warp embedded
+
 ### Tips
 
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
