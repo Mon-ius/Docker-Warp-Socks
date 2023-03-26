@@ -74,6 +74,8 @@ docker run --privileged --restart=always -itd \
 - use to avoid looping verification in Midjourney Discord Channel
 - use to proxy the API calling to prevent being banned
 - use to develop app with warp embedded
+- use to bypass the New Bing wait-list
+- use to success the AI WaitList pre-process
 
 ### Tips
 
