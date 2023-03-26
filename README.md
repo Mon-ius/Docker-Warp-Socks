@@ -71,6 +71,7 @@ docker run --privileged --restart=always -itd \
 ### Use Cases
 
 - use behind the proxy services to extend the accessibility and avoid potential restriction
+- use to avoid looping verification in Midjourney Discord Channel
 - use to proxy the API calling to prevent being banned
 - use to develop app with warp embedded
 
