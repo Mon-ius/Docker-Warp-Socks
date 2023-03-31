@@ -10,6 +10,18 @@
 
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
+## Features
+
+- Automatically install and config CloudFlare WARP Client in Docker
+- Enable the access of WARP network from Docker Container's **SOCKS5** port
+- Extend accessibility and avoid potential restrictions by using proxy services
+- Avoid looping verification in the Midjourney Discord Channel
+- Prevent being banned by proxying API calls
+- Successfully pre-process the AI WaitList
+- Develop apps with warp embedded
+- Bypass the New Bing wait-list
+- ...
+
 ## Why to use
 
 The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
@@ -68,14 +80,7 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
-### Use Cases
 
-- use behind the proxy services to extend the accessibility and avoid potential restriction
-- use to avoid looping verification in Midjourney Discord Channel
-- use to proxy the API calling to prevent being banned
-- use to develop app with warp embedded
-- use to bypass the New Bing wait-list
-- use to success the AI WaitList pre-process
 
 ### Tips
 
@@ -108,5 +113,9 @@ curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace 
 - [warp](https://developers.cloudflare.com/warp-client/get-started/linux/)
 - [wgcf-docker](https://github.com/Neilpang/wgcf-docker)
 - [wireguard-socks-proxy](https://github.com/ispmarin/wireguard-socks-proxy)
+
+## Notice of Non-Affiliation and Disclaimer
+
+We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with Cloudflare, or any of its subsidiaries or its affiliates. The official Cloudflare website can be found at https://www.cloudflare.com.
 
 ![visitor](https://count.getloli.com/get/@warp-socks?theme=asoul)
