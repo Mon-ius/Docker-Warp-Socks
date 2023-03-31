@@ -111,6 +111,8 @@ curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace 
 ### Credits
 
 - [warp](https://developers.cloudflare.com/warp-client/get-started/linux/)
+- [WireGuard](https://www.wireguard.com/)
+- [ViRb3/wgcf](https://github.com/ViRb3/wgcf)
 - [wgcf-docker](https://github.com/Neilpang/wgcf-docker)
 - [wireguard-socks-proxy](https://github.com/ispmarin/wireguard-socks-proxy)
 
