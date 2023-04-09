@@ -98,7 +98,7 @@ sudo chmod +x /usr/bin/docker-compose
 #### Compose up
 
 ```bash
-curl -fsSL https://bit.ly/warp-socks-compose > warp-socks.yml
+curl -fsSL https://bit.ly/docker-warp-socks-compose > warp-socks.yml
 
 #start
 docker-compose -f warp-socks.yml up -d
