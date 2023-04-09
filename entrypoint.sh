@@ -5,7 +5,7 @@ sleep 5
 
 IFACE=$(ip route show default | grep default | awk '{print $5}')
 
-if [ ! -e "/etc/wireguard/warp.conf" ] && [ ! -e "/opt/wgcf-profile.conf" ]; then
+if [ ! -e "/opt/wgcf-profile.conf" ]; then
     IPv4=$(ifconfig $IFACE | awk '/inet /{print $2}' | cut -d' ' -f2)
     IPv6=$(ifconfig $IFACE | awk '/inet6 /{print $2}' | cut -d' ' -f2)
     TAR="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
@@ -42,7 +42,7 @@ if [ ! -e "/opt/danted.conf" ]; then
 fi
 
 
-mv /opt/wgcf-profile.conf /etc/wireguard/warp.conf && mv /opt/danted.conf /etc/danted.conf
+/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
 modprobe ip6table_raw && wg-quick up warp
 
 exec "$@"
