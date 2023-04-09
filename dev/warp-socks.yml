@@ -1,5 +1,13 @@
 version: '3.9'
 services:
+    test:
+        image: curlimages/curl
+        network_mode: host
+        depends_on:
+            warp-socks:
+                condition: service_healthy
+        command: curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
+
     warp-socks:
         image: monius/docker-warp-socks:latest
         ports:
@@ -13,9 +21,9 @@ services:
         sysctls:
             net.ipv6.conf.all.disable_ipv6: 0
             net.ipv4.conf.all.src_valid_mark: 1
-    test:
-        image: curlimages/curl
-        network_mode: host
-        depends_on:
-            - warp-socks
-        command: curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
+        healthcheck:
+            test: ["CMD", "curl", "-f", "https://www.cloudflare.com/cdn-cgi/trace"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+
