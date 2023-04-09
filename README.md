@@ -73,7 +73,7 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
-### Test and Verify
+#### Test and Verify
 
 ``` bash
 
@@ -82,6 +82,12 @@ curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
 
 # See`warp=on` means success. 
 ```
+
+### Docker Compose
+
+#### Standalone
+
+curl -fsSL <https://github.com/docker/compose/releases/download/v2.17.2/docker-compose->`uname -s`-`uname -m` > ~/docker-compose
 
 ### Tips
 
@@ -119,6 +125,6 @@ curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace 
 
 ## Notice of Non-Affiliation and Disclaimer
 
-We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with Cloudflare, or any of its subsidiaries or its affiliates. The official Cloudflare website can be found at https://www.cloudflare.com.
+We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with Cloudflare, or any of its subsidiaries or its affiliates. The official Cloudflare website can be found at <https://www.cloudflare.com>.
 
 ![visitor](https://count.getloli.com/get/@warp-socks?theme=asoul)
