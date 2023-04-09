@@ -30,14 +30,14 @@ With any existed running proxy service, it acts just like a plugin that helps un
 
 ## Usage
 
-### Prerequisites
+### Docker CLI
+
+#### Prerequisites
 
 ```bash
 # in case, you have no docker-ce installed;
 curl -fsSL https://get.docker.com | sudo bash
 ```
-
-### Docker CLI
 
 The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues. ***Please follow those two EXAMPLES !!!***
 
