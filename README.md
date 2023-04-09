@@ -85,9 +85,26 @@ curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
 
 ### Docker Compose
 
-#### Standalone
+`docker-compose.yml` could replace some args in a file to run a container.
 
-curl -fsSL <https://github.com/docker/compose/releases/download/v2.17.2/docker-compose->`uname -s`-`uname -m` > ~/docker-compose
+#### Standalone Compose V2
+
+```bash
+sudo curl -fsSL <https://github.com/docker/compose/releases/download/v2.17.2/docker-compose->`uname -s`-`uname -m` > /usr/bin/docker-compose
+
+chmod +x ~/docker-compose
+```
+
+#### Compose up
+
+```bash
+curl -fsSL https://bit.ly/warp-socks-compose > warp-socks.yml
+
+#start
+docker-compose -f warp-socks.yml up -d
+#stop
+docker-compose -f warp-socks.yml down
+```
 
 ### Tips
 
