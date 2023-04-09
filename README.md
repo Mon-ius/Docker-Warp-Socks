@@ -37,9 +37,11 @@ With any existed running proxy service, it acts just like a plugin that helps un
 curl -fsSL https://get.docker.com | sudo bash
 ```
 
-### Docker cli
+### Docker CLI
 
-The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues.
+The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues. ***Please follow those two EXAMPLES !!!***
+
+#### Quick Start
 
 ```bash
 docker run --privileged --restart=always -itd \
@@ -54,19 +56,10 @@ docker run --privileged --restart=always -itd \
 
 The above command will create a background service that allows the entire container network to join the dual-stack cloudflare network pool without disconnecting from the host.
 
-Test it
-
-``` bash
-
-# Host
-curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
-
-# See`warp=on` means success. 
-```
-
-### Advanced
+#### Pre-Configuration (advanced)
 
 It will also recognize the prepared `wgcf-profile.conf` and `danted.conf` if they are located in `~/wireguard/`.
+Use **-v** `~/wireguard/:/opt/wireguard/:ro` to map the directory.
 
 ``` bash
 docker run --privileged --restart=always -itd \
@@ -80,7 +73,15 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
+### Test and Verify
 
+``` bash
+
+# Host
+curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
+
+# See`warp=on` means success. 
+```
 
 ### Tips
 
