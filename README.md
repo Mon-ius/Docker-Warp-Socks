@@ -92,7 +92,7 @@ curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
 ```bash
 sudo curl -fsSL <https://github.com/docker/compose/releases/download/v2.17.2/docker-compose->`uname -s`-`uname -m` > /usr/bin/docker-compose
 
-chmod +x ~/docker-compose
+sudo chmod +x /usr/bin/docker-compose
 ```
 
 #### Compose up
