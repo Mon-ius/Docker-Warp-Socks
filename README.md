@@ -38,6 +38,8 @@ With any existed running proxy service, it acts just like a plugin that helps un
 # in case, you have no docker-ce installed;
 curl -fsSL https://get.docker.com | sudo bash
 
+# to avoid `sudo` calling
+sudo usermod -aG docker ${USER}
 # or check https://docs.docker.com/engine/security/rootless 
 # if required a rootless install with `dockerd-rootless-setuptool.sh install`
 ```
