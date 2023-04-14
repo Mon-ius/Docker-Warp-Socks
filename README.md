@@ -44,9 +44,11 @@ sudo usermod -aG docker ${USER}
 # if required a rootless install with `dockerd-rootless-setuptool.sh install`
 ```
 
-The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues. ***Please follow those two EXAMPLES !!!***
+The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues. ***Please follow those two EXAMPLES To Get Start !***
 
 #### Quick Start
+
+1. Run the following commands in your terminal:
 
 ```bash
 docker run --privileged --restart=always -itd \
@@ -63,8 +65,7 @@ The above command will create a background service that allows the entire contai
 
 #### Pre-Configuration (advanced)
 
-It will also recognize the prepared `wgcf-profile.conf` and `danted.conf` if they are located in `~/wireguard/`.
-Use **-v** `~/wireguard/:/opt/wireguard/:ro` to map the directory.
+2. (Optional) To use your prepared config:
 
 ``` bash
 docker run --privileged --restart=always -itd \
@@ -78,7 +79,12 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
+It will also recognize the prepared `wgcf-profile.conf` and `danted.conf` if they are located in `~/wireguard/`.
+Use **-v** `~/wireguard/:/opt/wireguard/:ro` to map the directory.
+
 #### Test and Verify
+
+3. To output the network test log:
 
 ``` bash
 
