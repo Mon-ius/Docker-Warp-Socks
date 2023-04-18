@@ -30,9 +30,9 @@ With any existed running proxy service, it acts just like a plugin that helps un
 
 ## Usage
 
-### Docker CLI
+The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues. ***Please follow the EXAMPLES `1.1` and `2.1` To Get Start !***
 
-#### Prerequisites
+### 💾 Prerequisites
 
 ```bash
 # in case, you have no docker-ce installed;
@@ -44,9 +44,9 @@ sudo usermod -aG docker ${USER}
 # if required a rootless install with `dockerd-rootless-setuptool.sh install`
 ```
 
-The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues. ***Please follow those two EXAMPLES To Get Start !***
+### 1. Docker CLI
 
-#### Quick Start
+#### 1.1 🎉 Quick Start
 
 1. Run the following commands in your terminal:
 
@@ -63,9 +63,9 @@ docker run --privileged --restart=always -itd \
 
 The above command will create a background service that allows the entire container network to join the dual-stack cloudflare network pool without disconnecting from the host.
 
-#### Pre-Configuration (advanced)
+#### 1.2 🔧 Pre-Configuration Start (advanced)
 
-2. (Optional) To use your prepared config:
+To use your prepared config:
 
 ``` bash
 docker run --privileged --restart=always -itd \
@@ -82,9 +82,9 @@ docker run --privileged --restart=always -itd \
 It will also recognize the prepared `wgcf-profile.conf` and `danted.conf` if they are located in `~/wireguard/`.
 Use **-v** `~/wireguard/:/opt/wireguard/:ro` to map the directory.
 
-#### Test and Verify
+#### 1.3 Test and Verify
 
-3. To output the network test log:
+To output the network test log:
 
 ``` bash
 
@@ -94,11 +94,13 @@ curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
 # See`warp=on` means success. 
 ```
 
-### Docker Compose
+### 2. Docker Compose
 
 `docker-compose.yml` could replace some args in a file to run a container.
 
-#### Standalone Compose V2
+#### 2. 💾 Download Standalone Docker-Compose V2 Binary
+
+If you don't have Docker-Compose installed, following this:
 
 ```bash
 sudo curl -fsSL <https://github.com/docker/compose/releases/download/v2.17.2/docker-compose->`uname -s`-`uname -m` > /usr/bin/docker-compose
@@ -106,7 +108,7 @@ sudo curl -fsSL <https://github.com/docker/compose/releases/download/v2.17.2/doc
 sudo chmod +x /usr/bin/docker-compose
 ```
 
-#### Compose up
+#### 2.1 🎉 Compose up the container
 
 ```bash
 curl -fsSL https://bit.ly/docker-warp-socks-compose > warp-socks.yml
