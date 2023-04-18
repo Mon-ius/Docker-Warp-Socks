@@ -48,7 +48,7 @@ sudo usermod -aG docker ${USER}
 
 #### 1.1 🎉 Quick Start
 
-1. Run the following commands in your terminal:
+Run the following commands in your terminal:
 
 ```bash
 docker run --privileged --restart=always -itd \
@@ -73,7 +73,7 @@ docker run --privileged --restart=always -itd \
     --sysctl net.ipv6.conf.all.disable_ipv6=0 \
     --sysctl net.ipv4.conf.all.src_valid_mark=1 \
     --cap-add NET_ADMIN --cap-add SYS_MODULE \
-    -p 9091:9091 \
+    -p 127.0.0.1:9091:9091 \
     -v /lib/modules:/lib/modules \
     -v ~/wireguard/:/opt/wireguard/:ro \
     monius/docker-warp-socks
@@ -81,6 +81,8 @@ docker run --privileged --restart=always -itd \
 
 It will also recognize the prepared `wgcf-profile.conf` and `danted.conf` if they are located in `~/wireguard/`.
 Use **-v** `~/wireguard/:/opt/wireguard/:ro` to map the directory.
+
+And, `-p 127.0.0.1:9091:9091` will create a localhost(`127.0.0.1`) access-only `9091` port to secure the connection.
 
 #### 1.3 Test and Verify
 
@@ -98,7 +100,7 @@ curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
 
 `docker-compose.yml` could replace some args in a file to run a container.
 
-#### 2. 💾 Download Standalone Docker-Compose V2 Binary
+#### 💾 Download Standalone Docker-Compose V2 Binary
 
 If you don't have Docker-Compose installed, following this:
 
@@ -136,7 +138,7 @@ warp-cli set-proxy-port 9091
 warp-cli connect
 
 # test
-curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace "
+curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 
 # See`warp=on` means success. 
 ```
