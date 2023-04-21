@@ -41,8 +41,7 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
-
 /bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
-modprobe ip6table_raw && wg-quick up warp
+wg-quick up warp
 
 exec "$@"
