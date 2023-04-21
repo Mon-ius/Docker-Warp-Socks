@@ -3,7 +3,7 @@ set -e
 
 sleep 5
 
-IFACE=$(ip route show default | grep default | awk '{print $5}')
+IFACE=$(ip route show default | awk '{print $5}')
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
     IPv4=$(ifconfig $IFACE | awk '/inet /{print $2}' | cut -d' ' -f2)

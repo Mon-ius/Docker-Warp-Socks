@@ -124,8 +124,47 @@ curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - down
 
 [![Try in PWD](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com?stack=https://raw.githubusercontent.com/Mon-ius/Docker-Warp-Socks/main/dev/warp-socks.yml)
 
+#### 3.1 Enable Swarm Mode
+
+To use `Docker Stack`, first perform the *Swarm initialized* by:
+
 ```bash
-curl -fsSL https://bit.ly/docker-warp-socks-compose | docker stack deploy -c - warp
+# create
+docker swarm init
+
+#leave
+docker swarm leave --force
+```
+
+#### 3.1 Service Creation
+
+```bash
+# create
+curl -fsSL https://bit.ly/docker-warp-socks-compose | docker stack deploy -c - TEST
+
+# remove
+docker stack rm TEST
+```
+
+#### 3.2 Check and Test
+
+- `docker info`
+- `docker node ls`
+- `docker network ls`
+- `docker stack ps TEST`
+- `docker stack services TEST`
+- `docker service ls`
+- `docker service logs TEST_warp-socks`
+- `docker service inspect TEST_warp-socks`
+
+```bash
+# in swarm mode, the ip is random
+
+TID=`docker ps -aqf "name=^TEST_warp-socks"`
+IF=`docker exec $TID sh -c "ip route show default" | awk '{print $5}'`
+TIP=`docker exec $TID sh -c "ifconfig $IF" | awk '/inet /{print $2}' | cut -d' ' -f2`
+
+curl --proxy socks5h://$TIP:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
 ### Tips
