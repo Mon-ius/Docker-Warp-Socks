@@ -100,6 +100,8 @@ curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
 
 `docker-compose.yml` could replace some args in a file to run a container.
 
+[![Try in PWD](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com?stack=https://raw.githubusercontent.com/Mon-ius/Docker-Warp-Socks/main/dev/warp-socks.yml)
+
 #### 💾 Download Standalone Docker-Compose V2 Binary
 
 If you don't have Docker-Compose installed, following this:
@@ -117,6 +119,12 @@ sudo chmod +x /usr/bin/docker-compose
 curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - up -d
 #stop
 curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - down
+```
+
+### 3. Docker Stack Deploy
+
+```bash
+curl -fsSL https://bit.ly/docker-warp-socks-compose | docker stack deploy -c - warp
 ```
 
 ### Tips
