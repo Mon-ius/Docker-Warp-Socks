@@ -56,8 +56,8 @@ docker run --privileged --restart=always -itd \
     --sysctl net.ipv6.conf.all.disable_ipv6=0 \
     --sysctl net.ipv4.conf.all.src_valid_mark=1 \
     --cap-add NET_ADMIN --cap-add SYS_MODULE \
-    -p 9091:9091 \
     -v /lib/modules:/lib/modules \
+    -p 9091:9091 \
     monius/docker-warp-socks
 ```
 
@@ -123,6 +123,8 @@ curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - down
 ### 3. Docker Stack Deploy
 
 [![Try in PWD](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com?stack=https://raw.githubusercontent.com/Mon-ius/Docker-Warp-Socks/main/dev/warp-socks.yml)
+> Click the close, and replace the $IP with the given one, then run:
+> `curl --proxy socks5h://$IP:9091 "https://www.cloudflare.com/cdn-cgi/trace"`
 
 #### 3.1 Enable Swarm Mode
 
