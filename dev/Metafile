@@ -3,7 +3,7 @@ ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ="Europe/London"
 
-RUN apt-get -y update \
-    && apt-get -y install curl net-tools \
-    && apt-get -y install --no-install-recommends dante-server wireguard-tools iproute2 procps iptables openresolv kmod \
+RUN apt-get -qq update \
+    && apt-get -qq install curl net-tools \
+    && apt-get -qq install --no-install-recommends dante-server wireguard-tools iproute2 procps iptables openresolv kmod \
     && apt-get -qq autoremove --purge && apt-get clean && rm -rf /var/lib/apt/lists/*
