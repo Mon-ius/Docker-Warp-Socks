@@ -41,7 +41,15 @@ if [ ! -e "/opt/danted.conf" ]; then
 	EOF
 fi
 
-/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
+chmod +x /usr/local/bin/sthp
+/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf
+/bin/cp -rf /opt/danted.conf /etc/danted.conf
+
+# Start the danted service
 wg-quick up warp
+danted &
+
+# Start sthp with the desired command
+sthp -p 9092 -s "$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1):9091"
 
 exec "$@"
