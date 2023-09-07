@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-sleep 5
-
 IFACE=$(ip route show default | awk '{print $5}')
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
@@ -42,6 +40,22 @@ if [ ! -e "/opt/danted.conf" ]; then
 fi
 
 /bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
+
+CURRENT_NAMESERVER=$(grep "nameserver" /etc/resolv.conf | awk '{print $2}')
+
+# Backup the current resolv.conf
+cp /etc/resolv.conf /etc/resolv.conf.backup
+
+# Configure dnsmasq
+echo -e "no-resolv\nserver=1.1.1.1\nserver=$CURRENT_NAMESERVER" | tee /etc/dnsmasq.conf
+
+# Restart dnsmasq
+service dnsmasq restart
+
+/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
 wg-quick up warp
+
+# Change resolv.conf to use local DNS
+echo "nameserver 127.0.0.1" | tee /etc/resolv.conf
 
 exec "$@"
