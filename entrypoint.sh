@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+sleep 5
+
 IFACE=$(ip route show default | awk '{print $5}')
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
@@ -47,7 +49,7 @@ CURRENT_NAMESERVER=$(grep "nameserver" /etc/resolv.conf | awk '{print $2}')
 cp /etc/resolv.conf /etc/resolv.conf.backup
 
 # Configure dnsmasq
-echo -e "no-resolv\nserver=1.1.1.1\nserver=$CURRENT_NAMESERVER" | tee /etc/dnsmasq.conf
+echo -e "no-resolv\nall-servers\nserver=1.1.1.1\nserver=$CURRENT_NAMESERVER" | tee /etc/dnsmasq.conf
 
 # Restart dnsmasq
 service dnsmasq restart
