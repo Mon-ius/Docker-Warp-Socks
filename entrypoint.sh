@@ -19,29 +19,22 @@ if [ ! -e "/opt/wgcf-profile.conf" ]; then
     sed -i "/\[Interface\]/a PostUp = ip -4 rule add from ${IPv4} lookup main" /opt/wgcf-profile.conf
 fi
 
-if [ ! -e "/opt/danted.conf" ]; then
-	cat > /opt/danted.conf <<-EOF
-		logoutput: stderr
-		internal: ${IFACE} port = 9091
-		external: warp
-
-		user.unprivileged: nobody
-
-		socksmethod: none
-		clientmethod: none
-
-		client pass {
-			from: 0.0.0.0/0 to: 0.0.0.0/0
-			log: error
-		}
-
-		socks pass {
-			from: 0.0.0.0/0 to: 0.0.0.0/0
-		}
-	EOF
+if [ ! -e "/etc/shadowsocks-libev/dws_config.json" ]; then
+  cat > /etc/shadowsocks-libev/dws_config.json <<-EOF
+{
+  "server": ["127.0.0.1"],
+  "mode": "tcp_and_udp",
+      "server_port": 8388,
+  "local_address": "0.0.0.0",
+  "local_port": 9091,
+  "password": "1234",
+  "timeout": 60,
+  "method": "chacha20-ietf-poly1305"
+}
+EOF
 fi
 
-/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
+/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf
 
 CURRENT_NAMESERVER=$(grep "nameserver" /etc/resolv.conf | awk '{print $2}')
 
@@ -54,7 +47,10 @@ echo -e "no-resolv\nall-servers\nserver=1.1.1.1\nserver=$CURRENT_NAMESERVER" | t
 # Restart dnsmasq
 service dnsmasq restart
 
-/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
+# start ss
+ss-server -c /etc/shadowsocks-libev/dws_config.json -u --fast-open -v &
+
+# start wireguard
 wg-quick up warp
 
 # Change resolv.conf to use local DNS
