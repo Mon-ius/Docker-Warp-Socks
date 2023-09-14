@@ -22,7 +22,7 @@ fi
 if [ ! -e "/opt/danted.conf" ]; then
 	cat > /opt/danted.conf <<-EOF
 		logoutput: stderr
-		internal: ${IFACE} port = 9091
+		internal: 0.0.0.0 port=9091
 		external: warp
 
 		user.unprivileged: nobody
