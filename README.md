@@ -229,6 +229,8 @@ sed -i "/\[Interface\]/a PostUp = ip -4 rule add from 127.0.0.1 lookup main" /et
 wg-quick up warp
 
 curl https://www.cloudflare.com/cdn-cgi/trace
+curl --interface eth0 https://www.cloudflare.com/cdn-cgi/trace
+curl --interface warp https://www.cloudflare.com/cdn-cgi/trace
 
 ```
 
