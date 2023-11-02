@@ -223,8 +223,6 @@ sed -i "/\[Interface\]/a PostDown = ip -6 rule delete from ${IPv6}  lookup main"
 sed -i "/\[Interface\]/a PostUp = ip -6 rule add from ${IPv6} lookup main" /etc/wireguard/warp.conf
 sed -i "/\[Interface\]/a PostDown = ip -4 rule delete from ${IPv4} lookup main" /etc/wireguard/warp.conf
 sed -i "/\[Interface\]/a PostUp = ip -4 rule add from ${IPv4} lookup main" /etc/wireguard/warp.conf
-sed -i "/\[Interface\]/a PostDown = ip -4 rule delete from 127.0.0.1 lookup main" /etc/wireguard/warp.conf
-sed -i "/\[Interface\]/a PostUp = ip -4 rule add from 127.0.0.1 lookup main" /etc/wireguard/warp.conf
 
 wg-quick up warp
 
