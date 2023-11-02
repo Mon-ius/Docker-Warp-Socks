@@ -175,7 +175,7 @@ curl --proxy socks5h://$TIP:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
 
-``` bash
+```bash
 # install 
 curl "https://pkg.cloudflareclient.com/pubkey.gpg" | sudo gpg --yes --dearmor --output "/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg"
 echo "deb [arch=amd64 signed-by="/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg"] "https://pkg.cloudflareclient.com/" focal main" | sudo tee "/etc/apt/sources.list.d/cloudflare-client.list"
@@ -191,6 +191,45 @@ warp-cli connect
 curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 
 # See`warp=on` means success. 
+```
+
+### Debug Information
+
+Debug commands for quick troubleshooting
+
+```bash
+docker rm -f $(docker ps -a -q) && docker rmi -f $(docker images -a -q)
+
+docker run --privileged --restart=always -itd \
+    --name warp_debug \
+    --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+    --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+    --cap-add NET_ADMIN --cap-add SYS_MODULE \
+    -p 9091:9091 \
+    -v /lib/modules:/lib/modules \
+    monius/docker-warp-socks:meta
+
+docker exec -it warp_debug /bin/bash
+
+IFACE=$(ip route show default | grep default | awk '{print $5}')
+IPv4=$(ifconfig "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
+IPv6=$(ifconfig "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
+TAR="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
+ARCH=$(dpkg --print-architecture)
+URL=$(curl -fsSL ${TAR} | grep 'browser_download_url' | cut -d'"' -f4 | grep linux | grep "${ARCH}")
+curl -LSs "${URL}" -o ./wgcf && chmod +x ./wgcf && mv ./wgcf /usr/bin
+wgcf register --accept-tos && wgcf generate && mv wgcf-profile.conf /etc/wireguard/warp.conf
+sed -i "/\[Interface\]/a PostDown = ip -6 rule delete from ${IPv6}  lookup main" /etc/wireguard/warp.conf
+sed -i "/\[Interface\]/a PostUp = ip -6 rule add from ${IPv6} lookup main" /etc/wireguard/warp.conf
+sed -i "/\[Interface\]/a PostDown = ip -4 rule delete from ${IPv4} lookup main" /etc/wireguard/warp.conf
+sed -i "/\[Interface\]/a PostUp = ip -4 rule add from ${IPv4} lookup main" /etc/wireguard/warp.conf
+sed -i "/\[Interface\]/a PostDown = ip -4 rule delete from 127.0.0.1 lookup main" /etc/wireguard/warp.conf
+sed -i "/\[Interface\]/a PostUp = ip -4 rule add from 127.0.0.1 lookup main" /etc/wireguard/warp.conf
+
+wg-quick up warp
+
+curl https://www.cloudflare.com/cdn-cgi/trace
+
 ```
 
 ### Source
