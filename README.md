@@ -171,15 +171,14 @@ TIP=`docker exec $TID sh -c "ifconfig $IF" | awk '/inet /{print $2}' | cut -d' '
 curl --proxy socks5h://$TIP:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
-### Tips
+### Official Implement
 
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
 
 ```bash
-# install 
 curl "https://pkg.cloudflareclient.com/pubkey.gpg" | sudo gpg --yes --dearmor --output "/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg"
 echo "deb [arch=amd64 signed-by="/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg"] "https://pkg.cloudflareclient.com/" focal main" | sudo tee "/etc/apt/sources.list.d/cloudflare-client.list"
-apt -y update && apt -y install cloudflare-warp
+sudo apt-get -qq update && sudo apt-get -qq cloudflare-warp
 
 # run
 warp-cli register
