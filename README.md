@@ -171,7 +171,7 @@ TIP=`docker exec $TID sh -c "ifconfig $IF" | awk '/inet /{print $2}' | cut -d' '
 curl --proxy socks5h://$TIP:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
-### Official Implement
+### 4. Official Implement
 
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
 
@@ -197,7 +197,7 @@ curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 # See`warp=on` means success. 
 ```
 
-### Debug Information
+### 5. Debug Information
 
 Debug commands for quick troubleshooting
 
