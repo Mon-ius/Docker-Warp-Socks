@@ -4,10 +4,14 @@ set -e
 sleep 5
 
 IFACE=$(ip route show default | awk '{print $5}')
+# IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
     IPv4=$(ifconfig "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
+    _IPv4=$(ip addr show dev "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
     IPv6=$(ifconfig "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
+    _IPv6=$(ip addr show dev "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
+
     TAR="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
     ARCH=$(dpkg --print-architecture)
     URL=$(curl -fsSL ${TAR} | grep 'browser_download_url' | cut -d'"' -f4 | grep linux | grep "${ARCH}")
