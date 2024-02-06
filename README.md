@@ -173,6 +173,8 @@ curl --proxy socks5h://$TIP:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 
 ### 4. Official Implement
 
+#### 4.1 `Proxy` Mode for newbie
+
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
 
 ```bash
@@ -197,6 +199,29 @@ curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 # See`warp=on` means success. 
 ```
 
+#### 4.2 `Default` Global Mode for old man
+
+For those who are **ooold** enough for Linux network management, try it for a global proxy mode, keep in mind that you have already back up or have second way or third way to save your remote VM's network!!!
+
+```bash
+
+CF_WARP="https://pkg.cloudflareclient.com/pubkey.gpg"
+_WARP="deb https://pkg.cloudflareclient.com $(lsb_release -cs) main"
+echo "$_WARP" | sudo tee /etc/apt/sources.list.d/cloudflare-warp.list  > /dev/null
+curl -fsSL "$CF_WARP" | sudo gpg --yes --dearmor --output /etc/apt/trusted.gpg.d/cloudflare-warp.gpg
+sudo apt-get -qq update && sudo apt-get -qq install cloudflare-warp
+
+GATEWAY=$(ip route show default | awk '/default/ {print $3}')
+IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
+_IPv4=$(ip addr show dev "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
+_IPv6=$(ip addr show dev "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
+
+echo y | warp-cli register
+warp-cli add-excluded-route "$_IPv4"
+warp-cli add-excluded-route "$_IPv6"
+echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli add-excluded-route
+warp-cli connect
+```
 ### 5. Debug Information
 
 Debug commands for quick troubleshooting
