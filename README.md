@@ -187,7 +187,6 @@ echo "deb https://pkg.cloudflareclient.com $(lsb_release -cs) main" \
 
 sudo apt-get -qq update && sudo apt-get -qq install cloudflare-warp
 
-
 echo y | warp-cli register
 warp-cli set-mode proxy
 warp-cli set-proxy-port 9091
@@ -201,7 +200,7 @@ curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 
 #### 4.2 `Default` Global Mode for old man
 
-For those who are **ooold** enough for Linux network management, try it for a global proxy mode, keep in mind that you have already back up or have second way or third way to save your remote VM's network!!!
+For those who are **ooold** enough for Linux network management, try it for a global proxy mode, keep in mind that you have already back up or have second way or third way to save your remote VM's network!!! 
 
 ```bash
 
@@ -228,8 +227,9 @@ echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli
 warp-cli connect
 # Whole network in WARP proxy, `warp=on` means success. 
 curl "https://www.cloudflare.com/cdn-cgi/trace"
-
 ```
+**Plz be aware that the VMs still has possibility to be lost due to the `IP` can still be changed after `reboot`!!!**
+
 ### 5. Debug Information
 
 Debug commands for quick troubleshooting
