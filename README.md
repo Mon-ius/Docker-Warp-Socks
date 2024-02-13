@@ -42,6 +42,9 @@ curl -fsSL https://get.docker.com | sudo bash
 sudo usermod -aG docker ${USER}
 # or check https://docs.docker.com/engine/security/rootless 
 # if required a rootless install with `dockerd-rootless-setuptool.sh install`
+
+# in case, using Centos/RedHatEL
+sudo systemctl start docker
 ```
 
 ### 1. Docker CLI
