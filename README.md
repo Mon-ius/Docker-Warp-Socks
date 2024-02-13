@@ -71,6 +71,8 @@ To use your prepared config:
 ``` bash
 docker run --privileged --restart=always -itd \
     --name warp_socks \
+    -e SOCK_USER=monius \
+    -e SOCK_PWD=cool \
     --cap-add NET_ADMIN \
     --cap-add SYS_MODULE \
     --sysctl net.ipv6.conf.all.disable_ipv6=0 \
