@@ -1,10 +1,12 @@
 # Docker-Warp-Socks
 
-[![CI Status](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/build/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:build)
-[![CI Status](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/verify/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:verify)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Docker Pulls](https://flat.badgen.net/docker/pulls/monius/docker-warp-socks?icon=docker)](https://hub.docker.com/r/monius/docker-warp-socks)
-[![Visitors](https://api.visitorbadge.io/api/visitors?path=https://github.com/Mon-ius/Docker-Warp-Socks&label=Visitors%20Totay&labelColor=%23808080&countColor=%23ffa31a&style=flat&labelStyle=upper)](https://visitorbadge.io/status?path=https://github.com/Mon-ius/Docker-Warp-Socks)
+[![CI Status]](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/build/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:build)
+[![CI Status]](https://github.com/Mon-ius/Docker-Warp-Socks/workflows/verify/badge.svg)](https://github.com/Mon-ius/Docker-Warp-Socks/actions?query=workflow:verify)
+[![Open Issues]](https://img.shields.io/github/issues/Mon-ius/Docker-Warp-Socks)
+[![Code Size]](https://img.shields.io/github/languages/code-size/Mon-ius/Docker-Warp-Socks)
+[![License: GPL v3]](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Docker Pulls]](https://flat.badgen.net/docker/pulls/monius/docker-warp-socks?icon=docker)](https://hub.docker.com/r/monius/docker-warp-socks)
+[![Visitors]](https://api.visitorbadge.io/api/visitors?path=https://github.com/Mon-ius/Docker-Warp-Socks&label=Visitors%20Totay&labelColor=%23808080&countColor=%23ffa31a&style=flat&labelStyle=upper)](https://visitorbadge.io/status?path=https://github.com/Mon-ius/Docker-Warp-Socks)
 
 > A lightweight Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
 
@@ -69,8 +71,6 @@ The above command will create a background service that allows the entire contai
 
 #### 1.2 ⭐ WARP Plus Account(Advanced)
 
-Run the following commands in your terminal:
-
 ```bash
 docker run --privileged --restart=always -itd \
     --name warp_socks_plus \
@@ -84,7 +84,8 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
-The above command will use the *** WARP Plus *** License Key to perform better experience.
+The above command will use the *** WARP Plus *** License Key to perform better experience. Run, 
+`curl -x "socks5h://127.0.0.1:9091" https://www.cloudflare.com/cdn-cgi/trace`, see `plus` means success.
 
 #### 1.3 🔒 Tunnel Encryption
 
@@ -295,7 +296,7 @@ docker exec -it warp_debug /bin/bash
 IFACE=$(ip route show default | grep default | awk '{print $5}')
 IPv4=$(ifconfig "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
 IPv6=$(ifconfig "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
-TAR="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
+TAR="https://api.github.com/repos/Mon-ius/Docker-Warp-Socks/releases/latest"
 ARCH=$(dpkg --print-architecture)
 URL=$(curl -fsSL ${TAR} | grep 'browser_download_url' | cut -d'"' -f4 | grep linux | grep "${ARCH}")
 curl -LSs "${URL}" -o ./wgcf && chmod +x ./wgcf && mv ./wgcf /usr/bin
@@ -320,7 +321,7 @@ curl --interface warp https://www.cloudflare.com/cdn-cgi/trace
 ### Credits
 
 - [WireGuard](https://www.wireguard.com/)
-- [ViRb3/wgcf](https://github.com/ViRb3/wgcf)
+- [Mon-ius/Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
 - [Cloudflare WARP](https://developers.cloudflare.com/warp-client/get-started/linux/)
 - [Neilpang/wgcf-docker](https://github.com/Neilpang/wgcf-docker)
 - [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
