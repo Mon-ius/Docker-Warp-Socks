@@ -86,7 +86,27 @@ docker run --privileged --restart=always -itd \
 
 The above command will use the *** WARP Plus *** License Key to perform better experience.
 
-#### 1.3 🔧 Pre-Configuration Start (advanced)
+#### 1.3 🔒 Tunnel Encryption
+
+Run the following commands in your terminal:
+
+```bash
+docker run --privileged --restart=always -itd \
+    --name warp_socks_plus \
+    -e SOCK_USER=monius \
+    -e SOCK_PWD=passwd \
+    --cap-add NET_ADMIN \
+    --cap-add SYS_MODULE \
+    --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+    --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+    -v /lib/modules:/lib/modules \
+    -p 9091:9091 \
+    monius/docker-warp-socks
+```
+
+The above command will add a little encryption to the existed socks connection, just a little~
+
+#### 1.4 🔧 Pre-Configuration Start (advanced)
 
 To use your prepared config:
 

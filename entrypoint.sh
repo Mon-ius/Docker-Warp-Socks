@@ -45,33 +45,6 @@ cat > /opt/danted.conf <<-EOF
 EOF
 fi
 
-if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
-cat > /opt/danted.conf <<-EOF
-    logoutput: stderr
-    internal: 0.0.0.0 port=9091
-    external: warp
-
-    user.unprivileged: nobody
-
-    socksmethod: username
-    clientmethod: username
-
-    user.pass {
-        username: "$SOCK_USER"
-        password: "$SOCK_PWD"
-    }
-
-    client pass {
-        from: 0.0.0.0/0 to: 0.0.0.0/0
-        log: error
-    }
-
-    socks pass {
-        from: 0.0.0.0/0 to: 0.0.0.0/0
-    }
-EOF
-fi
-
 /bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
 wg-quick up warp
 
