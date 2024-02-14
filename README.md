@@ -84,8 +84,8 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
-The above command will use the ***WARP Plus*** License Key to perform better experience. Run, 
-`curl -x "socks5h://127.0.0.1:9091" https://www.cloudflare.com/cdn-cgi/trace`, see `plus` means success.
+Run, `curl -x "socks5h://127.0.0.1:9091" https://www.cloudflare.com/cdn-cgi/trace`;
+See `plus` means ***WARP Plus License Key*** applied success.
 
 #### 1.3 🔒 Tunnel Encryption
 
