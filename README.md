@@ -87,7 +87,7 @@ docker run --privileged --restart=always -itd \
 Run, `curl -x "socks5h://127.0.0.1:9091" https://www.cloudflare.com/cdn-cgi/trace`;
 See `plus` means ***WARP Plus License Key*** applied success.
 
-#### 1.3 🔒 Tunnel Encryption
+#### 1.3 🔒 Tunnel Encryption(Advanced)
 
 Run the following commands in your terminal:
 
