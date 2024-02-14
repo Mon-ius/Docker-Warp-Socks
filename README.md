@@ -44,7 +44,7 @@ sudo usermod -aG docker ${USER}
 # if required a rootless install with `dockerd-rootless-setuptool.sh install`
 
 # in case, using Centos/RedHatEL
-sudo systemctl start docker
+sudo systemctl enable docker && sudo systemctl start docker
 ```
 
 ### 1. Docker CLI
