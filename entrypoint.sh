@@ -3,8 +3,9 @@ set -e
 
 sleep 5
 
+_NET_DEV=warp
 IFACE=$(ip route show default | awk '{print $5}')
-# IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
+NET_DEV="${NET_DEV:-$_NET_DEV}"
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
     IPv4=$(ifconfig "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
@@ -28,7 +29,7 @@ if [ ! -e "/opt/danted.conf" ]; then
 cat <<EOF | tee /opt/danted.conf
 logoutput: stderr
 internal: 0.0.0.0 port=9091
-external: warp
+external: $NET_DEV
 
 user.unprivileged: nobody
 
@@ -48,7 +49,7 @@ EOF
 if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
 cat <<EOF | tee /opt/danted.conf
 logoutput: syslog
-external: warp
+external: $NET_DEV
 internal: 0.0.0.0 port=9091
 user.unprivileged: nobody
 
@@ -68,9 +69,7 @@ fi
 
 fi
 
-
-
-/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/warp.conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
+/bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/"$NET_DEV".conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
 wg-quick up warp
 
 exec "$@"

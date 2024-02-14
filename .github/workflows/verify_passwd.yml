@@ -1,4 +1,4 @@
-name: verify
+name: verify_passwd
 
 on:
   workflow_run:
