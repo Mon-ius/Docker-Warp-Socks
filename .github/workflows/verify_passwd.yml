@@ -18,7 +18,7 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
-          docker run --privileged --restart=always -itd \
+          sudo docker run --privileged --restart=always -itd \
             --name warp_socks_passwd \
             -e SOCK_USER=monius \
             -e SOCK_PWD=passwd \
