@@ -67,7 +67,26 @@ docker run --privileged --restart=always -itd \
 
 The above command will create a background service that allows the entire container network to join the dual-stack cloudflare network pool without disconnecting from the host.
 
-#### 1.2 🔧 Pre-Configuration Start (advanced)
+#### 1.2 ⭐ WARP Plus Account(Advanced)
+
+Run the following commands in your terminal:
+
+```bash
+docker run --privileged --restart=always -itd \
+    --name warp_socks_plus \
+    -e WGCF_LICENSE_KEY=yourpluslicense \
+    --cap-add NET_ADMIN \
+    --cap-add SYS_MODULE \
+    --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+    --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+    -v /lib/modules:/lib/modules \
+    -p 9091:9091 \
+    monius/docker-warp-socks
+```
+
+The above command will use the *** WARP Plus *** License Key to perform better experience.
+
+#### 1.3 🔧 Pre-Configuration Start (advanced)
 
 To use your prepared config:
 
