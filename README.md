@@ -107,6 +107,8 @@ docker run --privileged --restart=always -itd \
 
 The above command will add a little encryption to the existed socks connection, just a little~
 
+Run, `curl -U "monius:passwd" -x "socks5h://127.0.0.1:9091" https://www.cloudflare.com/cdn-cgi/trace` to go;
+
 #### 1.4 🔧 Pre-Configuration Start (advanced)
 
 To use your prepared config:

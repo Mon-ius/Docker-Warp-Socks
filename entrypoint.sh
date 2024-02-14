@@ -47,24 +47,23 @@ EOF
 
 if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
 cat <<EOF | tee /opt/danted.conf
-logoutput: stderr
-internal: 0.0.0.0 port=9091
+logoutput: syslog
 external: warp
+internal: 0.0.0.0 port=9091
 user.unprivileged: nobody
+
 socksmethod: username
-clientmethod: username
-user.pass {
-    username: "$SOCK_USER"
-    password: "$SOCK_PWD"
-}
+
 client pass {
-    from: 0.0.0.0/0 to: 0.0.0.0/0
-    log: error
+from: 0.0.0.0/0 to: 0.0.0.0/0
 }
+
 socks pass {
-    from: 0.0.0.0/0 to: 0.0.0.0/0
+from: 0.0.0.0/0 to: 0.0.0.0/0
 }
 EOF
+
+useradd "$SOCK_USER" && echo "$SOCK_USER:$SOCK_PWD" | chpasswd
 fi
 
 fi
