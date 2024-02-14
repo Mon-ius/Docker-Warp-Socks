@@ -19,7 +19,7 @@ jobs:
         shell: bash
         run: |
           docker run --privileged --restart=always -itd \
-            --name warp_socks_plus \
+            --name warp_socks_passwd \
             -e SOCK_USER=monius \
             -e SOCK_PWD=passwd \
             --cap-add NET_ADMIN \
@@ -29,7 +29,7 @@ jobs:
             -v /lib/modules:/lib/modules \
             -p 9091:9091 \
             monius/docker-warp-socks
-          date && sleep 60 && docker ps -a && date && docker logs warp_socks
+          date && sleep 60 && docker ps -a && date && docker logs warp_socks_passwd
 
       - name: Check proxy status
         id: check

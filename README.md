@@ -93,7 +93,7 @@ Run the following commands in your terminal:
 
 ```bash
 docker run --privileged --restart=always -itd \
-    --name warp_socks_plus \
+    --name warp_socks_passwd \
     -e SOCK_USER=monius \
     -e SOCK_PWD=passwd \
     --cap-add NET_ADMIN \
