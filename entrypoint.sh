@@ -46,28 +46,13 @@ from: 0.0.0.0/0 to: 0.0.0.0/0
 }
 EOF
 
+fi
+
 if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
-cat <<EOF | tee /opt/danted.conf
-logoutput: syslog
-external: $NET_DEV
-internal: 0.0.0.0 port=9091
-user.unprivileged: nobody
-
-socksmethod: username
-
-client pass {
-from: 0.0.0.0/0 to: 0.0.0.0/0
-}
-
-socks pass {
-from: 0.0.0.0/0 to: 0.0.0.0/0
-}
-EOF
-
-useradd "$SOCK_USER" && echo "$SOCK_USER:$SOCK_PWD" | chpasswd
+    useradd "$SOCK_USER" && echo "$SOCK_USER:$SOCK_PWD" | chpasswd
+    sed -i 's/socksmethod: none/socksmethod: username/g' /opt/danted.conf
 fi
 
-fi
 
 /bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/"$NET_DEV".conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
 wg-quick up warp
