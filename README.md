@@ -26,7 +26,7 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
 ## Ready to V2 features roadmap:
 
-- 1. Automatically enroll the WARP+ account plan
+- 1. automatically enroll the WARP+ account plan
 - 2. eBFP featured wireguard implement
 - 3. more OS/platform support
 - 4. more light in alpine core
