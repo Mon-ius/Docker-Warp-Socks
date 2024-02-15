@@ -24,6 +24,14 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 - Bypass the New Bing wait-list
 - ...
 
+## Ready to V2 features roadmap:
+
+- 1. Automatically enroll the WARP+ account plan
+- 2. eBFP featured wireguard implement
+- 3. more OS/platform support
+- 4. more light in alpine core
+- 5. all in one caller written in Rust!!!
+
 ## Why to use
 
 The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
