@@ -315,6 +315,9 @@ curl --interface eth0 https://www.cloudflare.com/cdn-cgi/trace
 curl --interface warp https://www.cloudflare.com/cdn-cgi/trace
 
 ```
+### Known issues
+
+- CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel
 
 ### Source
 [Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
@@ -326,10 +329,6 @@ curl --interface warp https://www.cloudflare.com/cdn-cgi/trace
 - [Neilpang/wgcf-docker](https://github.com/Neilpang/wgcf-docker)
 - [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
 - [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
-
-### Known issues
-
-- CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel
 
 ## Notice of Non-Affiliation and Disclaimer
 
