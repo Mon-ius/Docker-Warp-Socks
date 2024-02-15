@@ -53,7 +53,6 @@ if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
     sed -i 's/socksmethod: none/socksmethod: username/g' /opt/danted.conf
 fi
 
-
 /bin/cp -rf /opt/wgcf-profile.conf /etc/wireguard/"$NET_DEV".conf && /bin/cp -rf /opt/danted.conf /etc/danted.conf
 wg-quick up warp
 

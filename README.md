@@ -12,8 +12,13 @@
 
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
-## Features
+## Ready to V2 features roadmap:
 
+- + 1. automatically enroll the WARP+ account plan
+- + 2. eBFP featured wireguard implement
+- + 3. more OS/platform support
+- + 4. more light in alpine core
+- + 5. all in one caller written in Rust!!!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
 - Extend accessibility and avoid potential restrictions by using proxy services
@@ -23,14 +28,6 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 - Develop apps with warp embedded
 - Bypass the New Bing wait-list
 - ...
-
-## Ready to V2 features roadmap:
-
-- 1. automatically enroll the WARP+ account plan
-- 2. eBFP featured wireguard implement
-- 3. more OS/platform support
-- 4. more light in alpine core
-- 5. all in one caller written in Rust!!!
 
 ## Why to use
 
