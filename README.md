@@ -14,6 +14,8 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
 ## Ready to V2 features roadmap:
 
+The new feature will first release in [rws-cli](https://github.com/AUTOM77/RWS).
+
 - `+` 1. automatically enroll the WARP+ account plan
 - `+` 2. eBFP featured wireguard implement
 - `+` 3. more OS/platform support
