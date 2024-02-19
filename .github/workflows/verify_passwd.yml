@@ -13,7 +13,6 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
-
       -
         name: Create Proxy
         shell: bash
@@ -30,7 +29,6 @@ jobs:
             -p 9091:9091 \
             monius/docker-warp-socks
           date && sleep 60 && docker ps -a && date && docker logs warp_socks_passwd
-
       - name: Check proxy status
         id: check
         run: |

@@ -36,3 +36,19 @@ jobs:
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:pre-v2
+      -
+        name: Sleep and replace
+        shell: bash
+        run: |
+          sleep 60
+          sed -i 's/meta/pre-v2/g' Dockerfile
+          cat Dockerfile
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:v2
