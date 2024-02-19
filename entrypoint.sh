@@ -68,17 +68,10 @@ fi
 
 mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.conf" && /bin/cp -rf /opt/danted.conf "$SOCKS_CONF"
 
-cat <<EOF | tee /usr/bin/rws-cli
-if ip addr | grep -q "$NET_DEV"; then
-wg-quick down "$NET_DEV"
-
-echo "fuck" > /root/fuck
-sleep 3
-fi
-
 wg-quick up "$NET_DEV"
-$SOCKS_BIN
-EOF
 
-chmod +x /usr/bin/rws-cli || echo "existed"
+chmod -w /etc/resolv.conf
+
+ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli || echo "existed"
+
 exec "$@"
