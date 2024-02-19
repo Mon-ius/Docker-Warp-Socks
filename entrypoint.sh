@@ -72,4 +72,5 @@ wg-quick up "$NET_DEV"
 
 ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli || echo "existed"
 
+echo "1" >> /root/wg-restart
 exec "$@"
