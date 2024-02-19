@@ -18,7 +18,7 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
-          curl -fsSL bit.ly/warp_socks | bash
+          curl -fsSL bit.ly/warp_socks | sh -s --
           
           date && sleep 60 && docker ps -a && date && docker logs warp_socks
 
