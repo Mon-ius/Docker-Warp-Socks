@@ -67,8 +67,8 @@ elif [ -f /usr/sbin/danted ]; then
 fi
 
 mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.conf" && /bin/cp -rf /opt/danted.conf "$SOCKS_CONF"
-wg-quick down "${_NET_DEV}" || "echo restart"
-wg-quick up "${_NET_DEV}"
+wg-quick down "${NET_DEV}" 2>/dev/null
+wg-quick up "${NET_DEV}"
 
 ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli || echo "existed"
 
