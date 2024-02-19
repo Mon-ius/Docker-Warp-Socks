@@ -14,7 +14,7 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
 ## Ready to V2 features roadmap:
 
-The new features will be pre-released and tested at [rws-cli](https://github.com/AUTOM77/RWS).
+The new features will undergo pre-release testing at [rws-cli](https://github.com/AUTOM77/RWS). The main line will transition from V1 to V2 within a month, with minimal impact on the user side. As a contingency plan, users can revert to `monius/docker-warp-socks:v1` if needed.
 
 - `+` 1. automatically enroll the WARP+ account plan
 - `+` 2. eBFP featured wireguard implement
