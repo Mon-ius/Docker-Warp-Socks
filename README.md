@@ -19,7 +19,7 @@ The new feature will pre-release and test at [rws-cli](https://github.com/AUTOM7
 - `+` 1. automatically enroll the WARP+ account plan
 - `+` 2. eBFP featured wireguard implement
 - `+` 3. more OS/platform support
-- `+` 4. more light in alpine core
+- `+` 4. more light in `alpine` linux vm core
 - `+` 5. all in one caller written in Rust!!!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
