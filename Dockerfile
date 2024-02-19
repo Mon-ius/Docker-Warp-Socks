@@ -4,4 +4,4 @@ ENV LOG=0
 COPY entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
 
-CMD ["rws-cli"]
+CMD ["bash", "/usr/bin/rws-cli"]
