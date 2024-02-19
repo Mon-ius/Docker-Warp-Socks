@@ -19,7 +19,8 @@ The new features will be pre-released and tested at [rws-cli](https://github.com
 - `+` 1. automatically enroll the WARP+ account plan
 - `+` 2. eBFP featured wireguard implement
 - `+` 3. more OS/platform support
-- `+` 4. more light in `alpine` linux vm core
+- `+` 4. **90%** lighter in `alpine` linux vm core run in more small devices!
+- `+` 5. from `10s` to `1s` clone speed up from dockerhub!
 - `+` 5. all in one caller written in Rust!!!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
@@ -45,7 +46,7 @@ The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's desig
 
 ```bash
 # in case, you have no docker-ce installed;
-curl -fsSL https://get.docker.com | sudo bash
+curl -fsSL "https://get.docker.com" | sudo bash
 
 # to avoid `sudo` calling
 sudo usermod -aG docker ${USER}
@@ -91,7 +92,8 @@ docker run --privileged --restart=always -itd \
     monius/docker-warp-socks
 ```
 
-Run, `curl -x "socks5h://127.0.0.1:9091" https://www.cloudflare.com/cdn-cgi/trace`;
+
+Run, `curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"`;
 See `plus` means ***WARP Plus License Key*** applied success.
 
 #### 1.3 🔒 Tunnel Encryption(Advanced)
@@ -114,7 +116,7 @@ docker run --privileged --restart=always -itd \
 
 The above command will add a little encryption to the existed socks connection, just a little~
 
-Run, `curl -U "monius:passwd" -x "socks5h://127.0.0.1:9091" https://www.cloudflare.com/cdn-cgi/trace` to go 🤗
+Run, `curl -U "monius:passwd" -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"` to go 🤗
 
 #### 1.4 🔧 Pre-Configuration Start (advanced)
 
@@ -147,8 +149,7 @@ To output the network test log:
 ``` bash
 
 # Host
-curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace 
-
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 # See`warp=on` means success. 
 ```
 
@@ -170,7 +171,7 @@ sudo chmod +x /usr/bin/docker-compose
 
 ```bash
 #start
-curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - up -d --wait && curl --proxy socks5h://127.0.0.1:9091 https://www.cloudflare.com/cdn-cgi/trace
+curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - up -d --wait && curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 
 #stop
 curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - down 
@@ -180,7 +181,7 @@ curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - down
 
 [![Try in PWD](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com?stack=https://raw.githubusercontent.com/Mon-ius/Docker-Warp-Socks/main/dev/warp-socks.yml)
 > Click the *CLOSE* button, Replace the $IP with the given one on the top side, then run:
-> `curl --proxy socks5h://$IP:9091 "https://www.cloudflare.com/cdn-cgi/trace"`
+> `curl -x "socks5h://$IP:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"`
 
 #### 3.1 Enable Swarm Mode
 
@@ -222,7 +223,8 @@ TID=`docker ps -aqf "name=^TEST_warp-socks"`
 IF=`docker exec $TID sh -c "ip route show default" | awk '{print $5}'`
 TIP=`docker exec $TID sh -c "ifconfig $IF" | awk '/inet /{print $2}' | cut -d' ' -f2`
 
-curl --proxy socks5h://$TIP:9091 "https://www.cloudflare.com/cdn-cgi/trace"
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+
 ```
 
 ### 4. Official Implement
@@ -247,8 +249,7 @@ warp-cli set-proxy-port 9091
 warp-cli connect
 
 # test
-curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
-
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 # See`warp=on` means success. 
 ```
 
@@ -280,7 +281,7 @@ echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli
 
 warp-cli connect
 # Whole network in WARP proxy, `warp=on` means success. 
-curl "https://www.cloudflare.com/cdn-cgi/trace"
+curl -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 **Plz be aware that the VMs still has possibility to be lost due to the `IP` can still be changed after `reboot`!!!**
 
@@ -317,9 +318,9 @@ sed -i "/\[Interface\]/a PostUp = ip -4 rule add from ${IPv4} lookup main" /etc/
 
 wg-quick up warp
 
-curl https://www.cloudflare.com/cdn-cgi/trace
-curl --interface eth0 https://www.cloudflare.com/cdn-cgi/trace
-curl --interface warp https://www.cloudflare.com/cdn-cgi/trace
+curl "https://www.cloudflare.com/cdn-cgi/trace"
+curl --interface eth0 "https://www.cloudflare.com/cdn-cgi/trace"
+curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 
 ```
 ### Known issues
