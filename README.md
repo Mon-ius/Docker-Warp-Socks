@@ -19,8 +19,8 @@ The new features will be pre-released and tested at [rws-cli](https://github.com
 - `+` 1. automatically enroll the WARP+ account plan
 - `+` 2. eBFP featured wireguard implement
 - `+` 3. more OS/platform support
-- `+` 4. **90%** lighter in `alpine` linux vm core run in more small devices!
-- `+` 5. from `10s` to `1s` clone speed up from dockerhub!
+- `+` 4. **96.3%** lighter(only `8MB`) in `alpine` core run in more small devices!
+- `+` 5. from `10s` to `0.1s` clone speed up from dockerhub!
 - `+` 5. all in one caller written in Rust!!!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
@@ -91,7 +91,6 @@ docker run --privileged --restart=always -itd \
     -p 9091:9091 \
     monius/docker-warp-socks
 ```
-
 
 Run, `curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"`;
 See `plus` means ***WARP Plus License Key*** applied success.
