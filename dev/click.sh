@@ -7,11 +7,11 @@ _SOCK_PWD=""
 _PORT="9091"
 _VER="2"
 
-VER="${6:-$VER}"
-PORT="${5:-$_PORT}"
-SOCK_PWD="${4:-$SOCK_PWD}"
-SOCK_USER="${3:-$SOCK_USER}"
-KEY="${2:-$_KEY}"
+KEY="${6:-$_KEY}"
+SOCK_PWD="${5:-$SOCK_PWD}"
+SOCK_USER="${4:-$SOCK_USER}"
+PORT="${3:-$_PORT}"
+VER="${2:-$VER}"
 ARCH="${1:-$_ARCH}"
 
 sudo docker run --privileged --platform="${ARCH}" --restart=always -itd \

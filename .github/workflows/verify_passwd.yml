@@ -17,17 +17,7 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
-          sudo docker run --privileged --restart=always -itd \
-            --name warp_socks_passwd \
-            -e SOCK_USER=monius \
-            -e SOCK_PWD=passwd \
-            --cap-add NET_ADMIN \
-            --cap-add SYS_MODULE \
-            --sysctl net.ipv6.conf.all.disable_ipv6=0 \
-            --sysctl net.ipv4.conf.all.src_valid_mark=1 \
-            -v /lib/modules:/lib/modules \
-            -p 9091:9091 \
-            monius/docker-warp-socks
+          curl -fsSL bit.ly/warp_socks | sh -s -- "linux/amd64" "1" "9091" "monius" "passwd"
           date && sleep 60 && docker ps -a && date && docker logs warp_socks_passwd
       - name: Check proxy status
         id: check
