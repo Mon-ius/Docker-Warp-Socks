@@ -7,6 +7,7 @@ on:
       - "main"
     paths:
       - "dev/V2File"
+      - "entrypoint.sh"
 
 jobs:
   buildx:
