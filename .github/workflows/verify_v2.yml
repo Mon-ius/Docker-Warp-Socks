@@ -17,7 +17,7 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
-          curl -fsSL bit.ly/warp_socks | sh -s -- "linux/amd64" "2" "9091"
+          curl -fsSL bit.ly/warp_socks | sh -s -- "linux/amd64" "2" "9091" "monius" "passwd"
           date && sleep 60 && docker ps -a && date && docker logs warp_socks_v2_passwd
       - name: Check proxy status
         id: check
