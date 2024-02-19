@@ -70,8 +70,6 @@ mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.con
 
 wg-quick up "$NET_DEV"
 
-chmod -w /etc/resolv.conf
-
 ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli || echo "existed"
 
 exec "$@"
