@@ -69,6 +69,9 @@ fi
 mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.conf" && /bin/cp -rf /opt/danted.conf "$SOCKS_CONF"
 
 wg-quick up "$NET_DEV" >> /root/wg-log 2>&1
+wg-quick down "$NET_DEV" >> /root/wg-set 2>&1
+sleep 1
+wg-quick up "$NET_DEV" >> /root/wg 2>&1
 
 ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli || echo "existed"
 
