@@ -70,15 +70,14 @@ mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.con
 
 wg-quick up "$NET_DEV" >> /root/wg-log 2>&1
 
-touch /etc/network/.pve-ignore.interfaces
-touch /etc/.pve-ignore.resolv.conf
-touch /etc/.pve-ignore.hosts
-touch /etc/.pve-ignore.hostname
+if [ ! -e "/opt/resolv.conf" ]; then
+    cp -rf /etc/resolv.conf /opt/resolv.conf
+fi
 
-wg-quick down "$NET_DEV" >> /root/wg-set 2>&1
-sleep 1
-wg-quick up "$NET_DEV" >> /root/wg 2>&1
+cat /opt/resolv.conf >> /etc/resolv.conf
 
-ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli || echo "existed"
+if [ ! -e "/usr/bin/rws-cli" ]; then
+    ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli
+fi
 
 exec "$@"
