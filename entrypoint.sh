@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-sleep 3
+sleep 5
 
 _NET_DEV=warp
 NET_DEV="${NET_DEV:-$_NET_DEV}"
@@ -71,7 +71,7 @@ mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.con
 wg-quick up "$NET_DEV"
 
 if ! curl -fsSL https://www.cloudflare.com/cdn-cgi/trace  | grep -q "warp=on"; then
-    sleep 1
+    sleep 3
     wg-quick down "$NET_DEV" >> /root/wg-error 2>&1
     wg-quick up "$NET_DEV" >> /root/wg-log 2>&1
 fi
