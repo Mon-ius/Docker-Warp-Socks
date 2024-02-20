@@ -21,7 +21,8 @@ The new features will undergo pre-release testing at [rws-cli](https://github.co
 - `+` 3. more OS/platform support
 - `+` 4. **96.3%** lighter(only `8MB`) in `alpine` core run in more small devices!
 - `+` 5. from `10s` to `0.1s` clone speed up from dockerhub!
-- `+` 5. all in one caller written in Rust!!!
+- `+` 6. Enhance **robustness** to handle restartorreboot events!
+- `+` 7. all in one caller written in Rust!!!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
 - Extend accessibility and avoid potential restrictions by using proxy services
