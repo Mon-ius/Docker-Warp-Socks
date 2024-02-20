@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-sleep 5
+sleep 3
 
 _NET_DEV=warp
 NET_DEV="${NET_DEV:-$_NET_DEV}"
@@ -66,12 +66,12 @@ elif [ -f /usr/sbin/danted ]; then
     SOCKS_CONF=/etc/danted.conf
 fi
 
-mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.conf"
+mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.conf" && /bin/cp -rf /opt/danted.conf "$SOCKS_CONF"
 
 wg-quick up "$NET_DEV"
 
 if ! curl -fsSL https://www.cloudflare.com/cdn-cgi/trace  | grep -q "warp=on"; then
-    sleep 3
+    sleep 1
     wg-quick down "$NET_DEV" >> /root/wg-error 2>&1
     wg-quick up "$NET_DEV" >> /root/wg-log 2>&1
 fi
@@ -79,7 +79,5 @@ fi
 if [ ! -e "/usr/bin/rws-cli" ]; then
     ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli
 fi
-
-cat /opt/resolv.conf >> /etc/resolv.conf && /bin/cp -rf /opt/danted.conf "$SOCKS_CONF"
 
 exec "$@"
