@@ -23,6 +23,7 @@ jobs:
       - id: register
         run: |
           tos=$(TZ=UTC+1 date "+%Y-%m-%dT%H:%M:%S.691-01:00")
+          key="$(date "+%Y-%m-%dT%H:%M:%S.691-01:00" | sha256sum | head -c 43)="
           locale="fr-FR"
           model="iPhone15,1"
           type="IOS"
