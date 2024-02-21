@@ -37,8 +37,6 @@ jobs:
           \"type\": \"$type\" \
           }
 
-          if [ $ref = "false" ]; then
-            echo $json
-          fi
+          echo $json
         name: Register Test Account
         shell: bash
