@@ -9,17 +9,12 @@ env:
 on:
   workflow_dispatch:
   workflow_call:
-    outputs:
-      account_id:
-        description: "test account"
-        value: ${{ jobs.call.outputs.id }}
-      account_token:
-        description: "account token"
-        value: ${{ jobs.call.outputs.token }}
-      account_license:
-        description: "account license"
-        value: ${{ jobs.call.outputs.license }}
-
+    inputs:
+      ref:
+        description: 'refer_account_id'
+        required: false
+        default: 'false'
+        type: string
 jobs:
   call:
     runs-on: ubuntu-latest
@@ -31,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
       - id: register
         run: |
-          
+          ref=${{ inputs.ref }}
           key="$(cat /dev/urandom | head -c 10 | sha256sum | head -c 43)="
           tos=$(TZ=UTC+1 date "+%Y-%m-%dT%H:%M:%S.691-01:00")
           locale="fr-FR"
@@ -44,24 +39,10 @@ jobs:
           \"locale\": \"$locale\", \
           \"model\": \"$model\", \
           \"type\": \"$type\" \
-          }"
-          curl -X POST -fsSL $WARP_API_TEST_REG \
-          -H 'authority: cloudflareclient.com' \
-          -H 'host: api.cloudflareclient.com' \
-          -H 'User-Agent: okhttp/4.12.1' \
-          -H 'accept-encoding: gzip' \
-          -H 'accept-language: en-US,en;q=0.9' \
-          -H 'content-type: application/json; charset=UTF-8' \
-          -H 'connection: Keep-Alive' \
-          -H 'origin: https://cloudflareclient.com' \
-          -H 'referer: https://warp.plus' \
-          -H 'user-agent: okhttp/4.12.1' \
-          --compressed \
-          --data "$json" > /tmp/warp.dat
+          }
 
-          ACCOUNT_ID="$(grep -ow '"id":"[^"]*' /tmp/warp.dat | awk -F'"' '{print $4}' | head -n 1)"
-          ACCOUNT_LICENSE=$(grep -o '"license":"[^"]*' /tmp/warp.dat | awk -F'"' '{print $4}')
-          ACCOUNT_TOKEN=$(grep -o '"token":"[^"]*' /tmp/warp.dat | awk -F'"' '{print $4}')
-          echo id=$ACCOUNT_ID license=$ACCOUNT_LICENSE token=$ACCOUNT_TOKEN >> $GITHUB_OUTPUT
+          if [ $ref = "false" ]; then
+            echo $json
+          fi
         name: Register Test Account
         shell: bash
