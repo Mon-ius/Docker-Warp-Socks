@@ -8,6 +8,17 @@ env:
 
 on:
   workflow_dispatch:
+    inputs:
+      api:
+        description: 'api test endpoint'
+        required: True
+        default: 'http://127.0.0.1:6991/reg'
+        type: string
+      ref:
+        description: 'refer_account_id'
+        required: false
+        default: 'false'
+        type: string
   workflow_run:
     workflows: ["build-v2"]
     types:
@@ -17,9 +28,8 @@ jobs:
   register:
     uses: ./.github/workflows/reg.yml
     with:
-      api: ${{ secrets.WARP_API_TEST_REG }}
-      ref: ${{ secrets.WARP_DEFAULT }}
-
+      api: ${{ inputs.api }} 
+      ref: ${{ inputs.ref }}
 
   general:
     needs:
