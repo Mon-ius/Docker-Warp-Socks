@@ -9,11 +9,12 @@ env:
 on:
   workflow_dispatch:
   workflow_call:
-    ref:
-      description: 'refer_account_id'
-      required: false
-      default: 'false'
-      type: string
+    inputs:
+      ref:
+        description: 'refer_account_id'
+        required: false
+        default: 'false'
+        type: string
     outputs:
       account_id:
         description: "test account"
