@@ -46,4 +46,4 @@ jobs:
       - 
         name: Debug Mode
         uses: lhotari/action-upterm@v1
-        if: ${{ steps.check.outputs.trace != 'warp=on' }}
+        if: ${{ steps.check.outputs.trace != 'warp=plus' }}
