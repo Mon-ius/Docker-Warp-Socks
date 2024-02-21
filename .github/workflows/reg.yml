@@ -36,7 +36,10 @@ jobs:
       - uses: actions/checkout@v4
       - id: register
         run: |
-          
+          ref=${{ inputs.ref }}
+          if [ "$ref" == "false" ] || [ -z "$ref" ]; then
+            ref="$WARP_DEFAULT"
+          fi
           key="$(date "+%Y-%m-%dT%H:%M:%S" | sha256sum | head -c 43)="
           tos=$(TZ=UTC+1 date "+%Y-%m-%dT%H:%M:%S.691-01:00")
           locale="fr-FR"
@@ -44,7 +47,7 @@ jobs:
           type="IOS"
           json="{
           \"key\": \"$key\", \
-          \"referrer\": \"$WARP_DEFAULT\", \
+          \"referrer\": \"$ref\", \
           \"tos\": \"$tos\", \
           \"locale\": \"$locale\", \
           \"model\": \"$model\", \
@@ -70,3 +73,4 @@ jobs:
           echo id=$ACCOUNT_ID license=$ACCOUNT_LICENSE token=$ACCOUNT_TOKEN >> $GITHUB_OUTPUT
         name: Register Test Account
         shell: bash
+
