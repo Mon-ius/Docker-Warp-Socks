@@ -14,21 +14,10 @@ on:
 jobs:
   register:
     uses: ./.github/workflows/reg.yml
-    with:
-      api: $WARP_API_TEST_REG
-
-  refer:
-    needs:
-      - register
-    uses: ./.github/workflows/ref.yml
-    with:
-      api: $WARP_API_TEST_REG
-      ref: ${{ needs.register.outputs.account_id }}
-      key: ${{ needs.register.outputs.account_license }}
 
   general:
     needs:
-      - refer
+      - register
     runs-on: ubuntu-latest
     steps:
       -
@@ -38,7 +27,7 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
-          key=${{ needs.refer.outputs.key }}
+          key=${{ needs.register.outputs.account_license }}
           curl -fsSL bit.ly/warp_socks | sh -s -- "warp_socks_v2_plus" "linux/amd64" "2" "9091" "monius" "passwd" $key
           date && sleep 60 && docker ps -a && date && docker logs warp_socks_v2_plus
 
