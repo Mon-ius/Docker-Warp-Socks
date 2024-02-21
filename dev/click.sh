@@ -25,6 +25,7 @@ if [ $1 = "-test" ]; then
     \"locale\": \"$5\", \
     \"model\": \"$6\", \
     \"type\": \"$7\" \
+    \"referer\": \"$8\" \
     }"
 
     curl -X POST -fsSL "$api" \
