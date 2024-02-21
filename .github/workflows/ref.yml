@@ -11,14 +11,17 @@ on:
         description: 'api test endpoint'
         required: True
         default: 'http://127.0.0.1:6991/reg'
+        type: string
       ref:
         description: 'refer_account_id'
         required: True
         default: 'false'
+        type: string
       key:
         description: 'refer_account_license'
         required: True
         default: 'false'
+        type: string
     outputs:
       id:
         description: "original account id"

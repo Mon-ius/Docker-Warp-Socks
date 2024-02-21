@@ -11,6 +11,7 @@ on:
         description: 'api test endpoint'
         required: True
         default: 'http://127.0.0.1:6991/reg'
+        type: string
     outputs:
       account_id:
         description: "test account"

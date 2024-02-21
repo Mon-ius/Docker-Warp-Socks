@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/dash
 
 _ARCH="linux/amd64" # Expected `linux/amd64``, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 _NAME="warp_socks"
