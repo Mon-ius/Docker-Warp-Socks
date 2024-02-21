@@ -1,0 +1,57 @@
+name: verify-plus
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  WARP_API_TEST_REG: ${{ secrets.WARP_API_TEST_REG }}
+  CARGO_TERM_COLOR: always
+
+on:
+  workflow_run:
+    workflows: ["build-v2"]
+    types:
+      - completed
+
+jobs:
+  register:
+    uses: ./.github/workflows/reg.yml
+    with:
+      api: $WARP_API_TEST_REG
+
+  refer:
+    needs:
+      - register
+    uses: ./.github/workflows/ref.yml
+    with:
+      api: $WARP_API_TEST_REG
+      ref: ${{ needs.register.outputs.account_id }}
+      key: ${{ needs.register.outputs.account_license }}
+
+  general:
+    needs:
+      - refer
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Create Proxy
+        shell: bash
+        run: |
+          key=${{ needs.refer.outputs.key }}
+          curl -fsSL bit.ly/warp_socks | sh -s -- "warp_socks_v2_plus" "linux/amd64" "2" "9091" "monius" "passwd" $key
+          date && sleep 60 && docker ps -a && date && docker logs warp_socks_v2_plus
+
+      - name: Check proxy status
+        id: check
+        run: |
+          set +e
+          trace=$(curl -v -U "monius:passwd" -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace" | grep -w "warp=plus")
+          echo ::set-output name=trace::$trace
+      - name: Show proxy status
+        run: |
+          echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - 
+        name: Debug Mode
+        uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=on' }}
