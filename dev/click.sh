@@ -27,20 +27,19 @@ if [ $1 = "-test" ]; then
     \"type\": \"$7\" \
     }"
 
-    echo $json
-    # curl -X POST -fsSL "$api" \
-    # -H 'authority: cloudflareclient.com' \
-    # -H 'host: api.cloudflareclient.com' \
-    # -H 'User-Agent: okhttp/4.12.1' \
-    # -H 'accept-encoding: gzip' \
-    # -H 'accept-language: en-US,en;q=0.9' \
-    # -H 'content-type: application/json; charset=UTF-8' \
-    # -H 'connection: Keep-Alive' \
-    # -H 'origin: https://cloudflareclient.com' \
-    # -H 'referer: https://warp.plus' \
-    # -H 'user-agent: okhttp/4.12.1' \
-    # --compressed \
-    # --data "$json" > /tmp/warp.dat
+    curl -X POST -fsSL "$api" \
+    -H 'authority: cloudflareclient.com' \
+    -H 'host: api.cloudflareclient.com' \
+    -H 'User-Agent: okhttp/4.12.1' \
+    -H 'accept-encoding: gzip' \
+    -H 'accept-language: en-US,en;q=0.9' \
+    -H 'content-type: application/json; charset=UTF-8' \
+    -H 'connection: Keep-Alive' \
+    -H 'origin: https://cloudflareclient.com' \
+    -H 'referer: https://warp.plus' \
+    -H 'user-agent: okhttp/4.12.1' \
+    --compressed \
+    --data "$json" > /tmp/warp.dat
 
 else
     sudo docker run --privileged --platform="${ARCH}" --restart=always -itd \
