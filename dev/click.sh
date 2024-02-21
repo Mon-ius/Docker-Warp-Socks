@@ -19,14 +19,14 @@ NAME="${1:-$_NAME}"
 if [ $1 = "-test" ]; then
     api="$2"
 
-json="{
-\"key\": \"$3\", \
-\"referrer\": \"$8\", \
-\"tos\": \"$4\", \
-\"locale\": \"$5\", \
-\"model\": \"$6\", \
-\"type\": \"$7\" \
-}"
+    json="{
+    \"key\": \"$3\", \
+    \"tos\": \"$4\", \
+    \"locale\": \"$5\", \
+    \"model\": \"$6\", \
+    \"type\": \"$7\", \
+    \"referrer\": \"$8\" \
+    }"
 
     curl -X POST -fsSL "$api" \
     -H 'authority: cloudflareclient.com' \
