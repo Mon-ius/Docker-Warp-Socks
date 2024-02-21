@@ -10,6 +10,11 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
+      api:
+        description: 'api test endpoint'
+        required: True
+        default: 'http://127.0.0.1:6991/reg'
+        type: string
       ref:
         description: 'refer_account_id'
         required: false

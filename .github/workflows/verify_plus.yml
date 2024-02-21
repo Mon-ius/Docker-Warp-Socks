@@ -3,6 +3,7 @@ name: verify-plus
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   WARP_API_TEST_REG: ${{ secrets.WARP_API_TEST_REG }}
+  WARP_DEFAULT: ${{ secrets.WARP_DEFAULT }}
   CARGO_TERM_COLOR: always
 
 on:
@@ -14,6 +15,9 @@ on:
 jobs:
   register:
     uses: ./.github/workflows/reg.yml
+    with:
+      api: $WARP_API_TEST_REG
+      ref: $WARP_DEFAULT
 
   general:
     needs:
