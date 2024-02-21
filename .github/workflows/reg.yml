@@ -18,10 +18,6 @@ on:
 jobs:
   call:
     runs-on: ubuntu-latest
-    outputs:
-      id: ${{ steps.register.outputs.id }}
-      token: ${{ steps.register.outputs.token }}
-      license: ${{ steps.register.outputs.license }}
     steps:
       - uses: actions/checkout@v4
       - id: register
