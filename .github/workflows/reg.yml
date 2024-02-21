@@ -2,16 +2,13 @@ name: Reg
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  WARP_API_TEST_REG: ${{ secrets.WARP_API_TEST_REG }}
+  WARP_DEFAULT: ${{ secrets.WARP_DEFAULT }}
   CARGO_TERM_COLOR: always
 
 on:
+  workflow_dispatch:
   workflow_call:
-    inputs:
-      api:
-        description: 'api test endpoint'
-        required: True
-        default: 'http://127.0.0.1:6991/reg'
-        type: string
     outputs:
       account_id:
         description: "test account"
@@ -34,7 +31,6 @@ jobs:
       - uses: actions/checkout@v4
       - id: register
         run: |
-          WARP_API_TEST_REG="${{ inputs.api }}"
           
           key="$(cat /dev/urandom | head -c 10 | sha256sum | head -c 43)="
           tos=$(TZ=UTC+1 date "+%Y-%m-%dT%H:%M:%S.691-01:00")
@@ -43,6 +39,7 @@ jobs:
           type="IOS"
           json="{
           \"key\": \"$key\", \
+          \"referrer\": \"$WARP_DEFAULT\", \
           \"tos\": \"$tos\", \
           \"locale\": \"$locale\", \
           \"model\": \"$model\", \
