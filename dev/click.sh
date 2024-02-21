@@ -17,16 +17,16 @@ ARCH="${2:-$_ARCH}"
 NAME="${1:-$_NAME}"
 
 if [ $1 = "-test" ]; then
-
     api="$2"
-    json="{
-    \"key\": \"$3\", \
-    \"tos\": \"$4\", \
-    \"locale\": \"$5\", \
-    \"model\": \"$6\", \
-    \"type\": \"$7\" \
-    \"referrer\": \"$8\" \
-    }"
+
+json="{
+\"key\": \"$3\", \
+\"referrer\": \"$8\", \
+\"tos\": \"$4\", \
+\"locale\": \"$5\", \
+\"model\": \"$6\", \
+\"type\": \"$7\" \
+}"
 
     curl -X POST -fsSL "$api" \
     -H 'authority: cloudflareclient.com' \
@@ -41,7 +41,6 @@ if [ $1 = "-test" ]; then
     -H 'user-agent: okhttp/4.12.1' \
     --compressed \
     --data "$json" > /tmp/warp.dat
-
 else
     sudo docker run --privileged --platform="${ARCH}" --restart=always -itd \
         --name "${NAME}" -e LOG=1 \
