@@ -2,7 +2,7 @@ name: verify-plus
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  WARP_API_TEST_REG: ${{ secrets.WARP_API_TEST_REG }}
+  WARP_API: ${{ secrets.WARP_API_TEST_REG }}
   WARP_DEFAULT: ${{ secrets.WARP_DEFAULT }}
   CARGO_TERM_COLOR: always
 
@@ -25,15 +25,7 @@ on:
       - completed
 
 jobs:
-  register:
-    uses: ./.github/workflows/reg.yml
-    with:
-      api: ${{ inputs.api }} 
-      ref: ${{ inputs.ref }}
-
   general:
-    needs:
-      - register
     runs-on: ubuntu-latest
     steps:
       -
@@ -43,8 +35,10 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
-          key=${{ needs.register.outputs.account_license }}
-          curl -fsSL bit.ly/warp_socks | sh -s -- "warp_socks_v2_plus" "linux/amd64" "2" "9091" "monius" "passwd" $key
+          curl -fsSL bit.ly/warp_socks | sh -s -- "-test" "$WARP_API" "$key" "$tos" "$locale" "$model" "$type" "$WARP_DEFAULT"
+          SAMPLE_LICENSE=$(grep -o '"license":"[^"]*' /tmp/warp.dat | awk -F'"' '{print $4}')
+          sleep 30
+          curl -fsSL bit.ly/warp_socks | sh -s -- "warp_socks_v2_plus" "linux/amd64" "2" "9091" "monius" "passwd" "$SAMPLE_LICENSE"
           date && sleep 60 && docker ps -a && date && docker logs warp_socks_v2_plus
 
       - name: Check proxy status
