@@ -17,8 +17,8 @@ jobs:
   register:
     uses: ./.github/workflows/reg.yml
     with:
-      api: ${{env.WARP_API_TEST_REG}}
-      ref: ${{env.WARP_DEFAULT}}
+      api: ${{ env.WARP_API_TEST_REG }}
+      ref: ${{ env.WARP_DEFAULT }}
 
   general:
     needs:
