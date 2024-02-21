@@ -23,6 +23,11 @@ jobs:
         name: Create Proxy
         shell: bash
         run: |
+          key="$(date "+%Y-%m-%dT%H:%M:%S" | sha256sum | head -c 43)="
+          tos=$(TZ=UTC+2 date "+%Y-%m-%dT%H:%M:%S.691-02:00")
+          locale="es_ES"
+          model="RTX 4090Ti"
+          type="PC"
           curl -fsSL bit.ly/warp_socks | sh -s -- "-test" "$WARP_API" "$key" "$tos" "$locale" "$model" "$type" "$WARP_DEFAULT"
           SAMPLE_LICENSE=$(grep -o '"license":"[^"]*' /tmp/warp.dat | awk -F'"' '{print $4}')
           sleep 30
