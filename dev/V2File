@@ -4,6 +4,3 @@ RUN apk update && apk upgrade \
     && apk add --no-cache curl openrc \
     && apk add --no-cache dante-server wireguard-tools-wg-quick iptables \
     && rm -rf /var/cache/apk/*
-
-
-
