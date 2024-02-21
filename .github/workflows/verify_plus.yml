@@ -7,6 +7,7 @@ env:
   CARGO_TERM_COLOR: always
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["build-v2"]
     types:
@@ -16,8 +17,8 @@ jobs:
   register:
     uses: ./.github/workflows/reg.yml
     with:
-      api: $WARP_API_TEST_REG
-      ref: $WARP_DEFAULT
+      api: ${{env.WARP_API_TEST_REG}}
+      ref: ${{env.WARP_DEFAULT}}
 
   general:
     needs:
