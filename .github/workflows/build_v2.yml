@@ -6,11 +6,12 @@ on:
     branches:
       - "main"
     paths:
-      - "dev/V2File"
+      - "dev/Meta"
+      - "Dockerfile"
       - "entrypoint.sh"
 
 jobs:
-  buildx:
+  build-pre-v2:
     runs-on: ubuntu-latest
     steps:
       -
@@ -29,23 +30,25 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build and push meta
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./dev/V2File
+          file: ./dev/Meta
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:pre-v2
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:meta
       -
-        name: Sleep and replace
-        shell: bash
-        run: |
-          sleep 60
-          sed -i 's/meta/pre-v2/g' Dockerfile
-          cat Dockerfile
+        name: Build and push meta_v2
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./dev/Meta
+          push: true
+          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:meta_v2
       -
-        name: Build and push
+        name: Build and push v2
         uses: docker/build-push-action@v5
         with:
           context: .
