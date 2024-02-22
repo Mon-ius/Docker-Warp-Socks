@@ -52,5 +52,5 @@ else
         --cap-add NET_ADMIN --cap-add SYS_MODULE \
         -p "${PORT}":"${PORT}" \
         -v /lib/modules:/lib/modules \
-        monius/docker-warp-socks
+        monius/docker-warp-socks:"${VER}"
 fi
