@@ -1,4 +1,4 @@
-name: verify-all
+name: verify-chain
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
