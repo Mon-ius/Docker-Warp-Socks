@@ -6,7 +6,7 @@ _KEY=""
 _SOCK_USER=""
 _SOCK_PWD=""
 _PORT="9091"
-_VER="2"
+_VER="v2"
 
 KEY="${7:-$_KEY}"
 SOCK_PWD="${6:-$SOCK_PWD}"

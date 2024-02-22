@@ -23,7 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - run: |
-          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "1" "$port"
+          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v1" "$port"
           date && sleep 60 && docker ps -a && date && docker logs "$name"
       - id: check
         run: echo trace=$(curl -v -U $PASS -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
