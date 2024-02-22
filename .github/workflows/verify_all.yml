@@ -4,7 +4,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   TRACE: "https://www.cloudflare.com/cdn-cgi/trace"
   SOCKS: "socks5h://127.0.0.1"
-  PASS: "monius:passwd"
+  AUTH: "monius:passwd"
 
 on:
   workflow_dispatch:
@@ -26,7 +26,7 @@ jobs:
           curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v1" "$port"
           date && sleep 60 && docker ps -a && date && docker logs "$name"
       - id: check
-        run: echo trace=$(curl -v -U $PASS -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+        run: echo trace=$(curl -v -U $AUTH -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
       - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
       - uses: lhotari/action-upterm@v1
         if: ${{ steps.check.outputs.trace != 'warp=on' }}
