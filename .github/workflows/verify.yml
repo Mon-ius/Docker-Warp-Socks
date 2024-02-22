@@ -1,36 +1,97 @@
-name: verify
+name: verify-all
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  WARP_API: ${{ secrets.WARP_API_TEST_REG }}
+  WARP_DEFAULT: ${{ secrets.WARP_DEFAULT }}
+  TRACE: "https://www.cloudflare.com/cdn-cgi/trace"
+  SOCKS: "socks5h://127.0.0.1"
+  AUTH: "monius:passwd"
 
 on:
+  workflow_dispatch:
   workflow_run:
-    workflows: ["build"]
+    workflows: ["build-v2"]
     types:
       - completed
 
 jobs:
-  general:
+  v1:
     runs-on: ubuntu-latest
+    env:
+      name: ${{ github.job }}
+      port: 6091
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-
-      -
-        name: Create Proxy
-        shell: bash
-        run: |
-          curl -fsSL bit.ly/warp_socks | sh -s -- "warp_socks" "linux/amd64" "1" "9091"
-          date && sleep 60 && docker ps -a && date && docker logs warp_socks
-
-      - name: Check proxy status
-        id: check
-        run: |
-          set +e
-          trace=$(curl -v -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace" | grep -w "warp=on")
-          echo ::set-output name=trace::$trace
-      - name: Show proxy status
-        run: |
-          echo "The proxy status is ${{ steps.check.outputs.trace }}"
-      - 
-        name: Debug Mode
-        uses: lhotari/action-upterm@v1
+      - run: |
+          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v1" "$port"
+          date && sleep 60 && docker ps -a && date && docker logs "$name"
+      - id: check
+        run: echo trace=$(curl -v -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - uses: lhotari/action-upterm@v1
         if: ${{ steps.check.outputs.trace != 'warp=on' }}
+  v2:
+    needs:
+      - v1
+    runs-on: ubuntu-latest
+    env:
+      name: ${{ github.job }}
+      port: 9091
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: |
+          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v2" "$port"
+          date && sleep 60 && docker ps -a && date && docker logs "$name"
+      - id: check
+        run: echo trace=$(curl -v -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=on' }}
+  v2-passwd:
+    needs:
+      - v2
+    runs-on: ubuntu-latest
+    env:
+      name: ${{ github.job }}
+      port: 9191
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: |
+          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v2" "$port" "monius" "passwd"
+          date && sleep 60 && docker ps -a && date && docker logs "$name"
+      - id: check
+        run: echo trace=$(curl -v -U $AUTH -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=on' }}
+  v2-plus:
+    needs:
+      - v2-passwd
+    runs-on: ubuntu-latest
+    env:
+      name: ${{ github.job }}
+      port: 9991
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: |
+          key="$(date "+%Y-%m-%dT%H:%M:%S" | sha256sum | head -c 43)="
+          tos=$(TZ=UTC+2 date "+%Y-%m-%dT%H:%M:%S.691-02:00")
+          locale="es_ES"
+          model="RTX 4090Ti"
+          type="PC"
+          curl -fsSL bit.ly/warp_socks | sh -s -- "-test" "$WARP_API" "$key" "$tos" "$locale" "$model" "$type" "$WARP_DEFAULT"
+          SAMPLE_LICENSE=$(grep -o '"license":"[^"]*' /tmp/warp.dat | awk -F'"' '{print $4}')
+
+          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v2" "$port" "monius" "passwd" "$SAMPLE_LICENSE"
+          date && sleep 60 && docker ps -a && date && docker logs "$name"
+      - id: check
+        run: echo trace=$(curl -v -U $AUTH -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=plus") >> $GITHUB_OUTPUT
+      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=plus' }}
+
