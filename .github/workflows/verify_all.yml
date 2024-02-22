@@ -17,18 +17,16 @@ jobs:
   v1:
     runs-on: ubuntu-latest
     env:
+      name: ${{ github.job }}
       port: 6091
-      proxy: "$SOCKS:$port"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - run: |
           curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "1" "$port"
           date && sleep 60 && docker ps -a && date && docker logs "$name"
-        env:
-          name: ${{ github.job }}
       - id: check
-        run: echo trace=$(curl -v -U $PASS -x $proxy -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+        run: echo trace=$(curl -v -U $PASS -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
       - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
       - uses: lhotari/action-upterm@v1
         if: ${{ steps.check.outputs.trace != 'warp=on' }}
