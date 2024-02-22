@@ -1,5 +1,11 @@
 name: verify-all
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  TRACE: "https://www.cloudflare.com/cdn-cgi/trace"
+  PASS: "monius:passwd"
+  SOCKS: "socks5h://127.0.0.1"
+
 on:
   workflow_dispatch:
   workflow_run:
@@ -10,17 +16,18 @@ on:
 jobs:
   v1:
     runs-on: ubuntu-latest
+    env:
+      name: ${{ github.job }}
+      port: 6091
+      proxy: "$SOCKS:$port"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - run: |
           curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "1" "$port"
           date && sleep 60 && docker ps -a && date && docker logs "$name"
-        env:
-          name: ${{ github.job }}
-          port: 6091
       - id: check
-        run: echo trace=$(curl -v -U "monius:passwd" -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace" | grep -w "warp=on") >> $GITHUB_OUTPUT
+        run: echo trace=$(curl -v -U $PASS -x $proxy -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
       - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
       - uses: lhotari/action-upterm@v1
         if: ${{ steps.check.outputs.trace != 'warp=on' }}
