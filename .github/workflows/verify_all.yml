@@ -17,7 +17,7 @@ jobs:
           curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "1" "$port"
           date && sleep 60 && docker ps -a && date && docker logs "$name"
         env:
-          name: {{ github.job }}
+          name: ${{ github.job }}
           port: 6091
       - id: check
         run: |
