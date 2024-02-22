@@ -14,15 +14,16 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
 ## Ready to V2 features roadmap:
 
-The new features will undergo pre-release testing at [rws-cli](https://github.com/AUTOM77/RWS). The main line will transition from V1 to V2 within a month, with minimal impact on the user side. As a contingency plan, users can revert to `monius/docker-warp-socks:v1` if needed.
+The new features will undergo pre-release testing at [rws-cli](https://github.com/AUTOM77/RWS). 
 
 - `+` 1. automatically enroll the WARP+ account plan
 - `+` 2. eBFP featured wireguard implement
 - `+` 3. more OS/platform support
-- `+` 4. **96.3%** lighter(only `8MB`) in `alpine` core run in more small devices!
-- `+` 5. from `10s` to `0.1s` clone speed up from dockerhub!
-- `+` 6. Enhance **robustness** to handle restartorreboot events!
-- `+` 7. all in one caller written in Rust!!!
+- `+` 4. access to `OpenAI Sora` without effort
+- `+` 5. **96.3%** lighter(only `8MB`) in `alpine` core run in more small devices!
+- `+` 6. from `10s` to `0.1s` clone speed up from dockerhub!
+- `+` 7. Enhance **robustness** to handle restartorreboot events!
+- `+` 8. all in one caller written in Rust!!!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
 - Extend accessibility and avoid potential restrictions by using proxy services
@@ -30,18 +31,20 @@ The new features will undergo pre-release testing at [rws-cli](https://github.co
 - Prevent being banned by proxying API calls
 - Successfully pre-process the AI WaitList
 - Develop apps with warp embedded
-- Bypass the New Bing wait-list
+- ~~Bypass the New Bing wait-list~~
 - ...
 
 ## Why to use
 
 The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
 
-With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `Sora`, `ChatGPT`,`GPT-4`, `GPT4V`, `Claude`, `Claude 2`, ~~`Google Bard`~~, `Google Gemini`, `Google Gemini Pro Vision`, `Google Gemini Advanced`, ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
+With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `OpenAI Sora`, `OpenAI ChatGPT`,`OpenAI GPT-4`, `OpenAI GPT-4V`, `Claude`, `Claude 2`, ~~`Google Bard`~~, `Google Gemini`, `Google Gemini Pro Vision`, `Google Gemini Advanced`, ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
 
 ## Usage
 
-The docker image is built based on `ubuntu:22.04` aka `ubuntu:focal`. It's designed to be robust enough to avoid reboot and platform issues. ***Please follow the EXAMPLES `1.1` and `2.1` To Get Start !***
+The `v1` image is built on `debian:bookworm` aka `debian:12`, we recently migrate from `v1` to `v2`, which based on a more lighter container `alpine:3.19`. The main line will transition within a month, with minimal impact on the user side. As a contingency plan, users can revert to `monius/docker-warp-socks:v1` if needed.
+
+***Please follow the EXAMPLES `1.1` and `2.1` To Get Start !***
 
 ### 💾 Prerequisites
 
