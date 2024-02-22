@@ -2,6 +2,8 @@ name: build-v2
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 6 */6 * *'
   push:
     branches:
       - "main"
@@ -9,9 +11,48 @@ on:
       - "dev/Meta"
       - "Dockerfile"
       - "entrypoint.sh"
+      - "dev/v1/Meta"
+      - "dev/v1/Dockerfile"
+      - "dev/v1/entrypoint.sh"
 
 jobs:
-  build-pre-v2:
+  build-v1:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push v1 meta
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./dev/v1/Meta
+          push: true
+          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:meta_v1
+      -
+        name: Build and push v1 file
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./dev/v1/Dockerfile
+          push: true
+          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:v1
+  build-v2:
     runs-on: ubuntu-latest
     steps:
       -
