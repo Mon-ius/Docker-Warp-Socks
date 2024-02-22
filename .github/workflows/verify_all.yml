@@ -17,7 +17,6 @@ jobs:
   v1:
     runs-on: ubuntu-latest
     env:
-      name: ${{ github.job }}
       port: 6091
       proxy: "$SOCKS:$port"
     steps:
@@ -26,6 +25,8 @@ jobs:
       - run: |
           curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "1" "$port"
           date && sleep 60 && docker ps -a && date && docker logs "$name"
+        env:
+          name: ${{ github.job }}
       - id: check
         run: echo trace=$(curl -v -U $PASS -x $proxy -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
       - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
