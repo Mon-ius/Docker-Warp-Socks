@@ -3,8 +3,8 @@ name: verify-all
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   TRACE: "https://www.cloudflare.com/cdn-cgi/trace"
-  PASS: "monius:passwd"
   SOCKS: "socks5h://127.0.0.1"
+  PASS: "monius:passwd"
 
 on:
   workflow_dispatch:
