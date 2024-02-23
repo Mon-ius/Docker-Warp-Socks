@@ -285,6 +285,8 @@ echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli
 warp-cli connect
 # Whole network in WARP proxy, `warp=on` means success. 
 curl -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+
+# Check `/var/log/cloudflare-warp/cfwarp_service_log.txt` for logs details
 ```
 **Plz be aware that the VMs still has possibility to be lost due to the `IP` can still be changed after `reboot`!!!**
 
