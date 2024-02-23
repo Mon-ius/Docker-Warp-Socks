@@ -31,7 +31,6 @@ if [ $1 = "-test" ]; then
     curl -X POST -fsSL "$api" \
     -H 'authority: cloudflareclient.com' \
     -H 'host: api.cloudflareclient.com' \
-    -H 'User-Agent: okhttp/4.12.1' \
     -H 'accept-encoding: gzip' \
     -H 'accept-language: en-US,en;q=0.9' \
     -H 'content-type: application/json; charset=UTF-8' \
