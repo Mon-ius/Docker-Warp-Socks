@@ -273,14 +273,14 @@ IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
 _IPv4=$(ip addr show dev "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
 _IPv6=$(ip addr show dev "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
 
-echo y | warp-cli register
+echo y | warp-cli registration new
 
 # Setting for VPC internal
-warp-cli add-excluded-route "$_IPv4"
-warp-cli add-excluded-route "$_IPv6"
+warp-cli tunnel ip add "$_IPv4"
+warp-cli tunnel ip add "$_IPv6"
 
 # Setting for VPC external
-echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli add-excluded-route
+echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli tunnel ip add
 
 warp-cli connect
 # Whole network in WARP proxy, `warp=on` means success. 
