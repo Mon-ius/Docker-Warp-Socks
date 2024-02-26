@@ -25,7 +25,8 @@ The new features will undergo pre-release testing at [rws-cli](https://github.co
 - `+` 7. Enhance **robustness** to handle restartorreboot events!
 - `+` 8. all in one caller written in Rust!!!
 - `+` 9. Used to join in the `SORA` RED TEAM waitlist!
-- `+` 10. Used to join in `Gemini 1.5` waitlist!
+- `+` 10. Used to join in the `Gemini 1.5` waitlist!
+- `+` 11. Used to join in the `SD 3.0` waitlist!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
 - Extend accessibility and avoid potential restrictions by using proxy services
