@@ -27,6 +27,7 @@ The new features will undergo pre-release testing at [rws-cli](https://github.co
 - `+` 9. Used to join in the `SORA` RED TEAM waitlist!
 - `+` 10. Used to join in the `Gemini 1.5` waitlist!
 - `+` 11. Used to join in the `SD 3.0` waitlist!
+- `+` 12. Used to use the `Claude 3 Opus`!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
 - Extend accessibility and avoid potential restrictions by using proxy services
@@ -41,7 +42,7 @@ The new features will undergo pre-release testing at [rws-cli](https://github.co
 
 The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
 
-With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `OpenAI Sora`, `OpenAI ChatGPT`,`OpenAI GPT-4`, `OpenAI GPT-4V`, `Claude`, `Claude 2`, ~~`Google Bard`~~, `Google Gemini`, `Google Gemini Pro Vision`, `Google Gemini Advanced`, ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
+With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `OpenAI Sora`, `OpenAI ChatGPT`,`OpenAI GPT-4`, `OpenAI GPT-4V`, `Claude`, `Claude 2`, `Claude 3 Opus`, ~~`Google Bard`~~, `Google Gemini`, `Google Gemini Pro Vision`, `Google Gemini Advanced`, ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
 
 ## Usage
 
