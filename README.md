@@ -28,6 +28,7 @@ The new features will undergo pre-release testing at [rws-cli](https://github.co
 - `+` 10. Used to join in the `Gemini 1.5` waitlist!
 - `+` 11. Used to join in the `SD 3.0` waitlist!
 - `+` 12. Used to use the `Claude 3 Opus`!
+- `+` 13. Enable to join `Zero-Trust` team plan with **Unlimited** traffic plan!
 - Automatically install and config CloudFlare WARP Client in Docker
 - Enable the access of WARP network from Docker Container's **SOCKS5** port
 - Extend accessibility and avoid potential restrictions by using proxy services
