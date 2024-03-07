@@ -9,7 +9,7 @@ LABEL maintainer="M0nius <m0niusplus@gmail.com>" \
     org.opencontainers.image.version="2.0.0" \
     org.opencontainers.image.url="https://hub.docker.com/r/monius/docker-warp-socks" \
     org.opencontainers.image.source="https://github.com/Mon-ius/Docker-Warp-Socks" \
-    org.opencontainers.image.base.name="docker.io/monius/docker-warp-socks" \
+    org.opencontainers.image.base.name="docker.io/monius/docker-warp-socks"
 
 RUN apk update && apk upgrade \
     && apk add --no-cache curl openrc \
