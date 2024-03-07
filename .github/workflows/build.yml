@@ -62,15 +62,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push meta
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./dev/Meta
-          push: true
-          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:meta
-      -
         name: Build and push v2
         uses: docker/build-push-action@v5
         with:
