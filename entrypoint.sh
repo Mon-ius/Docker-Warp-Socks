@@ -15,9 +15,9 @@ if [ ! -e "/opt/wgcf-profile.conf" ]; then
     TAR="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
     case $(arch) in
         x86_64) _ARCH="amd64" ;;
-        armv7l) _ARCH="armhf" ;;
         aarch64) _ARCH="arm64" ;;
         s390x) _ARCH="s390x" ;;
+        armv7l) _ARCH="armv7" ;;
         *) echo "Unsupported architecture"; exit 1 ;;
     esac
     URL=$(curl -fsSL ${TAR} | grep 'browser_download_url' | cut -d'"' -f4 | grep linux | grep "${_ARCH}")
