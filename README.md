@@ -237,7 +237,7 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 
 ### 4. Official Implement
 
-#### 4.1 `Proxy` Mode for newbie
+#### 4.1.1 `Proxy` Mode for newbie
 
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
 
@@ -258,6 +258,29 @@ warp-cli connect
 # test
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 # See`warp=on` means success. 
+```
+
+#### 4.1.2 `Proxy` Mode with `Plus`
+
+Prepare `WGCF_LICENSE_KEY="xxxxxxx"`
+
+```bash
+curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg \
+    | sudo gpg --yes --dearmor --output /etc/apt/trusted.gpg.d/cloudflare-warp.gpg
+
+echo "deb https://pkg.cloudflareclient.com $(lsb_release -cs) main" \
+    | sudo tee /etc/apt/sources.list.d/cloudflare-warp.list  > /dev/null
+
+sudo apt-get -qq update && sudo apt-get -qq install cloudflare-warp
+
+echo y | warp-cli registration new && warp-cli registration license "$WGCF_LICENSE_KEY"
+warp-cli mode proxy
+warp-cli proxy port 9091
+warp-cli connect
+
+# test
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+# See`warp=plus` means success. 
 ```
 
 #### 4.2 `Default` Global Mode for old man
