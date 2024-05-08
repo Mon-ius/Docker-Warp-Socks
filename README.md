@@ -242,7 +242,6 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
 
 ```bash
-
 curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg \
     | sudo gpg --yes --dearmor --output /etc/apt/trusted.gpg.d/cloudflare-warp.gpg
 
@@ -266,7 +265,6 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 For those who are **ooold** enough for Linux network management, try it for a global proxy mode, keep in mind that you have already back up or have second way or third way to save your remote VM's network!!! 
 
 ```bash
-
 CF_WARP="https://pkg.cloudflareclient.com/pubkey.gpg"
 _WARP="deb https://pkg.cloudflareclient.com $(lsb_release -cs) main"
 echo "$_WARP" | sudo tee /etc/apt/sources.list.d/cloudflare-warp.list  > /dev/null
@@ -277,23 +275,65 @@ GATEWAY=$(ip route show default | awk '/default/ {print $3}')
 IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
 _IPv4=$(ip addr show dev "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
 _IPv6=$(ip addr show dev "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
+# Setting for VPC ip structure
+_VPC=$(curl -fsSL https://www.cloudflare.com/cdn-cgi/trace | grep 'ip' | sed 's/ip=//') 
 
 echo y | warp-cli registration new
 
 # Setting for VPC internal
-warp-cli tunnel ip add "$_IPv4"
-warp-cli tunnel ip add "$_IPv6"
-
-# Setting for VPC external
-echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli tunnel ip add
+warp-cli add-excluded-route "$_IPv4"
+warp-cli add-excluded-route "$_IPv6"
+warp-cli add-excluded-route "$_VPC"
+# Setting for external ssh
+echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli add-excluded-route
 
 warp-cli connect
 # Whole network in WARP proxy, `warp=on` means success. 
-curl -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 
 # Check `/var/log/cloudflare-warp/cfwarp_service_log.txt` for logs details
 ```
 **Plz be aware that the VMs still has possibility to be lost due to the `IP` can still be changed after `reboot`!!!**
+
+**DONT USE** `warp-cli tunnel ip add` to exclude ip for now!!!
+```bash
+GATEWAY=$(ip route show default | awk '/default/ {print $3}')
+IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
+_IPv4=$(ip addr show dev "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2 | sed 's/\([0-9.]*\)\/.*/\1/')
+_IPv6=$(ip addr show dev "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2 | sed 's/\([0-9.]*\)\/.*/\1/')
+warp-cli tunnel ip add "$_IPv4"
+warp-cli tunnel ip add "$_IPv6"
+warp-cli tunnel ip add "$_VPC"
+echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | sed 's/\([0-9.]*\)\/.*/\1/' | xargs warp-cli tunnel ip add
+```
+
+#### 4.3 `Zero-Trust` official implement
+
+1. Go to `https://$TEAM.cloudflareaccess.com/warp` and authenticate.
+2. On the ‘Success’ page in the browser, right click and ‘Inspect’ the blue ‘Open Cloudflare WARP’ button. Copy the long url start with `com.cloudflare.warp://` that’s shown linked to the button.
+3. Assume you store it inside `$TOKEN_URL`
+4. Go to `one.dash.cloudflare.com` 
+5. Find -> Setting -> WARP Client -> Device settings
+6. Click Default -> Configure -> Split Tunnels -> Manage, then add exclude IPs which is same as `warp-cli add-excluded-route` 
+
+```bash
+curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg \
+    | sudo gpg --yes --dearmor --output /etc/apt/trusted.gpg.d/cloudflare-warp.gpg
+
+echo "deb https://pkg.cloudflareclient.com $(lsb_release -cs) main" \
+    | sudo tee /etc/apt/sources.list.d/cloudflare-warp.list  > /dev/null
+
+sudo apt-get -qq update && sudo apt-get -qq install cloudflare-warp
+
+TOKEN_URL="com.cloudflare.warp://xxx.cloudflareaccess.com/auth?token=xxxxx"
+
+echo y | warp-cli registration token $TOKEN_URL
+
+warp-cli connect
+
+curl -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+curl --proxy socks5h://127.0.0.1:9011 https://www.cloudflare.com/cdn-cgi/trace
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
 
 ### 5. Debug Information
 
