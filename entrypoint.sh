@@ -9,8 +9,8 @@ _WG_CONF="/etc/wireguard"
 _IFACE=$(ip route show default | awk '{print $5}')
 
 if [ ! -e "/opt/wgcf-profile.conf" ]; then
-    _IPv4=$(ip addr show dev "$_IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
-    _IPv6=$(ip addr show dev "$_IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
+    _IPv4=$(ip addr show dev "$_IFACE" | awk '/inet /{print $2; exit}' | cut -d' ' -f2)
+    _IPv6=$(ip addr show dev "$_IFACE" | awk '/inet6 /{print $2; exit}' | cut -d' ' -f2)
 
     TAR="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
     case $(arch) in
