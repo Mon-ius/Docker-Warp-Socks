@@ -4,7 +4,11 @@ set -e
 sleep 3
 
 _NET_DEV=warp
+_NET_PORT=9091
+
 NET_DEV="${NET_DEV:-$_NET_DEV}"
+NET_PORT="${NET_PORT:-$_NET_PORT}"
+
 _WG_CONF="/etc/wireguard"
 _IFACE=$(ip route show default | awk '{print $5}')
 
@@ -33,7 +37,7 @@ if [ ! -e "/opt/danted.conf" ]; then
 
 cat <<EOF | tee /opt/danted.conf
 logoutput: stderr
-internal: 0.0.0.0 port=9091
+internal: 0.0.0.0 port=$NET_PORT
 external: $NET_DEV
 
 user.unprivileged: nobody

@@ -126,7 +126,26 @@ The above command will add a little encryption to the existed socks connection, 
 
 Run, `curl -U "monius:passwd" -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"` to go 🤗
 
-#### 1.4 🔧 Pre-Configuration Start (advanced)
+#### 1.4 🪡 Custom Port(Advanced)
+
+Run the following commands in your terminal:
+
+```bash
+docker run --privileged --restart=always -itd \
+    --name warp_socks_passwd \
+    -e NET_PORT=8091 \
+    --cap-add NET_ADMIN \
+    --cap-add SYS_MODULE \
+    --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+    --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+    -v /lib/modules:/lib/modules \
+    -p 8091:8091 \
+    monius/docker-warp-socks
+```
+
+Run, `curl -x "socks5h://127.0.0.1:8091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"` to go 🤗
+
+#### 1.5 🔧 Pre-Configuration Start (advanced)
 
 To use your prepared config:
 
