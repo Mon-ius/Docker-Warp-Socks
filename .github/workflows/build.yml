@@ -6,7 +6,7 @@ on:
     - cron: '0 6 */6 * *'
   push:
     branches:
-      - "main"
+      - "master"
     paths:
       - "Dockerfile"
       - "entrypoint.sh"
