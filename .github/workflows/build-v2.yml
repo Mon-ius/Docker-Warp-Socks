@@ -1,4 +1,4 @@
-name: build
+name: build-v2
 
 on:
   workflow_dispatch:
@@ -6,15 +6,26 @@ on:
     - cron: '0 6 */6 * *'
   push:
     branches:
-      - "main"
+      - "master"
     paths:
-      - "Dockerfile"
-      - "entrypoint.sh"
+      - ".github/workflows/build-v2.yml"
+      - "v2/Dockerfile"
+      - "v2/entrypoint.sh"
 
 jobs:
-  build:
+  build-v2:
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
       -
         name: Checkout
         uses: actions/checkout@v4
@@ -31,11 +42,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build and push v2 file
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: ./dev/v2/Dockerfile
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:v2
