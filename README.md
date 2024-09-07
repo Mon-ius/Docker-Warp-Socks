@@ -16,6 +16,7 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
 - The `v3` version will soon be released and available at `monius/docker-warp-socks:v3` and default in `monius/docker-warp-socks`.
+- The `Referral` programme will be concluded on Nov 1st from Cloudflare, the `Plus` feature in `v3` will be unavaible due to it. 
 
 ## V2 features:
 
