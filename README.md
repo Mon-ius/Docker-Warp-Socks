@@ -18,6 +18,7 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 - The `v3` version will soon be released and available at `monius/docker-warp-socks:v3` and default in `monius/docker-warp-socks`.
 - The `Referral` programme will be concluded on Nov 1st from Cloudflare, the `Plus` flag in `v3` will be unavaible due to it.
 - According to the new policy, see `sliver=005-tier1` for `plus` user and `siliver=none` for free account.
+- The `v3` version will be based on `alpine 3.20`.
 
 ## V3 features
 
@@ -25,7 +26,7 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 - Networking between containers. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/16)
 - More secure Bootstrap without `privileged` acquisition in docker container.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
-- Migration of core components from `ViRb3/wgcf` to `SagerNet/sing-box`.
+- Migration of core components from `ViRb3/wgcf` to `SagerNet/sing-box`. 
 
 Quick start from:
 ```sh
