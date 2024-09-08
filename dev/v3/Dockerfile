@@ -11,12 +11,13 @@ LABEL maintainer="M0nius <m0niusplus@gmail.com>" \
     org.opencontainers.image.source="https://github.com/Mon-ius/Docker-Warp-Socks" \
     org.opencontainers.image.base.name="docker.io/monius/docker-warp-socks"
 
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" | tee -a /etc/apk/repositories
+
 RUN apk update && apk upgrade \
-    && apk add --no-cache curl openrc \
-    && apk add --no-cache dante-server wireguard-tools-wg-quick iptables \
+    && apk add --no-cache curl sing-box openssl
     && rm -rf /var/cache/apk/*
 
-COPY entrypoint.sh /run/entrypoint.sh
+COPY ./dev/v3/entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
 
 CMD ["rws-cli"]
