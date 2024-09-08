@@ -23,9 +23,19 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
 - Support for mixed protocols on the default port `9091`. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/15)
 - Networking between containers. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/16)
+- More secure Bootstrap without `privileged` acquisition in docker container.
+- Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - Migration of core components from `ViRb3/wgcf` to `SagerNet/sing-box`.
 
-Quick verify on host with:
+Quick start from:
+```sh
+docker run --restart=always -itd \
+    --name warp_socks_v3 \
+    -p 9091:9091 \
+    monius/docker-warp-socks:v3
+```
+
+Then, verify on host with:
 
 ```sh
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
