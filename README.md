@@ -27,6 +27,7 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 - More secure Bootstrap without `privileged` acquisition in docker container.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - Migration of core components from `Dante` and `ViRb3/wgcf` to `SagerNet/sing-box`. 
+- Support `linux/ppc64le` and `linux/riscv64` in addition.
 
 Quick start from:
 ```sh
