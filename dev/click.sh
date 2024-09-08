@@ -7,7 +7,7 @@ get_end_point() {
     if [ -z "$_ACCOUNT_ID" ]; then
         echo "$_END_POINT"
     else
-        echo "$_END_POINT/$_ACCOUNT_ID/account"
+        echo "$_END_POINT/$_ACCOUNT_ID"
     fi
 }
 
@@ -110,13 +110,13 @@ EOF
     fi
 
     if [ -z "$_LICENSE" ]; then
-        echo "Response from server: $RESPONSE"
+        echo "Response from free: $RESPONSE"
     else
         account=$(echo "$RESPONSE" | grep -o '"id": *"[^"]*"' | head -n 1 | sed 's/"id": *"\([^"]*\)"/\1/')
         token=$(echo "$RESPONSE" | grep -o '"token": *"[^"]*"' | sed 's/"token": *"\([^"]*\)"/\1/')
-        echo "Response from server: $RESPONSE"
-        update_account "$account" "$token" "$_LICENSE"
-        check_account "$account" "$token"
+        _=$(update_account "$account" "$token" "$_LICENSE")
+        response=$(check_account "$account" "$token")
+        echo "Response from plus: $response"
     fi
 
     echo "\"private_key\":\"$private_key\""

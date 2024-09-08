@@ -48,7 +48,7 @@ Use `plus` license, now called `siliver`:
 ```sh
 docker run --restart=always -itd \
     --name warp_socks_plus \
-    -e WARP_LICENSE=thepluslicense \
+    -e WARP_LICENSE=$WARP_LICENSE \
     -p 9091:9091 \
     monius/docker-warp-socks:v3
 ```
