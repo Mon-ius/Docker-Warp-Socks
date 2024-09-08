@@ -25,7 +25,14 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 - Networking between containers. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/16)
 - Migration of core components from `ViRb3/wgcf` to `SagerNet/sing-box`.
 
-## V2 features:
+Quick verify on host with:
+
+```sh
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
+
+## V2 features
 
 The features undergo the testing at [rws-cli](https://github.com/AUTOM77/RWS). 
 
