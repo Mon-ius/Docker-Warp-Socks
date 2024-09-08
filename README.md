@@ -45,13 +45,15 @@ curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
 > [!TIP]
-> To use `plus` license, now called `siliver`:
-> add `-e WARP_LICENSE=$WARP_LICENSE` with docker run.
+> - To use `plus` license, now called `siliver`, add `-e WARP_LICENSE=$WARP_LICENSE`.
+> - To use customized `port`, set `-e NET_PORT=$NET_PORT`.
+> - To use Tunnel Encryption with `user` and `passwd`, set `-e SOCK_USER=$USER` and `-e SOCK_PWD=$PASSWD`.
 
 ```sh
 docker run --restart=always -itd \
     --name warp_socks_plus \
     -e WARP_LICENSE=$WARP_LICENSE \
+    -e NET_PORT=9091 \
     -p 9091:9091 \
     monius/docker-warp-socks:v3
 ```
