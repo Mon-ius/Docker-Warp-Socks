@@ -44,7 +44,10 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
-Use `plus` license, now called `siliver`:
+> [!TIP]
+> To use `plus` license, now called `siliver`:
+> add `-e WARP_LICENSE=$WARP_LICENSE` with docker run.
+
 ```sh
 docker run --restart=always -itd \
     --name warp_socks_plus \
