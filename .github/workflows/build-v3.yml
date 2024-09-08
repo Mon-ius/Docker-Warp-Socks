@@ -9,8 +9,8 @@ on:
       - "master"
     paths:
       - ".github/workflows/build-v3.yml"
-      - "v3/Dockerfile"
-      - "v3/entrypoint.sh"
+      - "dev/v3/Dockerfile"
+      - "dev/v3/entrypoint.sh"
 
 jobs:
   build-v3:
