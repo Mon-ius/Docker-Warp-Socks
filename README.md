@@ -44,6 +44,22 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
+Use `plus` license, now called `siliver`:
+```sh
+docker run --restart=always -itd \
+    --name warp_socks_plus \
+    -e WARP_LICENSE=thepluslicense \
+    -p 9091:9091 \
+    monius/docker-warp-socks:v3
+```
+
+Check if both `siliver=xxx-xxx` and `warp=on` shown from:
+
+```sh
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
+
 ## V2 features
 
 The features undergo the testing at [rws-cli](https://github.com/AUTOM77/RWS). 
