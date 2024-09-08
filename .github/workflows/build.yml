@@ -9,7 +9,7 @@ on:
       - "master"
     paths:
       - "Dockerfile"
-      - "entrypoint-v3.sh"
+      - "entrypoint.sh"
 
 jobs:
   build:
