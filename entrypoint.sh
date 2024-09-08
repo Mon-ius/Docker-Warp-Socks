@@ -1,87 +1,176 @@
 #!/bin/sh
+
 set -e
 
 sleep 3
 
-_NET_DEV=warp
+_WARP_SERVER=engage.cloudflareclient.com
+_WARP_PORT=2408
 _NET_PORT=9091
 
-NET_DEV="${NET_DEV:-$_NET_DEV}"
+WARP_SERVER="${WARP_SERVER:-$_WARP_SERVER}"
+WARP_PORT="${WARP_PORT:-$_WARP_PORT}"
 NET_PORT="${NET_PORT:-$_NET_PORT}"
 
-_WG_CONF="/etc/wireguard"
-_IFACE=$(ip route show default | awk '{print $5}')
+RESPONSE=$(curl -fsSL bit.ly/warp_socks | sh -s -- $WARP_LICENSE)
+private_key=$(echo "$RESPONSE" | sed -n 's/.*"private_key":"\([^"]*\)".*/\1/p')
+ipv4=$(echo "$RESPONSE" | sed -n 's/.*"v4":"\([^"]*\)".*/\1/p')
+ipv6=$(echo "$RESPONSE" | sed -n 's/.*"v6":"\([^"]*\)".*/\1/p')
+public_key=$(echo "$RESPONSE" | sed -n 's/.*"public_key":"\([^"]*\)".*/\1/p')
+client_hex=$(echo "$RESPONSE" | grep -o '"client_id":"[^"]*' | cut -d'"' -f4 | base64 -d | od -t x1 -An | tr -d ' \n')
+reserved_dec=$(echo "$client_hex" | awk '{printf "[%d, %d, %d]", "0x"substr($0,1,2), "0x"substr($0,3,2), "0x"substr($0,5,2)}')
 
-if [ ! -e "/opt/wgcf-profile.conf" ]; then
-    _IPv4=$(ip addr show dev "$_IFACE" | awk '/inet /{print $2; exit}' | cut -d' ' -f2)
-    _IPv6=$(ip addr show dev "$_IFACE" | awk '/inet6 /{print $2; exit}' | cut -d' ' -f2)
-
-    TAR="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
-    case $(arch) in
-        x86_64) _ARCH="amd64" ;;
-        aarch64) _ARCH="arm64" ;;
-        s390x) _ARCH="s390x" ;;
-        armv7l) _ARCH="armv7" ;;
-        *) echo "Unsupported architecture"; exit 1 ;;
-    esac
-    URL=$(curl -fsSL ${TAR} | grep 'browser_download_url' | cut -d'"' -f4 | grep linux | grep "${_ARCH}")
-    curl -fsSL "${URL}" -o ./wgcf && chmod +x ./wgcf && mv ./wgcf /usr/bin
-    wgcf register --accept-tos && wgcf update && wgcf generate && mv wgcf-profile.conf /opt
-    sed -i "/\[Interface\]/a PostDown = ip -6 rule delete from ${_IPv6}  lookup main" /opt/wgcf-profile.conf
-    sed -i "/\[Interface\]/a PostUp = ip -6 rule add from ${_IPv6} lookup main" /opt/wgcf-profile.conf
-    sed -i "/\[Interface\]/a PostDown = ip -4 rule delete from ${_IPv4} lookup main" /opt/wgcf-profile.conf
-    sed -i "/\[Interface\]/a PostUp = ip -4 rule add from ${_IPv4} lookup main" /opt/wgcf-profile.conf
+if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
+    AUTH_PART=$(cat <<EOF
+            "users": [
+                {
+                    "username": "$SOCK_USER",
+                    "password": "$SOCK_PWD"
+                }
+            ],
+EOF
+)
+else
+    AUTH_PART=""
 fi
 
-if [ ! -e "/opt/danted.conf" ]; then
-
-cat <<EOF | tee /opt/danted.conf
-logoutput: stderr
-internal: 0.0.0.0 port=$NET_PORT
-external: $NET_DEV
-
-user.unprivileged: nobody
-
-socksmethod: none
-clientmethod: none
-
-client pass {
-from: 0.0.0.0/0 to: 0.0.0.0/0
-log: error
-}
-
-socks pass {
-from: 0.0.0.0/0 to: 0.0.0.0/0
+cat <<EOF | tee /etc/sing-box/config.json
+{
+    "log": {
+        "disabled": false,
+        "level": "debug",
+        "timestamp": true
+    },
+    "experimental": {
+        "cache_file": {
+            "enabled": true,
+            "path": "cache.db",
+            "cache_id": "v1",
+            "store_fakeip": true
+        }
+    },
+    "dns": {
+        "servers": [
+            {
+                "tag": "google",
+                "address": "tls://8.8.8.8",
+                "detour": "WARP"
+            },
+            {
+                "tag": "fallback",
+                "address": "8.8.8.8",
+                "address_resolver": "google",
+                "detour": "WARP"
+            },
+            {
+                "tag": "local-dns",
+                "address": "223.5.5.5",
+                "detour": "direct"
+            },
+            {
+                "tag": "block-dns",
+                "address": "rcode://success"
+            }
+        ],
+        "rules": [
+            {
+                "outbound": "any",
+                "server": "local-dns"
+            },
+            {
+                "query_type": [
+                    "A"
+                ],
+                "rewrite_ttl": 1,
+                "server": "fallback"
+            }
+        ],
+        "strategy": "ipv4_only"
+    },
+    "route": {
+        "rules": [
+            {
+                "protocol": "dns",
+                "outbound": "dns-out"
+            },
+            {
+                "port": 53,
+                "outbound": "dns-out"
+            },
+            {
+                "type": "logical",
+                "mode": "or",
+                "rules": [
+                    {
+                        "port": 853
+                    },
+                    {
+                        "network": "udp",
+                        "port": 443
+                    },
+                    {
+                        "protocol": "stun"
+                    }
+                ],
+                "outbound": "block"
+            },
+            {
+                "ip_is_private": true,
+                "outbound": "direct"
+            }
+        ],
+        "auto_detect_interface": true,
+        "final": "WARP"
+    },
+    "outbounds": [
+        {
+            "tag": "WARP",
+            "type": "wireguard",
+            "server": "$WARP_SERVER",
+            "server_port": $WARP_PORT,
+            "local_address": [
+                "${ipv4}/32",
+                "${ipv6}/128"
+            ],
+            "private_key": "$private_key",
+            "peer_public_key": "$public_key",
+            "reserved": $reserved_dec,
+            "mtu": 1408
+        },
+        {
+            "type": "direct",
+            "tag": "direct"
+        },
+        {
+            "type": "dns",
+            "tag": "dns-out"
+        },
+        {
+            "type": "block",
+            "tag": "block"
+        }
+    ],
+    "inbounds": [
+        {
+            "type": "mixed",
+            "tag": "mixed-in",
+            "listen": "::",
+            "listen_port": $NET_PORT,
+$AUTH_PART
+            "sniff": true
+        },
+        {
+            "type": "direct",
+            "listen": "::",
+            "listen_port": 53,
+            "sniff": true
+        }
+    ]
 }
 EOF
 
-fi
-
-if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
-    adduser --disabled-password --gecos "" "$SOCK_USER" && echo "$SOCK_USER:$SOCK_PWD" | chpasswd
-    sed -i 's/socksmethod: none/socksmethod: username/g' /opt/danted.conf
-fi
-
-if [ -f /usr/sbin/sockd ]; then
-    SOCKS_BIN="/usr/sbin/sockd"
-    SOCKS_CONF=/etc/sockd.conf
-elif [ -f /usr/sbin/danted ]; then
-    SOCKS_BIN="/usr/sbin/danted"
-    SOCKS_CONF=/etc/danted.conf
-fi
-
-mkdir -p $_WG_CONF && /bin/cp -rf /opt/wgcf-profile.conf "$_WG_CONF/$NET_DEV.conf" && /bin/cp -rf /opt/danted.conf "$SOCKS_CONF"
-
-wg-quick up "$NET_DEV"
-
-if ! curl -fsSL https://www.cloudflare.com/cdn-cgi/trace  | grep -q "warp=on"; then
-    sleep 1
-    wg-quick down "$NET_DEV" >> /root/wg-error 2>&1
-    wg-quick up "$NET_DEV" >> /root/wg-log 2>&1
-fi
-
 if [ ! -e "/usr/bin/rws-cli" ]; then
-    ln -s "$SOCKS_BIN" /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli
+    echo "sing-box -c /etc/sing-box/config.json run" > /usr/bin/rws-cli && chmod +x /usr/bin/rws-cli
 fi
 
 exec "$@"
