@@ -12,7 +12,7 @@ WARP_SERVER="${WARP_SERVER:-$_WARP_SERVER}"
 WARP_PORT="${WARP_PORT:-$_WARP_PORT}"
 NET_PORT="${NET_PORT:-$_NET_PORT}"
 
-RESPONSE=$(curl -fsSL bit.ly/warp_socks | sh -s)
+RESPONSE=$(curl -fsSL bit.ly/warp_socks | sh -s -- $WARP_LICENSE)
 private_key=$(echo "$RESPONSE" | sed -n 's/.*"private_key":"\([^"]*\)".*/\1/p')
 ipv4=$(echo "$RESPONSE" | sed -n 's/.*"v4":"\([^"]*\)".*/\1/p')
 ipv6=$(echo "$RESPONSE" | sed -n 's/.*"v6":"\([^"]*\)".*/\1/p')
