@@ -17,7 +17,7 @@ RUN apk update && apk upgrade \
     && apk add --no-cache curl openssl sing-box \
     && rm -rf /var/cache/apk/*
 
-COPY dev/v3/entrypoint.sh /run/entrypoint.sh
+COPY entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
 
 CMD ["rws-cli"]
