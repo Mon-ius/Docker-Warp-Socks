@@ -16,7 +16,8 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
 - The `v3` version will soon be released and available at `monius/docker-warp-socks:v3` and default in `monius/docker-warp-socks`.
-- The `Referral` programme will be concluded on Nov 1st from Cloudflare, the `Plus` feature in `v3` will be unavaible due to it. 
+- The `Referral` programme will be concluded on Nov 1st from Cloudflare, the `Plus` flag in `v3` will be unavaible due to it.
+- According to the new policy, see `sliver=005-tier1` for `plus` user and `siliver=none` for free account. 
 
 ## V2 features:
 
@@ -109,6 +110,9 @@ docker run --privileged --restart=always -itd \
 
 Run, `curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"`;
 See `plus` means ***WARP Plus License Key*** applied success.
+
+Updates: Since the policy changes, there will be no such `plus` flag when check with `https://www.cloudflare.com/cdn-cgi/trace`.
+See `sliver=xxx-tier1` means sucess for now.
 
 #### 1.3 🔒 Tunnel Encryption(Advanced)
 
@@ -262,6 +266,18 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 
 ### 4. Official Implement
 
+#### 4.1 For `warp-cli 2024.6` and later
+
+```sh
+echo y | warp-cli registration new
+warp-cli registration license "$LICENSE_KEY"
+warp-cli mode proxy
+warp-cli proxy port 9091
+warp-cli connect
+
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
+
 #### 4.1.1 `Proxy` Mode for newbie
 
 For those who has `amd64` remote machine and don't need to use `docker` to secure network connection, I [suggest](https://github.com/cloudflare/cloudflare-docs/pull/7644) to use the official `warp-cli` as following:
@@ -305,8 +321,9 @@ warp-cli connect
 
 # test
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-# See`warp=plus` means success. 
+# Instead of `warp=plus`, see `sliver=005-tier1` means success.
 ```
+
 
 #### 4.2 `Default` Global Mode for old man
 
