@@ -17,7 +17,13 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, and `linux/s390x`;
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
 - The `v3` version will soon be released and available at `monius/docker-warp-socks:v3` and default in `monius/docker-warp-socks`.
 - The `Referral` programme will be concluded on Nov 1st from Cloudflare, the `Plus` flag in `v3` will be unavaible due to it.
-- According to the new policy, see `sliver=005-tier1` for `plus` user and `siliver=none` for free account. 
+- According to the new policy, see `sliver=005-tier1` for `plus` user and `siliver=none` for free account.
+
+## V3 features
+
+- Support for mixed protocols on the default port `9091`. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/15)
+- Networking between containers. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/16)
+- Migration of core components from `ViRb3/wgcf` to `SagerNet/sing-box`.
 
 ## V2 features:
 
@@ -449,6 +455,8 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - [WireGuard](https://www.wireguard.com/)
 - [Mon-ius/Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
 - [Cloudflare WARP](https://developers.cloudflare.com/warp-client/get-started/linux/)
+- [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
+- [ViRb3/wgcf](https://github.com/ViRb3/wgcf)
 - [Neilpang/wgcf-docker](https://github.com/Neilpang/wgcf-docker)
 - [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
 - [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
