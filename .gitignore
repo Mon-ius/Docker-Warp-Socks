@@ -1,0 +1,4 @@
+.DS_Store
+.test
+.vscode
+*.sh text eol=lf

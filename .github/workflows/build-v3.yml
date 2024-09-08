@@ -9,8 +9,8 @@ on:
       - "master"
     paths:
       - ".github/workflows/build-v3.yml"
-      - "v3/Dockerfile"
-      - "v3/entrypoint.sh"
+      - "dev/v3/Dockerfile"
+      - "dev/v3/entrypoint.sh"
 
 jobs:
   build-v3:
@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./v3/Dockerfile
+          file: ./dev/v3/Dockerfile
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm, linux/ppc64le, linux/riscv64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:v3
