@@ -76,8 +76,13 @@ check_account() {
     echo "Check Response from server: $RESPONSE"
 }
 
-get_account() {
-    _LICENSE=$1
+new_account() {
+    if [ ${#1} -gt 30 ]; then
+        _REF=$1
+    else
+        _LICENSE=$1
+    fi
+
     END_POINT=$(get_end_point)
     TOS=$(get_tos)
     KEY=$(get_key)
@@ -88,7 +93,8 @@ get_account() {
     JSON_PAYLOAD=$(cat <<EOF
     {
         "tos": "$TOS",
-        "key": "$public_key"
+        "key": "$public_key",
+        "referrer": "$_REF"
     }
 EOF
     )
@@ -172,7 +178,7 @@ test() {
 }
 
 if [ $# -le 1 ]; then
-    info=$(get_account "$1")
+    info=$(new_account "$1")
     echo "$info"
 else
     test "$@"
