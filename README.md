@@ -211,7 +211,9 @@ docker run --privileged --restart=always -itd \
     -e SOCK_USER=monius \
     -e SOCK_PWD=cool \
     --cap-add NET_ADMIN \
+    --cap-add NET_RAW \
     --cap-add SYS_MODULE \
+    --device=/dev/net/tun \
     --sysctl net.ipv6.conf.all.disable_ipv6=0 \
     --sysctl net.ipv4.conf.all.src_valid_mark=1 \
     -p 127.0.0.1:9091:9091 \
