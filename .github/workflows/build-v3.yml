@@ -15,22 +15,6 @@ on:
 jobs:
   build-v3:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [linux/amd64, linux/arm64, linux/s390x, linux/ppc64le, linux/riscv64, linux/arm]
-        include:
-          - platform: linux/amd64
-            tag_suffix: amd64
-          - platform: linux/arm64
-            tag_suffix: arm64
-          - platform: linux/s390x
-            tag_suffix: s390x
-          - platform: linux/riscv64
-            tag_suffix: riscv64
-          - platform: linux/ppc64le
-            tag_suffix: ppc64le
-          - platform: linux/arm
-            tag_suffix: arm
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
@@ -64,5 +48,5 @@ jobs:
           context: "{{defaultContext}}:dev/v3"
           file: Dockerfile
           push: true
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm, linux/ppc64le, linux/riscv64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:v3
