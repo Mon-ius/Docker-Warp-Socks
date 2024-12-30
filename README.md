@@ -28,6 +28,9 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - Migration of core components from `Dante` and `ViRb3/wgcf` to `SagerNet/sing-box`. 
 - Support `linux/ppc64le` and `linux/riscv64` in addition.
+- Used call `Gemini-2.0-flash-thinking-exp-1219` API.
+- Used call `OpenAI-o1-pro` API.
+- Used call `Anthropic Claude 3.5 Sonnet v2` API.
 
 Quick start from:
 ```sh
@@ -64,33 +67,6 @@ Check if both `siliver=xxx-xxx` and `warp=on` shown from:
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
-
-## V2 features
-
-The features undergo the testing at [rws-cli](https://github.com/AUTOM77/RWS). 
-
-- `+` 1. automatically enroll the WARP+ account plan
-- `+` 2. eBFP featured wireguard implement
-- `+` 3. more OS/platform support
-- `+` 4. access to `OpenAI Sora` without effort
-- `+` 5. **96.3%** lighter(only `8MB`) in `alpine` core run in more small devices!
-- `+` 6. from `10s` to `0.1s` clone speed up from dockerhub!
-- `+` 7. Enhance **robustness** to handle restartorreboot events!
-- `+` 8. all in one caller written in Rust!!!
-- `+` 9. Used to join in the `SORA` RED TEAM waitlist!
-- `+` 10. Used call `Gemini 1.5 Pro` API!
-- `+` 11. Used to implement `SD 3.0` API!
-- `+` 12. Used to use the `Claude 3.5 Sonnet`!
-- `+` 13. Enable to join `Zero-Trust` team plan with **Unlimited** traffic plan!
-- Automatically install and config CloudFlare WARP Client in Docker
-- Enable the access of WARP network from Docker Container's **SOCKS5** port
-- Extend accessibility and avoid potential restrictions by using proxy services
-- Avoid looping verification in the Midjourney Discord Channel
-- Prevent being banned by proxying API calls
-- Successfully pre-process the AI WaitList
-- Develop apps with warp embedded
-- ~~Bypass the New Bing wait-list~~
-- ...
 
 ## Why to use
 
