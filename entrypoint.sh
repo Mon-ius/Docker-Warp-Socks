@@ -54,7 +54,7 @@ WARP_PART=$(cat <<EOF
 EOF
 )
 
-cat <<EOF | sudo tee /etc/sing-box/config.json
+cat <<EOF | tee /etc/sing-box/config.json
 {
     "log": {
         "disabled": false,
