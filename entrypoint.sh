@@ -35,9 +35,9 @@ else
     AUTH_PART=""
 fi
 
-WARP_PART=$(cat <<EOF
+PROXY_PART=$(cat <<EOF
         {
-            "tag": "WARP",
+            "tag": "Proxy",
             "type": "wireguard",
             "server": "$WARP_SERVER",
             "server_port": $WARP_PORT,
@@ -83,7 +83,7 @@ cat <<EOF | tee /etc/sing-box/config.json
             "type": "block",
             "tag": "block"
         },
-$WARP_PART
+$PROXY_PART
     ],
     "dns": {
         "servers": [
@@ -131,7 +131,7 @@ $WARP_PART
             }
         ],
         "auto_detect_interface": true,
-        "final": "WARP"
+        "final": "Proxy"
     },
     "inbounds": [
         {
