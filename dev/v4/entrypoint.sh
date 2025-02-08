@@ -34,22 +34,33 @@ else
     AUTH_PART=""
 fi
 
+
 PROXY_PART=$(cat <<EOF
+    "endpoints": [
         {
             "tag": "Proxy",
             "type": "wireguard",
-            "server": "$WARP_SERVER",
-            "server_port": $WARP_PORT,
-            "local_address": [
+            "address": [
                 "${ipv4}/32",
                 "${ipv6}/128"
             ],
             "private_key": "$private_key",
-            "peer_public_key": "$public_key",
-            "reserved": $reserved_dec,
+            "peers": [
+                {
+                    "address": "$WARP_SERVER",
+                    "port": $WARP_PORT,
+                    "public_key": "$public_key",
+                    "allowed_ips": [
+                        "0.0.0.0/0"
+                    ],
+                    "persistent_keepalive_interval": 30,
+                    "reserved": $reserved_dec
+                }
+            ],
             "mtu": 1408,
             "udp_fragment": true
         }
+    ]
 EOF
 )
 
@@ -64,26 +75,9 @@ cat <<EOF | tee /etc/sing-box/config.json
         "cache_file": {
             "enabled": true,
             "path": "cache.db",
-            "cache_id": "v1",
-            "store_fakeip": true
+            "cache_id": "v1"
         }
     },
-    "outbounds": [
-        {
-            "tag": "direct-out",
-            "type": "direct",
-            "udp_fragment": true
-        },
-        {
-            "type": "dns",
-            "tag": "dns-out"
-        },
-        {
-            "type": "block",
-            "tag": "block"
-        },
-$PROXY_PART
-    ],
     "dns": {
         "servers": [
             {
@@ -107,11 +101,24 @@ $PROXY_PART
     "route": {
         "rules": [
             {
+                "inbound": "mixed-in",
+                "action": "sniff",
+                "sniffer": [
+                    "dns",
+                    "bittorrent",
+                    "http",
+                    "tls",
+                    "quic",
+                    "dtls"
+                ]
+            },
+            {
                 "protocol": "dns",
-                "outbound": "dns-out"
+                "action": "hijack-dns"
             },
             {
                 "ip_is_private": true,
+                "action": "route",
                 "outbound": "direct-out"
             },
             {
@@ -126,6 +133,7 @@ $PROXY_PART
                     "240.0.0.0/4",
                     "52.80.0.0/16"
                 ],
+                "action": "route",
                 "outbound": "direct-out"
             }
         ],
@@ -137,9 +145,16 @@ $PROXY_PART
             "type": "mixed",
             "tag": "mixed-in",
             "listen": "::",
-            "listen_port": $NET_PORT,
 $AUTH_PART
-            "sniff": true
+            "listen_port": $NET_PORT
+        }
+    ],
+$PROXY_PART,
+    "outbounds": [
+        {
+            "tag": "direct-out",
+            "type": "direct",
+            "udp_fragment": true
         }
     ]
 }

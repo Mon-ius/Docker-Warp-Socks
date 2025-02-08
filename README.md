@@ -12,32 +12,31 @@
 
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`;
 
-## Migrate to v3
-
-- The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
-- The `v3` version will soon be released and available at `monius/docker-warp-socks:v3` and default in `monius/docker-warp-socks`.
-- The `Referral` programme will be concluded on Nov 1st from Cloudflare, the `Plus` flag in `v3` will be unavaible due to it.
-- According to the new policy, see `sliver=005-tier1` for `plus` user and `siliver=none` for free account.
-- The `v3` version will be based on `alpine 3.20`.
-
-## V3 features
-
-- Support for mixed protocols on the default port `9091`. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/15)
-- Networking between containers. (https://github.com/Mon-ius/Docker-Warp-Socks/pull/16)
-- More secure Bootstrap without `privileged` acquisition in docker container.
+## V4 Features
+- Rich support for most linux family systems, including `arm`, `ppc64le`, `s390x` and `riscv64`, etc.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
-- Migration of core components from `Dante` and `ViRb3/wgcf` to `SagerNet/sing-box`. 
-- Support `linux/ppc64le` and `linux/riscv64` in addition.
-- Used call `Gemini-2.0-flash-thinking-exp-1219` API.
-- Used call `OpenAI-o1-pro` API.
+- More secure Bootstrap without `privileged` acquisition in docker container.
+- Support lastest `SagerNet/sing-box` v1.11.x version with `action` feature enabled.
+- Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
+- Light core with alpine linux `3.21`.
+- Easy networking between containers.
+- Used call `Gemini-2.0-flash-thinking-exp-0121` API.
+- Used call `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
 - Used call `Anthropic Claude 3.5 Sonnet v2` API.
+- Used call `DeepSeek V3` and `DeepSeek R1` API.
+
+## Migrate to v4
+- The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
+- The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
+- The `v4` version will soon be released and available at `monius/docker-warp-socks:v4` and default in `monius/docker-warp-socks`.
+- The `Referral` programme has been closed, there is no `Plus` flag anymore.
 
 Quick start from:
 ```sh
 docker run --restart=always -itd \
-    --name warp_socks_v3 \
+    --name warp_socks_v4 \
     -p 9091:9091 \
-    monius/docker-warp-socks:v3
+    monius/docker-warp-socks:v4
 ```
 
 Then, verify on host with:
@@ -58,7 +57,7 @@ docker run --restart=always -itd \
     -e WARP_LICENSE=$WARP_LICENSE \
     -e NET_PORT=9091 \
     -p 9091:9091 \
-    monius/docker-warp-socks:v3
+    monius/docker-warp-socks:v4
 ```
 
 Check if both `siliver=xxx-xxx` and `warp=on` shown from:
