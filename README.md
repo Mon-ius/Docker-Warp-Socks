@@ -24,11 +24,12 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - Used call `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
 - Used call `Anthropic Claude 3.5 Sonnet v2` API.
 - Used call `DeepSeek V3` and `DeepSeek R1` API.
+- Support `GHCR` for more Security and Flexibility.
 
 ## Migrate to v4
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
 - The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
-- The `v4` version will soon be released and available at `monius/docker-warp-socks:v4` and default in `monius/docker-warp-socks`.
+- The `v4` version is now available at `monius/docker-warp-socks` and `ghcr.io/mon-ius/docker-warp-socks`.
 - The `Referral` programme has been closed, there is no `Plus` flag anymore.
 
 Quick start from:

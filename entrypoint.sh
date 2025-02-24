@@ -34,62 +34,56 @@ else
     AUTH_PART=""
 fi
 
+
 PROXY_PART=$(cat <<EOF
+    "endpoints": [
         {
             "tag": "Proxy",
             "type": "wireguard",
-            "server": "$WARP_SERVER",
-            "server_port": $WARP_PORT,
-            "local_address": [
+            "address": [
                 "${ipv4}/32",
                 "${ipv6}/128"
             ],
             "private_key": "$private_key",
-            "peer_public_key": "$public_key",
-            "reserved": $reserved_dec,
+            "peers": [
+                {
+                    "address": "$WARP_SERVER",
+                    "port": $WARP_PORT,
+                    "public_key": "$public_key",
+                    "allowed_ips": [
+                        "0.0.0.0/0"
+                    ],
+                    "persistent_keepalive_interval": 30,
+                    "reserved": $reserved_dec
+                }
+            ],
             "mtu": 1408,
             "udp_fragment": true
         }
+    ]
 EOF
 )
 
 cat <<EOF | tee /etc/sing-box/config.json
 {
     "log": {
-        "disabled": false,
         "level": "debug",
         "timestamp": true
     },
     "experimental": {
         "cache_file": {
             "enabled": true,
-            "path": "cache.db",
-            "cache_id": "v1",
-            "store_fakeip": true
+            "store_fakeip": true,
+            "store_rdrc": true
         }
     },
-    "outbounds": [
-        {
-            "tag": "direct-out",
-            "type": "direct",
-            "udp_fragment": true
-        },
-        {
-            "type": "dns",
-            "tag": "dns-out"
-        },
-        {
-            "type": "block",
-            "tag": "block"
-        },
-$PROXY_PART
-    ],
     "dns": {
         "servers": [
             {
-                "tag": "ND-h3",
-                "address": "h3://dns.nextdns.io/x",
+                "tag": "google",
+                "address": "https://dns.google/dns-query",
                 "address_resolver": "dns-direct",
+                "client_subnet": "1.0.1.0",
                 "detour": "direct-out"
             },
             {
@@ -98,8 +92,7 @@ $PROXY_PART
                 "detour": "direct-out"
             }
         ],
-        "strategy": "ipv4_only",
-        "final": "ND-h3",
+        "final": "google",
         "reverse_mapping": true,
         "disable_cache": false,
         "disable_expire": false
@@ -107,8 +100,12 @@ $PROXY_PART
     "route": {
         "rules": [
             {
+                "inbound": "mixed-in",
+                "action": "sniff"
+            },
+            {
                 "protocol": "dns",
-                "outbound": "dns-out"
+                "action": "hijack-dns"
             },
             {
                 "ip_is_private": true,
@@ -137,9 +134,16 @@ $PROXY_PART
             "type": "mixed",
             "tag": "mixed-in",
             "listen": "::",
-            "listen_port": $NET_PORT,
 $AUTH_PART
-            "sniff": true
+            "listen_port": $NET_PORT
+        }
+    ],
+$PROXY_PART,
+    "outbounds": [
+        {
+            "tag": "direct-out",
+            "type": "direct",
+            "udp_fragment": true
         }
     ]
 }
