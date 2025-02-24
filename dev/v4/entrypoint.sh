@@ -67,23 +67,23 @@ EOF
 cat <<EOF | tee /etc/sing-box/config.json
 {
     "log": {
-        "disabled": false,
         "level": "debug",
         "timestamp": true
     },
     "experimental": {
         "cache_file": {
             "enabled": true,
-            "path": "cache.db",
-            "cache_id": "v1"
+            "store_fakeip": true,
+            "store_rdrc": true
         }
     },
     "dns": {
         "servers": [
             {
-                "tag": "ND-h3",
-                "address": "h3://dns.nextdns.io/x",
+                "tag": "google",
+                "address": "https://dns.google/dns-query",
                 "address_resolver": "dns-direct",
+                "client_subnet": "1.0.1.0",
                 "detour": "direct-out"
             },
             {
@@ -92,8 +92,7 @@ cat <<EOF | tee /etc/sing-box/config.json
                 "detour": "direct-out"
             }
         ],
-        "strategy": "ipv4_only",
-        "final": "ND-h3",
+        "final": "google",
         "reverse_mapping": true,
         "disable_cache": false,
         "disable_expire": false
@@ -102,15 +101,7 @@ cat <<EOF | tee /etc/sing-box/config.json
         "rules": [
             {
                 "inbound": "mixed-in",
-                "action": "sniff",
-                "sniffer": [
-                    "dns",
-                    "bittorrent",
-                    "http",
-                    "tls",
-                    "quic",
-                    "dtls"
-                ]
+                "action": "sniff"
             },
             {
                 "protocol": "dns",
@@ -118,7 +109,6 @@ cat <<EOF | tee /etc/sing-box/config.json
             },
             {
                 "ip_is_private": true,
-                "action": "route",
                 "outbound": "direct-out"
             },
             {
@@ -133,7 +123,6 @@ cat <<EOF | tee /etc/sing-box/config.json
                     "240.0.0.0/4",
                     "52.80.0.0/16"
                 ],
-                "action": "route",
                 "outbound": "direct-out"
             }
         ],
