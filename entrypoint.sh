@@ -38,7 +38,7 @@ fi
 PROXY_PART=$(cat <<EOF
     "endpoints": [
         {
-            "tag": "Proxy",
+            "tag": "WARP",
             "type": "wireguard",
             "address": [
                 "${ipv4}/32",
@@ -127,7 +127,7 @@ cat <<EOF | tee /etc/sing-box/config.json
             }
         ],
         "auto_detect_interface": true,
-        "final": "Proxy"
+        "final": "WARP"
     },
     "inbounds": [
         {
