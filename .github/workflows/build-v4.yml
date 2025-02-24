@@ -50,3 +50,5 @@ jobs:
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm, linux/ppc64le, linux/riscv64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:v4
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
