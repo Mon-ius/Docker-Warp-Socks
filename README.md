@@ -37,7 +37,7 @@ Quick start from:
 docker run --restart=always -itd \
     --name warp_socks_v4 \
     -p 9091:9091 \
-    ghcr.io/mon-ius/docker-warp-socks:v4
+    ghcr.io/mon-ius/docker-warp-socks
 ```
 
 Then, verify on host with:
