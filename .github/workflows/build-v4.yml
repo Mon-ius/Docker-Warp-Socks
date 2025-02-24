@@ -26,29 +26,40 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
-      -
-        name: Checkout
-        uses: actions/checkout@v4
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v3
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - name: Convert tags to lowercase
+        run: |
+          ghcr_tag="ghcr.io/${{ github.repository }}"
+          repository="${{ github.repository }}"
+          repo_name="${repository#*/}"
+          echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_ENV
+          echo "repo_name=${repo_name,,}" >> $GITHUB_ENV
+      - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push v3 file
-        uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:dev/v4"
           file: Dockerfile
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm, linux/ppc64le, linux/riscv64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-warp-socks:v4
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.repo_name }}:v4
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: "{{defaultContext}}:dev/v4"
+          file: Dockerfile
+          push: true
+          platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm, linux/ppc64le, linux/riscv64
+          tags: ${{ env.ghcr_tag }}:v4
           cache-from: type=gha
           cache-to: type=gha,mode=max
