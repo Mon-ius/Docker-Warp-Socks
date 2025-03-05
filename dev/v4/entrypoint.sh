@@ -66,33 +66,22 @@ EOF
 
 cat <<EOF | tee /etc/sing-box/config.json
 {
-    "log": {
-        "level": "debug",
-        "timestamp": true
-    },
-    "experimental": {
-        "cache_file": {
-            "enabled": true,
-            "store_fakeip": true,
-            "store_rdrc": true
-        }
-    },
     "dns": {
         "servers": [
             {
-                "tag": "google",
-                "address": "https://dns.google/dns-query",
-                "address_resolver": "dns-direct",
+                "tag": "remote",
+                "address": "https://1.0.0.1/dns-query",
+                "address_resolver": "local",
                 "client_subnet": "1.0.1.0",
-                "detour": "direct-out"
+                "detour": "Proxy"
             },
             {
-                "tag": "dns-direct",
-                "address": "udp://223.5.5.5",
+                "tag": "local",
+                "address": "udp://119.29.29.29",
                 "detour": "direct-out"
             }
         ],
-        "final": "google",
+        "final": "remote",
         "reverse_mapping": true,
         "disable_cache": false,
         "disable_expire": false
