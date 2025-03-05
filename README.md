@@ -62,7 +62,7 @@ docker run --restart=always -itd \
     --name warp_socks_plus \
     -e WARP_LICENSE=$WARP_LICENSE \
     -e NET_PORT=9091 \
-    -e CUSTOM_DNS_SERVERS=[{"tag":"quad9","address":"tls://dns.quad9.net","address_resolver":"dns-direct","detour":"direct-out"}] \
+    -e CUSTOM_DNS_SERVERS=[{"tag":"quad9","address":"tls://dns.quad9.net","address_resolver":"local","detour":"direct-out"}] \
     -e CUSTOM_DNS_FINAL="quad9" \
     -p 9091:9091 \
     monius/docker-warp-socks:v4
