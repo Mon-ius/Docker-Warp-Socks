@@ -72,8 +72,7 @@ cat <<EOF | tee /etc/sing-box/config.json
                 "tag": "remote",
                 "address": "https://1.0.0.1/dns-query",
                 "address_resolver": "local",
-                "client_subnet": "1.0.1.0",
-                "detour": "Proxy"
+                "client_subnet": "1.0.1.0"
             },
             {
                 "tag": "local",
