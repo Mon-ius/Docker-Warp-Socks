@@ -14,7 +14,7 @@ LABEL maintainer="M0nius <m0niusplus@gmail.com>" \
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" | tee -a /etc/apk/repositories
 
 RUN apk update && apk upgrade \
-    && apk add --no-cache curl openssl sing-box \
+    && apk add --no-cache curl openssl sing-box jq \
     && rm -rf /var/cache/apk/*
 
 COPY entrypoint.sh /run/entrypoint.sh

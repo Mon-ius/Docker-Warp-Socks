@@ -34,6 +34,41 @@ else
     AUTH_PART=""
 fi
 
+# Default DNS configuration
+DNS_CONFIG=$(cat <<EOF
+{
+    "servers": [
+        {
+            "tag": "remote",
+            "address": "https://1.0.0.1/dns-query",
+            "address_resolver": "local",
+            "client_subnet": "1.0.1.0",
+            "detour": "direct-out"
+        },
+        {
+            "tag": "local",
+            "address": "udp://119.29.29.29",
+            "detour": "direct-out"
+        }
+    ],
+    "final": "remote",
+    "reverse_mapping": true,
+    "disable_cache": false,
+    "disable_expire": false
+}
+EOF
+)
+
+# Custom DNS servers if provided
+if [ -n "$CUSTOM_DNS_SERVERS" ]; then
+    DNS_CONFIG=$(echo "$DNS_CONFIG" | jq --argjson custom_dns_servers "$CUSTOM_DNS_SERVERS" '.servers += $custom_dns_servers')
+fi
+
+# Final DNS server if provided
+if [ -n "$CUSTOM_DNS_FINAL" ]; then
+    DNS_CONFIG=$(echo "$DNS_CONFIG" | jq --arg custom_dns_final "$CUSTOM_DNS_FINAL" '.final = $custom_dns_final')
+fi
+
 
 PROXY_PART=$(cat <<EOF
     "endpoints": [
@@ -66,26 +101,7 @@ EOF
 
 cat <<EOF | tee /etc/sing-box/config.json
 {
-    "dns": {
-        "servers": [
-            {
-                "tag": "remote",
-                "address": "https://1.0.0.1/dns-query",
-                "address_resolver": "local",
-                "client_subnet": "1.0.1.0",
-                "detour": "direct-out"
-            },
-            {
-                "tag": "local",
-                "address": "udp://119.29.29.29",
-                "detour": "direct-out"
-            }
-        ],
-        "final": "remote",
-        "reverse_mapping": true,
-        "disable_cache": false,
-        "disable_expire": false
-    },
+    "dns": $DNS_CONFIG,
     "route": {
         "rules": [
             {
