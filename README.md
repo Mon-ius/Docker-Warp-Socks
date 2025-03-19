@@ -13,26 +13,29 @@
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`;
 
 ## V4 Features
-- Rich support for most linux family systems, including `arm`, `ppc64le`, `s390x` and `riscv64`, etc.
-- Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
-- More secure Bootstrap without `privileged` acquisition in docker container.
-- Support lastest `SagerNet/sing-box` v1.11.x version with `action` feature enabled.
-- Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
-- Light core with alpine linux `3.21`.
-- Easy networking between containers.
-- Used call `Gemini-2.0-flash-thinking-exp-0121` API.
-- Used call `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
-- Used call `Anthropic Claude 3.5 Sonnet v2` API.
-- Used call `DeepSeek V3` and `DeepSeek R1` API.
-- Support `GHCR` for more Security and Flexibility.
+
+-   Rich support for most linux family systems, including `arm`, `ppc64le`, `s390x` and `riscv64`, etc.
+-   Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
+-   More secure Bootstrap without `privileged` acquisition in docker container.
+-   Support lastest `SagerNet/sing-box` v1.11.x version with `action` feature enabled.
+-   Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
+-   Light core with alpine linux `3.21`.
+-   Easy networking between containers.
+-   Used call `Gemini-2.0-flash-thinking-exp-0121` API.
+-   Used call `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
+-   Used call `Anthropic Claude 3.5 Sonnet v2` API.
+-   Used call `DeepSeek V3` and `DeepSeek R1` API.
+-   Support `GHCR` for more Security and Flexibility.
 
 ## Migrate to v4
-- The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
-- The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
-- The `v4` version is now available at `monius/docker-warp-socks` and `ghcr.io/mon-ius/docker-warp-socks`.
-- The `Referral` programme has been closed, there is no `Plus` flag anymore.
+
+-   The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
+-   The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
+-   The `v4` version is now available at `monius/docker-warp-socks` and `ghcr.io/mon-ius/docker-warp-socks`.
+-   The `Referral` programme has been closed, there is no `Plus` flag anymore.
 
 Quick start from:
+
 ```sh
 docker run --restart=always -itd \
     --name warp_socks_v4 \
@@ -48,15 +51,19 @@ curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
 > [!TIP]
-> - To use `plus` license, now called `siliver`, add `-e WARP_LICENSE=$WARP_LICENSE`.
-> - To use customized `port`, set `-e NET_PORT=$NET_PORT`.
-> - To use Tunnel Encryption with `user` and `passwd`, set `-e SOCK_USER=$USER` and `-e SOCK_PWD=$PASSWD`.
+>
+> -   To use `plus` license, now called `siliver`, add `-e WARP_LICENSE=$WARP_LICENSE`.
+> -   To use customized `port`, set `-e NET_PORT=$NET_PORT`.
+> -   To use Tunnel Encryption with `user` and `passwd`, set `-e SOCK_USER=$USER` and `-e SOCK_PWD=$PASSWD`.
+> -   To use customized DNS servers, set `-e CUSTOM_DNS_SERVERS=$CUSTOM_DNS_SERVERS` (as a json array) and optionally `-e CUSTOM_DNS_FINAL=$CUSTOM_DNS_FINAL` (name of a dns server tag).
 
 ```sh
 docker run --restart=always -itd \
     --name warp_socks_plus \
     -e WARP_LICENSE=$WARP_LICENSE \
     -e NET_PORT=9091 \
+    -e CUSTOM_DNS_SERVERS=[{"tag":"quad9","address":"tls://dns.quad9.net","address_resolver":"local","detour":"direct-out"}] \
+    -e CUSTOM_DNS_FINAL="quad9" \
     -p 9091:9091 \
     monius/docker-warp-socks:v4
 ```
@@ -78,7 +85,7 @@ With any existed running proxy service, it acts just like a plugin that helps un
 
 The `v1` image is built on `debian:bookworm` aka `debian:12`, we recently migrate from `v1` to `v2`, which based on a more lighter container `alpine:3.19`. The main line will transition within a month, with minimal impact on the user side. As a contingency plan, users can revert to `monius/docker-warp-socks:v1` if needed.
 
-***Please follow the EXAMPLES `1.1` and `2.1` To Get Start !***
+**_Please follow the EXAMPLES `1.1` and `2.1` To Get Start !_**
 
 ### 💾 Prerequisites
 
@@ -90,7 +97,7 @@ curl -fsSL "https://get.docker.com" | sudo bash
 sudo usermod -aG docker ${USER}
 # sudo chmod 666 /var/run/docker.sock
 sudo chown root:docker /var/run/docker.sock
-# or check https://docs.docker.com/engine/security/rootless 
+# or check https://docs.docker.com/engine/security/rootless
 # if required a rootless install with `dockerd-rootless-setuptool.sh install`
 
 # in case, using Centos/RedHatEL
@@ -133,7 +140,7 @@ docker run --privileged --restart=always -itd \
 ```
 
 Run, `curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"`;
-See `plus` means ***WARP Plus License Key*** applied success.
+See `plus` means **_WARP Plus License Key_** applied success.
 
 Updates: Since the policy changes, there will be no such `plus` flag when check with `https://www.cloudflare.com/cdn-cgi/trace`.
 See `sliver=xxx-tier1` means sucess for now.
@@ -183,7 +190,7 @@ Run, `curl -x "socks5h://127.0.0.1:8091" -fsSL "https://www.cloudflare.com/cdn-c
 
 To use your prepared config:
 
-``` bash
+```bash
 docker run --privileged --restart=always -itd \
     --name warp_socks \
     -e SOCK_USER=monius \
@@ -209,11 +216,11 @@ And, `-p 127.0.0.1:9091:9091` will create a localhost(`127.0.0.1`) access-only `
 
 To output the network test log:
 
-``` bash
+```bash
 
 # Host
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-# See`warp=on` means success. 
+# See`warp=on` means success.
 ```
 
 ### 2. Docker Compose
@@ -237,18 +244,19 @@ sudo chmod +x /usr/bin/docker-compose
 curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - up -d --wait && curl --proxy socks5h://127.0.0.1:9091 "https://www.cloudflare.com/cdn-cgi/trace"
 
 #stop
-curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - down 
+curl -fsSL https://bit.ly/docker-warp-socks-compose | docker-compose -f - down
 ```
 
 ### 3. Docker Stack Deploy
 
 [![Try in PWD](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](http://play-with-docker.com?stack=https://raw.githubusercontent.com/Mon-ius/Docker-Warp-Socks/main/dev/warp-socks.yml)
-> Click the *CLOSE* button, Replace the $IP with the given one on the top side, then run:
+
+> Click the _CLOSE_ button, Replace the $IP with the given one on the top side, then run:
 > `curl -x "socks5h://$IP:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"`
 
 #### 3.1 Enable Swarm Mode
 
-To use `Docker Stack`, first perform the *Swarm Initialized* by:
+To use `Docker Stack`, first perform the _Swarm Initialized_ by:
 
 ```bash
 # create
@@ -270,14 +278,14 @@ docker stack rm TEST
 
 #### 3.3 Check and Test
 
-- `docker info`
-- `docker node ls`
-- `docker network ls`
-- `docker stack ps TEST`
-- `docker stack services TEST`
-- `docker service ls`
-- `docker service logs TEST_warp-socks`
-- `docker service inspect TEST_warp-socks`
+-   `docker info`
+-   `docker node ls`
+-   `docker network ls`
+-   `docker stack ps TEST`
+-   `docker stack services TEST`
+-   `docker service ls`
+-   `docker service logs TEST_warp-socks`
+-   `docker service inspect TEST_warp-socks`
 
 ```bash
 # in swarm mode, the ip addr is random
@@ -324,7 +332,7 @@ warp-cli connect
 
 # test
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-# See`warp=on` means success. 
+# See`warp=on` means success.
 ```
 
 #### 4.1.2 `Proxy` Mode with `Plus`
@@ -350,10 +358,9 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 # Instead of `warp=plus`, see `sliver=005-tier1` means success.
 ```
 
-
 #### 4.2 `Default` Global Mode for old man
 
-For those who are **ooold** enough for Linux network management, try it for a global proxy mode, keep in mind that you have already back up or have second way or third way to save your remote VM's network!!! 
+For those who are **ooold** enough for Linux network management, try it for a global proxy mode, keep in mind that you have already back up or have second way or third way to save your remote VM's network!!!
 
 ```bash
 CF_WARP="https://pkg.cloudflareclient.com/pubkey.gpg"
@@ -367,7 +374,7 @@ IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
 _IPv4=$(ip addr show dev "$IFACE" | awk '/inet /{print $2}' | cut -d' ' -f2)
 _IPv6=$(ip addr show dev "$IFACE" | awk '/inet6 /{print $2}' | cut -d' ' -f2)
 # Setting for VPC ip structure
-_VPC=$(curl -fsSL https://www.cloudflare.com/cdn-cgi/trace | grep 'ip' | sed 's/ip=//') 
+_VPC=$(curl -fsSL https://www.cloudflare.com/cdn-cgi/trace | grep 'ip' | sed 's/ip=//')
 
 echo y | warp-cli registration new
 
@@ -379,13 +386,15 @@ warp-cli add-excluded-route "$_VPC"
 echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | xargs warp-cli add-excluded-route
 
 warp-cli connect
-# Whole network in WARP proxy, `warp=on` means success. 
+# Whole network in WARP proxy, `warp=on` means success.
 
 # Check `/var/log/cloudflare-warp/cfwarp_service_log.txt` for logs details
 ```
+
 **Plz be aware that the VMs still has possibility to be lost due to the `IP` can still be changed after `reboot`!!!**
 
 **DONT USE** `warp-cli tunnel ip add` to exclude ip for now!!!
+
 ```bash
 GATEWAY=$(ip route show default | awk '/default/ {print $3}')
 IFACE=$(ip route get 8.8.8.8 | sed -n 's/.*dev \([^\ ]*\).*/\1/p' | head -n 1)
@@ -402,9 +411,9 @@ echo "$SSH_CONNECTION" | sed 's/ .*//' | sed 's/[0-9]*$/0\/24/' | sed 's/\([0-9.
 1. Go to `https://$TEAM.cloudflareaccess.com/warp` and authenticate.
 2. On the ‘Success’ page in the browser, right click and ‘Inspect’ the blue ‘Open Cloudflare WARP’ button. Copy the long url start with `com.cloudflare.warp://` that’s shown linked to the button.
 3. Assume you store it inside `$TOKEN_URL`
-4. Go to `one.dash.cloudflare.com` 
+4. Go to `one.dash.cloudflare.com`
 5. Find -> Setting -> WARP Client -> Device settings
-6. Click Default -> Configure -> Split Tunnels -> Manage, then add exclude IPs which is same as `warp-cli add-excluded-route` 
+6. Click Default -> Configure -> Split Tunnels -> Manage, then add exclude IPs which is same as `warp-cli add-excluded-route`
 
 ```bash
 curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg \
@@ -464,22 +473,25 @@ curl --interface eth0 "https://www.cloudflare.com/cdn-cgi/trace"
 curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 
 ```
+
 ### Known issues
 
-- CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel
+-   CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel
 
 ### Source
+
 [Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
 
 ### Credits
-- [WireGuard](https://www.wireguard.com/)
-- [Mon-ius/Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
-- [Cloudflare WARP](https://developers.cloudflare.com/warp-client/get-started/linux/)
-- [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
-- [ViRb3/wgcf](https://github.com/ViRb3/wgcf)
-- [Neilpang/wgcf-docker](https://github.com/Neilpang/wgcf-docker)
-- [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
-- [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
+
+-   [WireGuard](https://www.wireguard.com/)
+-   [Mon-ius/Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
+-   [Cloudflare WARP](https://developers.cloudflare.com/warp-client/get-started/linux/)
+-   [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
+-   [ViRb3/wgcf](https://github.com/ViRb3/wgcf)
+-   [Neilpang/wgcf-docker](https://github.com/Neilpang/wgcf-docker)
+-   [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
+-   [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
 
 ## Notice of Non-Affiliation and Disclaimer
 
