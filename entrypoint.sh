@@ -141,7 +141,6 @@ cat <<EOF | tee /etc/sing-box/config.json
             {
                 "protocol": "dns",
                 "action": "hijack-dns",
-                "fallback": true
             },
             {
                 "ip_is_private": true,
@@ -161,8 +160,7 @@ cat <<EOF | tee /etc/sing-box/config.json
             }
         ],
         "auto_detect_interface": true,
-        "final": "warp-fallback",
-        "fallback": true
+        "final": "WARP",
     },
     "inbounds": [
         {
@@ -184,10 +182,6 @@ $PROXY_PART,
             "type": "direct",
             "udp_fragment": true
         },
-        {
-            "tag": "warp-fallback",
-            "type": "direct"
-        }
     ],
     "dial_timeout": "5s",
     "tcp_fast_open": true,
