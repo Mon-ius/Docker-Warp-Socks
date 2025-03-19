@@ -172,7 +172,6 @@ $PROXY_PART,
             "udp_fragment": true
         },
     ],
-    "dial_timeout": "5s",
     "tcp_fast_open": true,
     "tcp_multi_path": true
 }
