@@ -78,7 +78,6 @@ DNS_CONFIG=$(cat <<EOF
     "strategy": "prefer_ipv4",
     "reverse_mapping": true,
     "disable_cache": false,
-    "cache_ttl": 300,
     "disable_expire": false
 }
 EOF
