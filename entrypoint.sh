@@ -117,6 +117,8 @@ PROXY_PART=$(cat <<EOF
             ],
             "mtu": 1408,
             "udp_fragment": true,
+            "tcp_fast_open": true,
+            "tcp_multi_path": true
         }
     ]
 EOF
@@ -172,8 +174,6 @@ $PROXY_PART,
             "udp_fragment": true
         },
     ],
-    "tcp_fast_open": true,
-    "tcp_multi_path": true
 }
 EOF
 
