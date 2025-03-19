@@ -20,9 +20,9 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
 - Light core with alpine linux `3.21`.
 - Easy networking between containers.
-- Used call `Gemini-2.0-flash-thinking-exp-0121` API.
+- Used call ~~`Gemini-2.0-flash-thinking-exp-0121`~~, `Google Gemini 2.0 Flash Thinking`, `Google Gemini 2.0 Pro Exp0205` API.
 - Used call `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
-- Used call `Anthropic Claude 3.5 Sonnet v2` API.
+- Used call ~~`Claude 3.5 Sonnet`~~, `Claude 3.7 Sonnet`, `Claude 3.7 Sonnet(extend)` API.
 - Used call `DeepSeek V3` and `DeepSeek R1` API.
 - Support `GHCR` for more Security and Flexibility.
 
@@ -72,7 +72,7 @@ curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 
 The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
 
-With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `OpenAI Sora`, `OpenAI GPT-3.5`,`OpenAI GPT-4`, `OpenAI GPT-4V`, `OpenAI GPT-4o`, `OpenAI GPT-4o-mini`, ~~`Claude`~~, ~~`Claude 2`~~, `Claude 3 Opus`, `Claude 3.5 Sonnet`, ~~`Google Bard`~~, ~~`Google Gemini`~~, ~~`Google Gemini Pro Vision`~~, `Google Gemini Advanced`, `Google Gemini 1.5 PRO`, `Google Gemini 1.5 Flash` ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
+With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `OpenAI Sora`, `OpenAI GPT-3.5`,`OpenAI GPT-4`, `OpenAI GPT-4V`, `OpenAI GPT-4o`, `OpenAI GPT-4o-mini`, ~~`Claude`~~, ~~`Claude 2`~~, ~~`Claude 3 Opus`~~, ~~`Claude 3.5 Sonnet`~~, `Claude 3.7 Sonnet`, `Claude 3.7 Sonnet(extend)`, ~~`Google Bard`~~, ~~`Google Gemini`~~, ~~`Google Gemini Pro Vision`~~, `Google Gemini Advanced`, ~~`Google Gemini 1.5 PRO`~~, ~~`Google Gemini 1.5 Flash`~~, `Google Gemini 2.0 Flash Thinking`, `Google Gemini 2.0 Pro Exp0205`, ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
 
 ## Usage
 
