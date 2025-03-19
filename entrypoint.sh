@@ -39,21 +39,46 @@ DNS_CONFIG=$(cat <<EOF
 {
     "servers": [
         {
-            "tag": "remote",
-            "address": "https://1.0.0.1/dns-query",
-            "address_resolver": "local",
-            "client_subnet": "1.0.1.0",
+            "tag": "cloudflare-1",
+            "address": "udp://1.1.1.1",
             "detour": "direct-out"
         },
         {
-            "tag": "local",
-            "address": "udp://119.29.29.29",
+            "tag": "cloudflare-2",
+            "address": "udp://1.0.0.1",
+            "detour": "direct-out"
+        },
+        {
+            "tag": "quad9",
+            "address": "udp://9.9.9.9",
+            "detour": "direct-out"
+        },
+        {
+            "tag": "opendns-1",
+            "address": "udp://208.67.222.222",
+            "detour": "direct-out"
+        },
+        {
+            "tag": "opendns-2",
+            "address": "udp://208.67.220.220",
+            "detour": "direct-out"
+        },
+        {
+            "tag": "google-1",
+            "address": "udp://8.8.8.8",
+            "detour": "direct-out"
+        },
+        {
+            "tag": "google-2",
+            "address": "udp://8.8.4.4",
             "detour": "direct-out"
         }
     ],
-    "final": "remote",
+    "final": "cloudflare-1",
+    "strategy": "prefer_ipv4",
     "reverse_mapping": true,
     "disable_cache": false,
+    "cache_ttl": 300,
     "disable_expire": false
 }
 EOF
@@ -68,7 +93,6 @@ fi
 if [ -n "$CUSTOM_DNS_FINAL" ]; then
     DNS_CONFIG=$(echo "$DNS_CONFIG" | jq --arg custom_dns_final "$CUSTOM_DNS_FINAL" '.final = $custom_dns_final')
 fi
-
 
 PROXY_PART=$(cat <<EOF
     "endpoints": [
@@ -88,12 +112,19 @@ PROXY_PART=$(cat <<EOF
                     "allowed_ips": [
                         "0.0.0.0/0"
                     ],
-                    "persistent_keepalive_interval": 30,
+                    "persistent_keepalive_interval": 15,
                     "reserved": $reserved_dec
                 }
             ],
-            "mtu": 1408,
-            "udp_fragment": true
+            "mtu": 1400,
+            "udp_fragment": true,
+            "multiplexer": {
+                "enabled": true,
+                "protocol": "smux",
+                "max_connections": 8,
+                "min_streams": 4,
+                "max_streams": 32
+            }
         }
     ]
 EOF
@@ -110,7 +141,8 @@ cat <<EOF | tee /etc/sing-box/config.json
             },
             {
                 "protocol": "dns",
-                "action": "hijack-dns"
+                "action": "hijack-dns",
+                "fallback": true
             },
             {
                 "ip_is_private": true,
@@ -118,21 +150,20 @@ cat <<EOF | tee /etc/sing-box/config.json
             },
             {
                 "ip_cidr": [
-                    "0.0.0.0/8",
                     "10.0.0.0/8",
-                    "127.0.0.0/8",
-                    "169.254.0.0/16",
                     "172.16.0.0/12",
                     "192.168.0.0/16",
+                    "127.0.0.0/8",
+                    "169.254.0.0/16",
                     "224.0.0.0/4",
-                    "240.0.0.0/4",
-                    "52.80.0.0/16"
+                    "240.0.0.0/4"
                 ],
                 "outbound": "direct-out"
             }
         ],
         "auto_detect_interface": true,
-        "final": "WARP"
+        "final": "warp-fallback",
+        "fallback": true
     },
     "inbounds": [
         {
@@ -140,7 +171,11 @@ cat <<EOF | tee /etc/sing-box/config.json
             "tag": "mixed-in",
             "listen": "::",
 $AUTH_PART
-            "listen_port": $NET_PORT
+            "listen_port": $NET_PORT,
+            "sniff": {
+                "enabled": true,
+                "override_destination": true
+            }
         }
     ],
 $PROXY_PART,
@@ -149,8 +184,15 @@ $PROXY_PART,
             "tag": "direct-out",
             "type": "direct",
             "udp_fragment": true
+        },
+        {
+            "tag": "warp-fallback",
+            "type": "direct"
         }
-    ]
+    ],
+    "dial_timeout": "5s",
+    "tcp_fast_open": true,
+    "tcp_multi_path": true
 }
 EOF
 
