@@ -115,15 +115,8 @@ PROXY_PART=$(cat <<EOF
                     "reserved": $reserved_dec
                 }
             ],
-            "mtu": 1400,
+            "mtu": 1408,
             "udp_fragment": true,
-            "multiplexer": {
-                "enabled": true,
-                "protocol": "smux",
-                "max_connections": 8,
-                "min_streams": 4,
-                "max_streams": 32
-            }
         }
     ]
 EOF
