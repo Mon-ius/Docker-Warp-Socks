@@ -169,10 +169,6 @@ cat <<EOF | tee /etc/sing-box/config.json
             "listen": "::",
 $AUTH_PART
             "listen_port": $NET_PORT,
-            "sniff": {
-                "enabled": true,
-                "override_destination": true
-            }
         }
     ],
 $PROXY_PART,
