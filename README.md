@@ -20,9 +20,10 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
 - Light core with alpine linux `3.21`.
 - Easy networking between containers.
-- Used call ~~`Gemini-2.0-flash-thinking-exp-0121`~~, `Google Gemini 2.0 Flash Thinking`, `Google Gemini 2.0 Pro Exp0205` API.
-- Used call `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
-- Used call ~~`Claude 3.5 Sonnet`~~, `Claude 3.7 Sonnet`, `Claude 3.7 Sonnet(extend)` API.
+- Used call `Google Gemini-Diffusion`, `Google Gemini 2.5 Pro` and `Google Gemini 2.5 Flash thinking` API.
+- Used call `ChatGPT-4o`, `ChatGPT-4.1`, `OpenAI-o1`, `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
+- Used call `Grok-4`, and `Grok-3` API.
+- Used call `Claude 4 Sonnet` and `Claude 4 Opus` API.
 - Used call `DeepSeek V3` and `DeepSeek R1` API.
 - Support `GHCR` for more Security and Flexibility.
 
