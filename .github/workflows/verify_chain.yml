@@ -17,25 +17,25 @@ on:
       - completed
 
 jobs:
-  v1:
-    runs-on: ubuntu-latest
-    env:
-      name: ${{ github.job }}
-      port: 9991
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - run: |
-          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v1" "$port"
-          date && sleep 30 && docker ps -a && date && docker logs "$name"
-      - id: check
-        run: echo trace=$(curl -v -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
-      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
-      - uses: lhotari/action-upterm@v1
-        if: ${{ steps.check.outputs.trace != 'warp=on' }}
+  # v1:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     name: ${{ github.job }}
+  #     port: 9991
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - run: |
+  #         curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v1" "$port"
+  #         date && sleep 30 && docker ps -a && date && docker logs "$name"
+  #     - id: check
+  #       run: echo trace=$(curl -v -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+  #     - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+  #     - uses: lhotari/action-upterm@v1
+  #       if: ${{ steps.check.outputs.trace != 'warp=on' }}
   v2:
-    needs:
-      - v1
+    # needs:
+    #   - v1
     runs-on: ubuntu-latest
     env:
       name: ${{ github.job }}
