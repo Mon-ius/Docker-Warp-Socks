@@ -12,7 +12,7 @@
 
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`;
 
-## V4 Features
+## V5 Features
 - Rich support for most linux family systems, including `arm`, `ppc64le`, `s390x` and `riscv64`, etc.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - More secure Bootstrap without `privileged` acquisition in docker container.
@@ -27,11 +27,11 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - Used call `DeepSeek V3` and `DeepSeek R1` API.
 - Support `GHCR` for more Security and Flexibility.
 
-## Migrate to v4
+## Migrate to v5
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
 - The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
-- The `v4` version is now available at `monius/docker-warp-socks` and `ghcr.io/mon-ius/docker-warp-socks`.
-- The `Referral` programme has been closed, there is no `Plus` flag anymore.
+- The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
+- Due to the Cloudflare Policy, we dont provide option for input license any more on `v5`.
 
 Quick start from:
 ```sh
