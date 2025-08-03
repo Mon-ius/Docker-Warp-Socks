@@ -1,7 +1,7 @@
-FROM alpine:3.21
+FROM alpine:3.22
 
 LABEL maintainer="M0nius <m0niusplus@gmail.com>" \
-    alpine-version="3.21.3" \
+    alpine-version="3.22" \
     org.opencontainers.image.title="Docker-Warp-Socks" \
     org.opencontainers.image.description="Connet to CloudFlare WARP, exposing `socks5` proxy all together." \
     org.opencontainers.image.authors="M0nius <m0niusplus@gmail.com>" \
