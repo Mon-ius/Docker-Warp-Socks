@@ -41,7 +41,7 @@ DNS_PART='
                 "tag": "remote",
                 "type": "tls",
                 "server": "dns.quad9.net",
-                "domain_resolver": "local"
+                "domain_resolver": "local",
                 "detour": "direct-out"
             },
             {
@@ -49,7 +49,7 @@ DNS_PART='
                 "type": "udp",
                 "server": "119.29.29.29",
                 "detour": "direct-out"
-            },
+            }
         ],
         "final": "remote",
         "reverse_mapping": true
