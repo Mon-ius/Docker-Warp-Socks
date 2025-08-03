@@ -33,45 +33,45 @@ jobs:
   #     - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
   #     - uses: lhotari/action-upterm@v1
   #       if: ${{ steps.check.outputs.trace != 'warp=on' }}
-  v2:
+  # v2:
     # needs:
     #   - v1
-    runs-on: ubuntu-latest
-    env:
-      name: ${{ github.job }}
-      port: 9992
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - run: |
-          curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v2" "$port" "monius" "passwd"
-          date && sleep 15 && docker ps -a && date && docker logs "$name"
-      - id: check
-        run: echo trace=$(curl -v -U $AUTH -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
-      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
-      - uses: lhotari/action-upterm@v1
-        if: ${{ steps.check.outputs.trace != 'warp=on' }}
-  v3:
-    needs:
-      - v2
-    runs-on: ubuntu-latest
-    env:
-      name: ${{ github.job }}
-      port: 9993
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - run: |
-          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd monius/docker-warp-socks:v3
-          date && sleep 15 && docker ps -a && date && docker logs "$name"
-      - id: check
-        run: echo trace=$(curl -v -x "$HTTP:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
-      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
-      - uses: lhotari/action-upterm@v1
-        if: ${{ steps.check.outputs.trace != 'warp=on' }}
+    # runs-on: ubuntu-latest
+    # env:
+    #   name: ${{ github.job }}
+    #   port: 9992
+    # steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v4
+    #   - run: |
+    #       curl -fsSL bit.ly/warp_socks | sh -s -- "$name" "linux/amd64" "v2" "$port" "monius" "passwd"
+    #       date && sleep 15 && docker ps -a && date && docker logs "$name"
+    #   - id: check
+    #     run: echo trace=$(curl -v -U $AUTH -x "$SOCKS:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+    #   - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+    #   - uses: lhotari/action-upterm@v1
+    #     if: ${{ steps.check.outputs.trace != 'warp=on' }}
+  # v3:
+  #   needs:
+  #     - v2
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     name: ${{ github.job }}
+  #     port: 9993
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - run: |
+  #         sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd monius/docker-warp-socks:v3
+  #         date && sleep 15 && docker ps -a && date && docker logs "$name"
+  #     - id: check
+  #       run: echo trace=$(curl -v -x "$HTTP:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+  #     - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+  #     - uses: lhotari/action-upterm@v1
+  #       if: ${{ steps.check.outputs.trace != 'warp=on' }}
   v4:
-    needs:
-      - v3
+    # needs:
+    #   - v3
     runs-on: ubuntu-latest
     env:
       name: ${{ github.job }}
