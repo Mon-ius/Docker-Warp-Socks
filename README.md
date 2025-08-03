@@ -36,9 +36,9 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 Quick start from:
 ```sh
 docker run --restart=always -itd \
-    --name warp_socks_v4 \
+    --name warp_socks_v5 \
     -p 9091:9091 \
-    ghcr.io/mon-ius/docker-warp-socks
+    ghcr.io/mon-ius/docker-warp-socks:v5
 ```
 
 Then, verify on host with:

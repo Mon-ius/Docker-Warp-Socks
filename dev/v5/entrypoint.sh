@@ -114,7 +114,7 @@ PROXY_PART='
             "mtu": 1408,
             "udp_fragment": true
         }
-    ]
+    ],
 '
 
 
@@ -135,7 +135,7 @@ $AUTH_PART
             "listen_port": $NET_PORT
         }
     ],
-$PROXY_PART,
+$PROXY_PART
     "outbounds": [
         {
             "tag": "direct-out",

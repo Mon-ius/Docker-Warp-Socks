@@ -44,6 +44,7 @@ RUN set -e; \
     tar xzf singbox.tar.gz && \
     find . -name "sing-box" -type f -executable -exec mv {} /usr/bin/sing-box \; && \
     chmod +x /usr/bin/sing-box && \
+    mkdir -p /etc/sing-box && \
     rm -rf /tmp/*
 
 COPY entrypoint.sh /run/entrypoint.sh
