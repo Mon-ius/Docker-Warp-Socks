@@ -45,7 +45,7 @@ DNS_PART='
                 "detour": "direct-out"
             },
             {
-                "tag": "remote",
+                "tag": "local",
                 "type": "udp",
                 "server": "119.29.29.29",
                 "detour": "direct-out"

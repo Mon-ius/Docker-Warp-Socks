@@ -18,13 +18,15 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - More secure Bootstrap without `privileged` acquisition in docker container.
 - Support lastest `SagerNet/sing-box` v1.11.x version with `action` feature enabled.
 - Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
-- Light core with alpine linux `3.21`.
+- Light core with alpine linux `3.22`.
 - Easy networking between containers.
 - Used call `Google Gemini-Diffusion`, `Google Gemini 2.5 Pro`, `Google Gemini 2.5 Flash thinking` and `Google Gemini 2.5 Pro(Deep Thinking)` API.
 - Used call `OpenAI-GPT5`, `ChatGPT-4o`, `ChatGPT-4.1`, `OpenAI-o1`, `OpenAI-o3`, `OpenAI-o3-mini`, `OpenAI-o1-pro` and `OpenAI-Sora` API.
 - Used call `Grok-4`, and `Grok-3` API.
 - Used call `Claude 4 Sonnet` and `Claude 4 Opus` API.
 - Used call `DeepSeek V3` and `DeepSeek R1` API.
+- Used call `Moonshot Kimi K2` API.
+- Used call `Minimax M1` API.
 - Support `GHCR` for more Security and Flexibility.
 
 ## Migrate to v5
@@ -47,7 +49,7 @@ Then, verify on host with:
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
-
+<!-- 
 > [!TIP]
 > - To use `plus` license, now called `siliver`, add `-e WARP_LICENSE=$WARP_LICENSE`.
 > - To use customized `port`, set `-e NET_PORT=$NET_PORT`.
@@ -67,7 +69,7 @@ Check if both `siliver=xxx-xxx` and `warp=on` shown from:
 ```sh
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-```
+``` -->
 
 ## Why to use
 

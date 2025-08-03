@@ -87,4 +87,22 @@ jobs:
       - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
       - uses: lhotari/action-upterm@v1
         if: ${{ steps.check.outputs.trace != 'warp=on' }}
+  v5:
+    needs:
+      - v4
+    runs-on: ubuntu-latest
+    env:
+      name: ${{ github.job }}
+      port: 9995
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: |
+          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd monius/docker-warp-socks:v5
+          date && sleep 15 && docker ps -a && date && docker logs "$name"
+      - id: check
+        run: echo trace=$(curl -v -x "$HTTP:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
+      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
+      - uses: lhotari/action-upterm@v1
+        if: ${{ steps.check.outputs.trace != 'warp=on' }}
 
