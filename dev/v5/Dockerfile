@@ -50,5 +50,3 @@ COPY entrypoint.sh /run/entrypoint.sh
 ENTRYPOINT ["/run/entrypoint.sh"]
 
 CMD ["rws-cli-v5"]
-
-curl -fsSL -X GET "https://api.github.com"/repos/SagerNet/sing-box/releases/latest
