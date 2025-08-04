@@ -12,9 +12,10 @@
 
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`
 
+## V5 Features
+
 Start from `docker run --restart=always -itd -p 9091:9091 monius/docker-warp-socks:v5`
 
-## V5 Features
 - Rich support for most linux family systems, including `arm`, `arm64`, `ppc64le`, `s390x` and `riscv64`, etc.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - More secure Bootstrap without `privileged` acquisition in docker container.
@@ -32,35 +33,11 @@ Start from `docker run --restart=always -itd -p 9091:9091 monius/docker-warp-soc
 - Support `GHCR` for more Security and Flexibility.
 
 > [!NOTE]
-> Check if `warp=on` shown using `curl`
+> Verify the success, if `warp=on` shown with `curl`
 
 ```sh
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-```
-
-## Migrate to v5
-- The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
-- The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
-- The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
-- Due to the Cloudflare Policy, we dont provide option for input license any more on `v5`.
-
-> [!IMPORTANT]
-> Prerequisites for use `docker-warp-socks` v5
-
-```bash
-# in case, you have no docker-ce installed;
-curl -fsSL "https://get.docker.com" | sudo bash
-
-# to avoid `sudo` calling
-sudo usermod -aG docker ${USER}
-sudo chmod 666 /var/run/docker.sock
-sudo chown root:docker /var/run/docker.sock
-# or check https://docs.docker.com/engine/security/rootless 
-# if required a rootless install with `dockerd-rootless-setuptool.sh install`
-
-# in case, using Centos/RedHatEL
-sudo systemctl enable docker && sudo systemctl start docker
 ```
 
 > [!TIP]
@@ -457,6 +434,12 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 
 - CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel -->
 
+## Migrate to v5
+- The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
+- The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
+- The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
+- Due to the Cloudflare Policy, we dont provide option for input license any more on `v5`.
+
 ### Source
 [Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
 
@@ -469,6 +452,24 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - [Neilpang/wgcf-docker](https://github.com/Neilpang/wgcf-docker)
 - [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
 - [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
+
+> [!Caution]
+> Prerequisites for use `docker-warp-socks` v5 without root permission!
+
+```bash
+# in case, you have no docker-ce installed;
+curl -fsSL "https://get.docker.com" | sudo bash
+
+# to avoid `sudo` calling
+sudo usermod -aG docker ${USER}
+sudo chmod 666 /var/run/docker.sock
+sudo chown root:docker /var/run/docker.sock
+# or check https://docs.docker.com/engine/security/rootless 
+# if required a rootless install with `dockerd-rootless-setuptool.sh install`
+
+# in case, using Centos/RedHatEL
+sudo systemctl enable docker && sudo systemctl start docker
+```
 
 ## Notice of Non-Affiliation and Disclaimer
 
