@@ -70,7 +70,8 @@ jobs:
   #     - uses: lhotari/action-upterm@v1
   #       if: ${{ steps.check.outputs.trace != 'warp=on' }}
   tag:
-    - run: |
+    - 
+      run: |
         dockerhub_tag="${{ secrets.DOCKERHUB_USERNAME }}"
         ghcr_tag="ghcr.io/${{ github.repository }}"
         echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_ENV
