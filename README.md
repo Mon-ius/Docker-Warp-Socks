@@ -14,6 +14,7 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 
 ---
 
+## Quick start v5 via GHCR
 ```sh
 docker run --restart=always -itd \
     --name warp_socks_v5 \
@@ -45,6 +46,16 @@ docker run --restart=always -itd \
 ```sh
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
+
+> [!TIP]
+> Alternative using `docker-warp-socks` v5 from GHCR
+
+```sh
+docker run --restart=always -itd \
+    --name warp_socks_v5 \
+    -p 9091:9091 \
+    ghcr.io/mon-ius/docker-warp-socks:v5
 ```
 
 <!-- ## Why to use
