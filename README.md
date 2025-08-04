@@ -41,7 +41,7 @@ docker run --restart=always -itd \
 - Used call `Minimax M1` API.
 - Support `GHCR` for more Security and Flexibility.
 
-> [!TIP]
+> [!Note]
 > Verify the success, if `warp=on` shown with `curl`
 
 ```sh
@@ -452,7 +452,7 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
 - [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
 
-> [!Note]
+> [!Tip]
 > Prerequisites for use `docker-warp-socks` v5 without root permission!
 
 ```bash
