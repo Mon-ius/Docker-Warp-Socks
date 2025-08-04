@@ -69,6 +69,12 @@ jobs:
   #     - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
   #     - uses: lhotari/action-upterm@v1
   #       if: ${{ steps.check.outputs.trace != 'warp=on' }}
+  tag:
+    - run: |
+        dockerhub_tag="${{ secrets.DOCKERHUB_USERNAME }}"
+        ghcr_tag="ghcr.io/${{ github.repository }}"
+        echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_ENV
+        echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_ENV
   v4:
     # needs:
     #   - v3
