@@ -35,25 +35,6 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
 - Due to the Cloudflare Policy, we dont provide option for input license any more on `v5`.
 
-
-> [!TIP]
-> Prerequisites for use `docker-warp-socks` v5
-
-```bash
-# in case, you have no docker-ce installed;
-curl -fsSL "https://get.docker.com" | sudo bash
-
-# to avoid `sudo` calling
-sudo usermod -aG docker ${USER}
-sudo chmod 666 /var/run/docker.sock
-sudo chown root:docker /var/run/docker.sock
-# or check https://docs.docker.com/engine/security/rootless 
-# if required a rootless install with `dockerd-rootless-setuptool.sh install`
-
-# in case, using Centos/RedHatEL
-sudo systemctl enable docker && sudo systemctl start docker
-```
-
 > [!IMPORTANT]
 > Prerequisites for use `docker-warp-socks` v5
 
