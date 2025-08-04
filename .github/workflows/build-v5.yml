@@ -46,5 +46,5 @@ jobs:
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm, linux/ppc64le, linux/riscv64
           tags: |
-            ${{ env.dockerhub_tag }}/${{ env.dockerhub_tag }}:v5
+            ${{ env.dockerhub_tag }}/${{ env.repo_name }}:v5
             ${{ env.ghcr_tag }}:v5
