@@ -12,9 +12,16 @@
 
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`
 
-## V5 Features
+---
 
-Start from `docker run --restart=always -itd -p 9091:9091 monius/docker-warp-socks:v5`
+```sh
+docker run --restart=always -itd \
+    --name warp_socks_v5 \
+    -p 9091:9091 \
+    ghcr.io/mon-ius/docker-warp-socks:v5
+```
+
+## V5 Features
 
 - Rich support for most linux family systems, including `arm`, `arm64`, `ppc64le`, `s390x` and `riscv64`, etc.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
@@ -32,22 +39,12 @@ Start from `docker run --restart=always -itd -p 9091:9091 monius/docker-warp-soc
 - Used call `Minimax M1` API.
 - Support `GHCR` for more Security and Flexibility.
 
-> [!NOTE]
+> [!TIP]
 > Verify the success, if `warp=on` shown with `curl`
 
 ```sh
 curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-```
-
-> [!TIP]
-> Alternative using `docker-warp-socks` v5 from GHCR
-
-```sh
-docker run --restart=always -itd \
-    --name warp_socks_v5 \
-    -p 9091:9091 \
-    ghcr.io/mon-ius/docker-warp-socks:v5
 ```
 
 <!-- ## Why to use
@@ -453,7 +450,7 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
 - [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
 
-> [!Caution]
+> [!Note]
 > Prerequisites for use `docker-warp-socks` v5 without root permission!
 
 ```bash
