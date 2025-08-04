@@ -70,15 +70,20 @@ jobs:
   #     - uses: lhotari/action-upterm@v1
   #       if: ${{ steps.check.outputs.trace != 'warp=on' }}
   tag:
-    - 
+    runs-on: ubuntu-latest
+    outputs:
+      dockerhub_tag: ${{ steps.convert.outputs.dockerhub_tag }}
+      ghcr_tag: ${{ steps.convert.outputs.ghcr_tag }}
+    steps:
+    - id: convert
       run: |
         dockerhub_tag="${{ secrets.DOCKERHUB_USERNAME }}"
         ghcr_tag="ghcr.io/${{ github.repository }}"
-        echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_ENV
-        echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_ENV
+        echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_OUTPUT
+        echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_OUTPUT
   v4:
-    # needs:
-    #   - v3
+    needs:
+      - tag
     runs-on: ubuntu-latest
     env:
       name: ${{ github.job }}
@@ -87,7 +92,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - run: |
-          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd ${{ env.ghcr_tag }}:v4
+          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd ${{ needs.tag.outputs.ghcr_tag }}:v4
           date && sleep 15 && docker ps -a && date && docker logs "$name"
       - id: check
         run: echo trace=$(curl -v -x "$HTTP:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
@@ -96,6 +101,7 @@ jobs:
         if: ${{ steps.check.outputs.trace != 'warp=on' }}
   v5:
     needs:
+      - tag
       - v4
     runs-on: ubuntu-latest
     env:
@@ -105,7 +111,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - run: |
-          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd ${{ env.ghcr_tag }}:v5
+          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd ${{ needs.tag.outputs.ghcr_tag }}:v5
           date && sleep 15 && docker ps -a && date && docker logs "$name"
       - id: check
         run: echo trace=$(curl -v -x "$HTTP:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
