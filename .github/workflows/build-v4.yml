@@ -33,10 +33,11 @@ jobs:
       - name: Convert tags to lowercase
         run: |
           docker_name="${{ secrets.DOCKERHUB_USERNAME }}"
-          repo_name="${{ github.repository##*/ }}"
+          repository="${{ github.repository }}"
+          repo_name="${repository##*/}"
 
-          echo "dockerhub_tag=${docker_name,,}/${repo_name,,}" >> $GITHUB_ENV
-          echo "ghcr_tag=ghcr.io/${{ github.repository,, }}" >> $GITHUB_ENV
+          echo "dockerhub_tag=${docker_name,,}/${repo_name,,}" >> "$GITHUB_ENV"
+          echo "ghcr_tag=ghcr.io/${repository,,}" >> "$GITHUB_ENV"
       - uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:dev/v4"
