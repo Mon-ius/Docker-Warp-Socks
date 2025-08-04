@@ -36,8 +36,11 @@ jobs:
           repository="${{ github.repository }}"
           repo_name="${repository##*/}"
 
-          echo "dockerhub_tag=${docker_name,,}/${repo_name,,}" >> "$GITHUB_ENV"
-          echo "ghcr_tag=ghcr.io/${repository,,}" >> "$GITHUB_ENV"
+          dockerhub_tag="${docker_name}/${repo_name}"
+          ghcr_tag="ghcr.io/${{ github.repository }}"
+
+          echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_ENV
+          echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_ENV
       - uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:dev/v4"
