@@ -48,5 +48,3 @@ jobs:
           tags: |
             ${{ env.dockerhub_tag }}/${{ env.dockerhub_tag }}:v5
             ${{ env.ghcr_tag }}:v5
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
