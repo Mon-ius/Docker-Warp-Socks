@@ -32,13 +32,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Convert tags to lowercase
         run: |
-          dockerhub_tag="${{ secrets.DOCKERHUB_USERNAME }}"
-          ghcr_tag="ghcr.io/${{ github.repository }}"
-          repository="${{ github.repository }}"
-          repo_name="${repository#*/}"
-          echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_ENV
-          echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_ENV
-          echo "repo_name=${repo_name,,}" >> $GITHUB_ENV
+          docker_name="${{ secrets.DOCKERHUB_USERNAME }}"
+          repo_name="${{ github.repository##*/ }}"
+
+          echo "dockerhub_tag=${docker_name,,}/${repo_name,,}" >> $GITHUB_ENV
+          echo "ghcr_tag=ghcr.io/${{ github.repository,, }}" >> $GITHUB_ENV
       - uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:dev/v4"
@@ -46,7 +44,7 @@ jobs:
           push: true
           platforms: linux/amd64, linux/arm64, linux/s390x, linux/arm, linux/ppc64le, linux/riscv64
           tags: |
-            ${{ env.dockerhub_tag }}/${{ env.repo_name }}:v4
+            ${{ env.dockerhub_tag }}:v4
             ${{ env.ghcr_tag }}:v4
           cache-from: type=gha
           cache-to: type=gha,mode=max
