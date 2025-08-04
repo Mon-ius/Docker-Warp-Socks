@@ -23,6 +23,14 @@ docker run --restart=always -itd \
     ghcr.io/mon-ius/docker-warp-socks:v5
 ```
 
+> [!Note]
+> Verify the success, if `warp=on` shown with `curl`
+
+```sh
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
+
 ## V5 Features
 
 - Rich support for most linux family systems, including `arm`, `arm64`, `ppc64le`, `s390x` and `riscv64`, etc.
@@ -40,14 +48,6 @@ docker run --restart=always -itd \
 - Used call `Moonshot Kimi K2` API.
 - Used call `Minimax M1` API.
 - Support `GHCR` for more Security and Flexibility.
-
-> [!Note]
-> Verify the success, if `warp=on` shown with `curl`
-
-```sh
-curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-```
 
 <!-- ## Why to use
 
