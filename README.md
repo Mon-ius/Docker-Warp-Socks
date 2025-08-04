@@ -13,7 +13,7 @@
 Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`;
 
 ## V5 Features
-- Rich support for most linux family systems, including `arm`, `ppc64le`, `s390x` and `riscv64`, etc.
+- Rich support for most linux family systems, including `arm`, `arm64`, `ppc64le`, `s390x` and `riscv64`, etc.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - More secure Bootstrap without `privileged` acquisition in docker container.
 - Support lastest `SagerNet/sing-box` v1.11.x version with `action` feature enabled.
