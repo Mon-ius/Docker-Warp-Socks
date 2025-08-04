@@ -10,7 +10,9 @@
 
 > A lightweight Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
 
-Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`;
+Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `linux/s390x` and `linux/riscv64`
+
+Start from `docker run --restart=always -itd -p 9091:9091 monius/docker-warp-socks:v5`
 
 ## V5 Features
 - Rich support for most linux family systems, including `arm`, `arm64`, `ppc64le`, `s390x` and `riscv64`, etc.
@@ -28,6 +30,14 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - Used call `Moonshot Kimi K2` API.
 - Used call `Minimax M1` API.
 - Support `GHCR` for more Security and Flexibility.
+
+> [!NOTE]
+> Check if `warp=on` shown using `curl`
+
+```sh
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
 
 ## Migrate to v5
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
@@ -53,32 +63,14 @@ sudo chown root:docker /var/run/docker.sock
 sudo systemctl enable docker && sudo systemctl start docker
 ```
 
-> [!NOTE]
-> Using `docker-warp-socks` v5 from GHCR
+> [!TIP]
+> Alternative using `docker-warp-socks` v5 from GHCR
 
 ```sh
 docker run --restart=always -itd \
     --name warp_socks_v5 \
     -p 9091:9091 \
     ghcr.io/mon-ius/docker-warp-socks:v5
-```
-
-> [!NOTE]
-> Using `docker-warp-socks` v5 from DockerHub
-
-```sh
-docker run --restart=always -itd \
-    --name warp_socks_v5 \
-    -p 9091:9091 \
-    monius/docker-warp-socks:v5
-```
-
-> [!TIP]
-> Check if `warp=on` shown using `curl`
-
-```sh
-curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
 <!-- ## Why to use
