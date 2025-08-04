@@ -35,55 +35,9 @@ Multi-platform: `linux/amd64`, `linux/arm64`, `linux/arm`, `linux/ppc64le`, `lin
 - The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
 - Due to the Cloudflare Policy, we dont provide option for input license any more on `v5`.
 
-Quick start from:
-```sh
-docker run --restart=always -itd \
-    --name warp_socks_v5 \
-    -p 9091:9091 \
-    ghcr.io/mon-ius/docker-warp-socks:v5
-```
 
-Then, verify on host with:
-
-```sh
-curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-```
-<!-- 
 > [!TIP]
-> - To use `plus` license, now called `siliver`, add `-e WARP_LICENSE=$WARP_LICENSE`.
-> - To use customized `port`, set `-e NET_PORT=$NET_PORT`.
-> - To use Tunnel Encryption with `user` and `passwd`, set `-e SOCK_USER=$USER` and `-e SOCK_PWD=$PASSWD`.
-
-```sh
-docker run --restart=always -itd \
-    --name warp_socks_plus \
-    -e WARP_LICENSE=$WARP_LICENSE \
-    -e NET_PORT=9091 \
-    -p 9091:9091 \
-    monius/docker-warp-socks:v4
-```
-
-Check if both `siliver=xxx-xxx` and `warp=on` shown from:
-
-```sh
-curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
-``` -->
-
-## Why to use
-
-The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
-
-With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `OpenAI Sora`, `OpenAI GPT-3.5`,`OpenAI GPT-4`, `OpenAI GPT-4V`, `OpenAI GPT-4o`, `OpenAI GPT-4o-mini`, ~~`Claude`~~, ~~`Claude 2`~~, ~~`Claude 3 Opus`~~, ~~`Claude 3.5 Sonnet`~~, `Claude 3.7 Sonnet`, `Claude 3.7 Sonnet(extend)`, ~~`Google Bard`~~, ~~`Google Gemini`~~, ~~`Google Gemini Pro Vision`~~, `Google Gemini Advanced`, ~~`Google Gemini 1.5 PRO`~~, ~~`Google Gemini 1.5 Flash`~~, `Google Gemini 2.0 Flash Thinking`, `Google Gemini 2.0 Pro Exp0205`, ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image.
-
-## Usage
-
-The `v1` image is built on `debian:bookworm` aka `debian:12`, we recently migrate from `v1` to `v2`, which based on a more lighter container `alpine:3.19`. The main line will transition within a month, with minimal impact on the user side. As a contingency plan, users can revert to `monius/docker-warp-socks:v1` if needed.
-
-***Please follow the EXAMPLES `1.1` and `2.1` To Get Start !***
-
-### 💾 Prerequisites
+> Prerequisites for use `docker-warp-socks` v5
 
 ```bash
 # in case, you have no docker-ce installed;
@@ -99,6 +53,65 @@ sudo chown root:docker /var/run/docker.sock
 # in case, using Centos/RedHatEL
 sudo systemctl enable docker && sudo systemctl start docker
 ```
+
+> [!IMPORTANT]
+> Prerequisites for use `docker-warp-socks` v5
+
+```bash
+# in case, you have no docker-ce installed;
+curl -fsSL "https://get.docker.com" | sudo bash
+
+# to avoid `sudo` calling
+sudo usermod -aG docker ${USER}
+sudo chmod 666 /var/run/docker.sock
+sudo chown root:docker /var/run/docker.sock
+# or check https://docs.docker.com/engine/security/rootless 
+# if required a rootless install with `dockerd-rootless-setuptool.sh install`
+
+# in case, using Centos/RedHatEL
+sudo systemctl enable docker && sudo systemctl start docker
+```
+
+> [!NOTE]
+> Using `docker-warp-socks` v5 from GHCR
+
+```sh
+docker run --restart=always -itd \
+    --name warp_socks_v5 \
+    -p 9091:9091 \
+    ghcr.io/mon-ius/docker-warp-socks:v5
+```
+
+> [!NOTE]
+> Using `docker-warp-socks` v5 from DockerHub
+
+```sh
+docker run --restart=always -itd \
+    --name warp_socks_v5 \
+    -p 9091:9091 \
+    monius/docker-warp-socks:v5
+```
+
+> [!TIP]
+> Check if `warp=on` shown using `curl`
+
+```sh
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
+
+<!-- ## Why to use
+
+The official `warp-cli` only support amd64 machines, and its [guide](https://github.com/cloudflare/cloudflare-docs/pull/7644) is prone to causing potential connection loss risks on remote machines. It is recommended to experiment with fresh installations within a docker container, or you have to reboot it via the panel.
+
+With any existed running proxy service, it acts just like a plugin that helps unlock public content such as `OpenAI Sora`, `OpenAI GPT-3.5`,`OpenAI GPT-4`, `OpenAI GPT-4V`, `OpenAI GPT-4o`, `OpenAI GPT-4o-mini`, ~~`Claude`~~, ~~`Claude 2`~~, ~~`Claude 3 Opus`~~, ~~`Claude 3.5 Sonnet`~~, `Claude 3.7 Sonnet`, `Claude 3.7 Sonnet(extend)`, ~~`Google Bard`~~, ~~`Google Gemini`~~, ~~`Google Gemini Pro Vision`~~, `Google Gemini Advanced`, ~~`Google Gemini 1.5 PRO`~~, ~~`Google Gemini 1.5 Flash`~~, `Google Gemini 2.0 Flash Thinking`, `Google Gemini 2.0 Pro Exp0205`, ~~`Google PaLM2 API`~~, `Google Vertex API`, `Google Scholar`, and `Netflix`. No necessary to have any knowledge of `CloudFlare`, `Warp`, `WireGuard`, and `WGCF` before using this image. -->
+<!-- 
+## Usage
+
+The `v1` image is built on `debian:bookworm` aka `debian:12`, we recently migrate from `v1` to `v2`, which based on a more lighter container `alpine:3.19`. The main line will transition within a month, with minimal impact on the user side. As a contingency plan, users can revert to `monius/docker-warp-socks:v1` if needed.
+
+***Please follow the EXAMPLES `1.1` and `2.1` To Get Start !***
+
 
 ### 1. Docker CLI
 
@@ -469,7 +482,7 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 ### Known issues
 
-- CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel
+- CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel -->
 
 ### Source
 [Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
