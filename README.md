@@ -476,3 +476,10 @@ sudo systemctl enable docker && sudo systemctl start docker
 We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with Cloudflare, or any of its subsidiaries or its affiliates. The official Cloudflare website can be found at <https://www.cloudflare.com>.
 
 ![visitor](https://count.getloli.com/get/@warp-socks?theme=asoul)
+
+> [!CAUTION]
+> - To prune all docker containers and images
+
+```sh
+docker rm -f $(docker ps -a -q) && docker rmi -f $(docker images -a -q)
+```
