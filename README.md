@@ -12,7 +12,6 @@
 
 Multi-platform: `linux/arm`, `linux/arm64`, `linux/amd64`,  `linux/ppc64le`, `linux/s390x` and `linux/riscv64`
 
-
 ---
 
 ## Quick start v5 via GHCR
