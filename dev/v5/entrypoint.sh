@@ -56,6 +56,10 @@ DNS_PART='
 '
 
 ROUTE_PART='
+        "default_domain_resolver": {
+            "server": "local",
+            "rewrite_ttl": 60
+        },
         "rules": [
             {
                 "inbound": "mixed-in",

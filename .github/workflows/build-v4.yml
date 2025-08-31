@@ -41,14 +41,14 @@ jobs:
 
           echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_ENV
           echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_ENV
-      - uses: docker/build-push-action@v6
-        with:
-          context: "{{defaultContext}}:dev/v4"
-          file: Dockerfile
-          push: true
-          platforms: linux/arm, linux/arm64, linux/amd64, linux/ppc64le, linux/s390x, linux/riscv64
-          tags: |
-            ${{ env.dockerhub_tag }}:v4
-            ${{ env.ghcr_tag }}:v4
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      # - uses: docker/build-push-action@v6
+      #   with:
+      #     context: "{{defaultContext}}:dev/v4"
+      #     file: Dockerfile
+      #     push: true
+      #     platforms: linux/arm, linux/arm64, linux/amd64, linux/ppc64le, linux/s390x, linux/riscv64
+      #     tags: |
+      #       ${{ env.dockerhub_tag }}:v4
+      #       ${{ env.ghcr_tag }}:v4
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
