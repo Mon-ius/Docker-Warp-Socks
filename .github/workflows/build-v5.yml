@@ -41,7 +41,7 @@ jobs:
 
           echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_ENV
           echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_ENV
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: "{{defaultContext}}:dev/v5"
           file: Dockerfile
