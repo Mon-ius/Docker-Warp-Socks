@@ -14,6 +14,106 @@ Multi-platform: `linux/arm`, `linux/arm64`, `linux/amd64`,  `linux/ppc64le`, `li
 
 ---
 
+## Quick start v6 via GHCR
+
+```sh
+docker run --restart=always -itd \
+    --name warp_socks_v6 \
+    -p 9091:9091 \
+    -p 9092:9092 \
+    ghcr.io/mon-ius/docker-warp-socks:v6
+```
+
+> [!Note]
+> Port `9091` routes through **WARP** (IPv6-preferred). Port `9092` routes through the **local machine** directly.
+
+```sh
+# Verify WARP is active and IPv6 is used
+curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+
+# Verify local/direct traffic on port 9092
+curl -x "socks5h://127.0.0.1:9092" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+```
+
+## V6 Features
+
+- Two independent mixed proxy inbounds on separate ports:
+  - **Port A** (`NET_PORT`, default `9091`): all traffic exits via **Cloudflare WARP**, with **IPv6 preferred** for every outbound connection.
+  - **Port B** (`LOCAL_PORT`, default `9092`): all traffic exits via the **local machine** directly, bypassing WARP entirely.
+- `prefer_ipv6` DNS strategy: domains are resolved to IPv6 addresses whenever available, ensuring WARP uses the IPv6 path end-to-end.
+- WireGuard `allowed_ips` includes `::/0` so IPv6 traffic is fully tunnelled through WARP.
+- Independent username/password authentication per port (`SOCK_USER`/`SOCK_PWD` for WARP, `LOCAL_USER`/`LOCAL_PWD` for local).
+- Everything from V5: no `NET_ADMIN`, no `privileged`, latest `sing-box` binary, multi-platform.
+
+### V6 Environment Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `NET_PORT` | `9091` | Port for the WARP proxy inbound (port A) |
+| `LOCAL_PORT` | `9092` | Port for the local/direct proxy inbound (port B) |
+| `SOCK_USER` | _(none)_ | Username for WARP proxy authentication |
+| `SOCK_PWD` | _(none)_ | Password for WARP proxy authentication |
+| `LOCAL_USER` | _(falls back to `SOCK_USER`)_ | Username for local proxy authentication |
+| `LOCAL_PWD` | _(falls back to `SOCK_PWD`)_ | Password for local proxy authentication |
+| `WARP_SERVER` | `engage.cloudflareclient.com` | WARP WireGuard endpoint host |
+| `WARP_PORT` | `2408` | WARP WireGuard endpoint port |
+
+### V6 Docker Compose
+
+Save the following as `docker-compose.yml` and run `docker compose up -d`:
+
+```yaml
+services:
+  warp-socks-v6:
+    image: ghcr.io/mon-ius/docker-warp-socks:v6
+    restart: always
+    environment:
+      # Port A — WARP proxy (IPv6-preferred outbound)
+      NET_PORT: "9091"
+      # Port B — local/direct proxy (traffic exits via the host machine)
+      LOCAL_PORT: "9092"
+      # Authentication for the WARP proxy port (leave unset to disable auth)
+      SOCK_USER: ""
+      SOCK_PWD: ""
+      # Authentication for the local proxy port (falls back to SOCK_USER/SOCK_PWD if unset)
+      LOCAL_USER: ""
+      LOCAL_PWD: ""
+    ports:
+      - "9091:9091"   # WARP proxy
+      - "9092:9092"   # local/direct proxy
+    healthcheck:
+      test: ["CMD", "curl", "-fsSL", "https://www.cloudflare.com/cdn-cgi/trace"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+```
+
+To enable authentication, fill in `SOCK_USER`/`SOCK_PWD` (and optionally `LOCAL_USER`/`LOCAL_PWD`):
+
+```yaml
+    environment:
+      NET_PORT: "9091"
+      LOCAL_PORT: "9092"
+      SOCK_USER: "myuser"
+      SOCK_PWD: "mypassword"
+      LOCAL_USER: "localuser"
+      LOCAL_PWD: "localpassword"
+```
+
+Then verify:
+
+```sh
+# WARP proxy with auth
+curl -U "myuser:mypassword" -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+curl -U "myuser:mypassword" -x "http://127.0.0.1:9091"    -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
+
+# Local/direct proxy with auth
+curl -U "localuser:localpassword" -x "socks5h://127.0.0.1:9092" -fsSL "https://ifconfig.me"
+curl -U "localuser:localpassword" -x "http://127.0.0.1:9092"    -fsSL "https://ifconfig.me"
+```
+
+---
+
 ## Quick start v5 via GHCR
 
 ```sh
@@ -432,6 +532,11 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 ### Known issues
 
 - CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel -->
+
+## Migrate to v6
+- The `v5` version will be kept and available at `monius/docker-warp-socks:v5`.
+- v6 adds a second direct/local inbound port and IPv6-preferred WARP routing on top of v5.
+- All v5 environment variables (`NET_PORT`, `SOCK_USER`, `SOCK_PWD`) continue to work in v6.
 
 ## Migrate to v5
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
