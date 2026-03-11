@@ -57,14 +57,14 @@ DNS_PART='
             {
                 "tag": "remote",
                 "type": "tls",
-                "server": "dns.quad9.net",
+                "server": "1.1.1.1",
                 "domain_resolver": "local",
                 "detour": "direct-out"
             },
             {
                 "tag": "local",
                 "type": "udp",
-                "server": "119.29.29.29",
+                "server": "8.8.8.8",
                 "detour": "direct-out"
             }
         ],
