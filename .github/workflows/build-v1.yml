@@ -2,8 +2,6 @@ name: build-v1
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 6 */6 * *'
   push:
     branches:
       - "master"
