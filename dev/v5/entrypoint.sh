@@ -20,6 +20,11 @@ CF_ADDR_V6=$(echo "$RESPONSE" | grep -o '"v6":"[^"]*' | cut -d'"' -f4 | tail -n 
 CF_PUBLIC_KEY=$(echo "$RESPONSE" | grep -o '"key":"[^"]*' | cut -d'"' -f4 | head -n 1)
 CF_PRIVATE_KEY=$(echo "$RESPONSE" | grep -o '"secret":"[^"]*' | cut -d'"' -f4 | head -n 1)
 
+if [ -z "$CF_CLIENT_ID" ] || [ -z "$CF_PUBLIC_KEY" ] || [ -z "$CF_PRIVATE_KEY" ]; then
+    echo "Error: failed to parse WARP credentials" >&2
+    exit 1
+fi
+
 reserved=$(echo "$CF_CLIENT_ID" | base64 -d | od -An -t u1 | awk '{print "["$1", "$2", "$3"]"}' | head -n 1)
 
 if [ -n "$SOCK_USER" ] && [ -n "$SOCK_PWD" ]; then
@@ -27,7 +32,7 @@ AUTH_PART='
     "users": [
         {
             "username": "'"$SOCK_USER"'",
-            "password": "'"$SOCK_PWD"'",
+            "password": "'"$SOCK_PWD"'"
         }
     ],
 '
@@ -151,7 +156,7 @@ $PROXY_PART
 EOF
 
 if [ ! -e "/usr/bin/rws-cli-v5" ]; then
-    echo "sing-box -c /etc/sing-box/config.json run" > /usr/bin/rws-cli-v5 && chmod +x /usr/bin/rws-cli-v5
+    printf '#!/bin/sh\nexec sing-box -c /etc/sing-box/config.json run\n' > /usr/bin/rws-cli-v5 && chmod +x /usr/bin/rws-cli-v5
 fi
 
 exec "$@"
