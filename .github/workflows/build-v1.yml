@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push v1 file
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: "{{defaultContext}}:dev/v1"
           file: Dockerfile
