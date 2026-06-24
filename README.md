@@ -8,19 +8,39 @@
 [![Open Issues](https://img.shields.io/github/issues/Mon-ius/Docker-Warp-Socks)](https://github.com/Mon-ius/Docker-Warp-Socks/issues)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https://github.com/Mon-ius/Docker-Warp-Socks&label=Visitors%20Totay&labelColor=%23808080&countColor=%23ffa31a&style=flat&labelStyle=upper)](https://visitorbadge.io/status?path=https://github.com/Mon-ius/Docker-Warp-Socks)
 
-> A lightweight Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
+> A lightweight `Alpine Linux` based Docker image, designed for easy connection to CloudFlare WARP, exposing `socks5` proxy all together.
 
 Multi-platform: `linux/arm`, `linux/arm64`, `linux/amd64`,  `linux/ppc64le`, `linux/s390x` and `linux/riscv64`
 
 ---
 
-## Quick start v6 via GHCR
+## Usage
+
+### Quick Start
 
 ```sh
 docker run --restart=always -itd \
-    --name warp_socks_v6 \
+    --name warp-socks \
     -p 9091:9091 \
-    ghcr.io/mon-ius/docker-warp-socks:v6
+    ghcr.io/mon-ius/docker-warp-socks
+```
+
+### Start from Docker Compose
+
+```yaml
+services:
+    warp-socks:
+        image: ghcr.io/mon-ius/docker-warp-socks
+        container_name: warp-socks
+        restart: always
+        ports:
+            - "9091:9091"
+        healthcheck:
+            test: ["CMD", "curl", "-x", "socks5h://127.0.0.1:9091", "-fsSL", "https://www.cloudflare.com/cdn-cgi/trace"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+            start_period: 10s
 ```
 
 > [!Note]
@@ -31,7 +51,10 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
-## V6 Features
+## Features
+
+<details>
+<summary>V6</summary>
 
 - Rich support for most linux family systems, including `arm`, `arm64`, `ppc64le`, `s390x` and `riscv64`, etc.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
@@ -50,6 +73,8 @@ curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 - Used call `Moonshot Kimi K2.7 Code` and `Moonshot Kimi K2.6` API.
 - Used call `MiniMax M3` and `MiniMax M2.7` API.
 - Support `GHCR` for more Security and Flexibility.
+
+</details>
 
 <!-- ## Why to use
 
@@ -456,8 +481,9 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - [Wireguard-Socks-Proxy](https://github.com/ispmarin/wireguard-socks-proxy)
 - [WARP exlude config](https://github.com/crzidea/confbook/blob/fe6e583dff223fc9d461cd8350adc24eff5b1925/apt/cloudflare-warp#L16)
 
+<!--
 > [!Tip]
-> Prerequisites for use `docker-warp-socks` v5 without root permission!
+> Prerequisites for use `docker-warp-socks` v6 without root permission!
 
 ```bash
 # in case, you have no docker-ce installed;
@@ -473,6 +499,7 @@ sudo chown root:docker /var/run/docker.sock
 # in case, using Centos/RedHatEL
 sudo systemctl enable docker && sudo systemctl start docker
 ```
+-->
 
 ## Notice of Non-Affiliation and Disclaimer
 
@@ -480,9 +507,11 @@ We are not affiliated, associated, authorized, endorsed by, or in any way offici
 
 ![visitor](https://count.getloli.com/get/@warp-socks?theme=asoul)
 
+<!--
 > [!CAUTION]
 > - To prune all docker containers and images
 
 ```sh
 docker rm -f $(docker ps -a -q) && docker rmi -f $(docker images -a -q)
 ```
+-->
