@@ -53,7 +53,7 @@ curl -x "socks5h://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/tra
 curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ```
 
-## Features
+### Features
 
 <details>
 <summary>V6</summary>
@@ -471,11 +471,11 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - `v6` upgrades the core to `SagerNet/sing-box` v1.13.x; due to the Cloudflare Policy, we dont provide option for input license.
 -->
 
-### Source
+## Source
 - [GitHub](https://github.com/Mon-ius/Docker-Warp-Socks)
 - [DockerHub](https://hub.docker.com/r/monius/docker-warp-socks)
 
-### Credits
+## Credits
 - [WireGuard](https://www.wireguard.com/)
 - [Mon-ius/Docker-Warp-Socks](https://github.com/Mon-ius/Docker-Warp-Socks)
 - [Cloudflare WARP](https://developers.cloudflare.com/warp-client/get-started/linux/)
