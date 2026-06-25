@@ -25,7 +25,9 @@ docker run --restart=always -itd \
     ghcr.io/mon-ius/docker-warp-socks
 ```
 
-### Start from Docker Compose
+### Docker Compose
+
+Run `docker-compose up -d` with the content for `docker-compose.yml`.
 
 ```yaml
 services:
