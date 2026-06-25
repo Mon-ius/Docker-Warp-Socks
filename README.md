@@ -460,12 +460,14 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 
 - CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel -->
 
+<!--
 ## Migrate to v6
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
 - The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
 - The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
 - The `v5` version will be kept and available at `monius/docker-warp-socks:v5`.
 - `v6` upgrades the core to `SagerNet/sing-box` v1.13.x; due to the Cloudflare Policy, we dont provide option for input license.
+-->
 
 ### Source
 - [GitHub](https://github.com/Mon-ius/Docker-Warp-Socks)
