@@ -12,7 +12,7 @@ env:
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["build-v6"]
+    workflows: ["build-v7"]
     types:
       - completed
 
@@ -81,18 +81,18 @@ jobs:
         ghcr_tag="ghcr.io/${{ github.repository }}"
         echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_OUTPUT
         echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_OUTPUT
-  v6:
+  v7:
     needs:
       - tag
     runs-on: ubuntu-latest
     env:
       name: ${{ github.job }}
-      port: 9996
+      port: 9997
     steps:
       - name: Checkout
         uses: actions/checkout@v7
       - run: |
-          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd ${{ needs.tag.outputs.ghcr_tag }}:v6
+          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd ${{ needs.tag.outputs.ghcr_tag }}:v7
           date && sleep 15 && docker ps -a && date && docker logs "$name"
       - id: check
         run: echo trace=$(curl -v -x "$HTTP:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT

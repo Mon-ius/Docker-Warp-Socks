@@ -1,1 +1,1 @@
-dev/v6/entrypoint.sh
+dev/v7/entrypoint.sh

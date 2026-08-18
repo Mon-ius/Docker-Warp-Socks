@@ -56,23 +56,24 @@ curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 ### Features
 
 <details>
-<summary>V6</summary>
+<summary>V7</summary>
 
 - Rich support for most linux family systems, including `arm`, `arm64`, `ppc64le`, `s390x` and `riscv64`, etc.
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - More secure Bootstrap without `privileged` acquisition in docker container.
+- Self-contained WARP registration, no third-party redirector or remote bootstrap script is fetched at runtime.
 - Core upgraded to `SagerNet/sing-box` v1.13.x (stable), built on the WireGuard `endpoints` and the typed DNS engine.
 - Rule-action routing (`sniff` / `hijack-dns` / `route`) with `auto_detect_interface` and a `default_domain_resolver`.
 - New `1.13.x` capabilities: ICMP/ping over the tunnel, optimistic DNS cache (persistent `cache_file`), `bypass` rule action, and TLS fragment route options.
 - Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
-- Light core with alpine linux `3.22`.
+- Light core with alpine linux `3.24`.
 - Easy networking between containers.
-- Used call `Google Gemini 3.5 Flash`, `Google Gemini 3.5 Pro`, `Google Gemini 3.1 Pro` and `Google Gemini 3.1 Deep Think` API.
-- Used call `OpenAI-GPT-5.5`, `GPT-5.5 Pro`, `GPT-5.5 Thinking` and `OpenAI-Sora 2` API.
-- Used call `Grok-4.3`, and `Grok-4.20` API.
-- Used call `Claude Opus 4.8` and `Claude Sonnet 4.6` API.
+- Used call `Google Gemini 3.7 Flash`, `Google Gemini 3.6 Flash`, `Google Gemini 3.5 Pro` and `Google Gemini 3.5 Flash-Lite` API.
+- Used call `OpenAI-GPT-5.6`, `GPT-5.6 Sol`, `GPT-5.6 Cyber` and `OpenAI-Sora 2` API.
+- Used call `Grok-4.6`, and `Grok-4.5` API.
+- Used call `Claude Opus 5`, `Claude Sonnet 5` and `Claude Fable 5` API.
 - Used call `DeepSeek V4-Pro` and `DeepSeek V4-Flash` API.
-- Used call `Moonshot Kimi K2.7 Code` and `Moonshot Kimi K2.6` API.
+- Used call `Moonshot Kimi K3` and `Moonshot Kimi K2.7 Code` API.
 - Used call `MiniMax M3` and `MiniMax M2.7` API.
 - Support `GHCR` for more Security and Flexibility.
 
@@ -463,12 +464,14 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - CentOS/RedHat/Rocky Linux as Host, see https://github.com/uzairali001/docker-wireguard-rhel -->
 
 <!--
-## Migrate to v6
+## Migrate to v7
 - The `v2` version will be kept and available at `monius/docker-warp-socks:v2`.
 - The `v3` version will be kept and available at `monius/docker-warp-socks:v3`.
 - The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
 - The `v5` version will be kept and available at `monius/docker-warp-socks:v5`.
+- The `v6` version will be kept and available at `monius/docker-warp-socks:v6`.
 - `v6` upgrades the core to `SagerNet/sing-box` v1.13.x; due to the Cloudflare Policy, we dont provide option for input license.
+- `v7` inlines the WARP registration into `entrypoint.sh`, so the container no longer depends on any external bootstrap script.
 -->
 
 ## Source
@@ -487,7 +490,7 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 
 <!--
 > [!Tip]
-> Prerequisites for use `docker-warp-socks` v6 without root permission!
+> Prerequisites for use `docker-warp-socks` v7 without root permission!
 
 ```bash
 # in case, you have no docker-ce installed;
