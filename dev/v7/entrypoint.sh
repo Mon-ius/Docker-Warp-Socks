@@ -146,7 +146,7 @@ PROXY_PART='
     ],
 '
 
-cat <<EOF | tee /etc/sing-box/config.json
+cat <<EOF > /etc/sing-box/config.json
 {
     "log": {
         "level": "info",
@@ -182,6 +182,8 @@ $ROUTE_PART
     }
 }
 EOF
+
+chmod 0600 /etc/sing-box/config.json
 
 if [ ! -e "/usr/bin/rws-cli-v7" ]; then
     printf '#!/bin/sh\nexec sing-box -c /etc/sing-box/config.json run\n' > /usr/bin/rws-cli-v7 && chmod +x /usr/bin/rws-cli-v7
