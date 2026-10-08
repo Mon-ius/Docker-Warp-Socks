@@ -1,0 +1,30 @@
+services:
+  warp-socks:
+    image: ghcr.io/mon-ius/docker-warp-socks:v8
+    build: .
+    container_name: warp-socks
+    restart: always
+    environment:
+      NET_PORT: "${NET_PORT:-9091}"
+      LOG_LEVEL: "${LOG_LEVEL:-info}"
+      WARP_API: "${WARP_API:-https://api.cloudflareclient.com/v0a2025/reg}"
+      WARP_SERVER: "${WARP_SERVER:-engage.cloudflareclient.com}"
+      WARP_PORT: "${WARP_PORT:-2408}"
+      SOCK_USER: "${SOCK_USER:-}"
+      SOCK_PWD: "${SOCK_PWD:-}"
+    ports:
+      - "${NET_PORT:-9091}:${NET_PORT:-9091}"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          set --;
+          if [ -n "$${SOCK_USER}" ] && [ -n "$${SOCK_PWD}" ]; then
+            set -- --proxy-user "$${SOCK_USER}:$${SOCK_PWD}";
+          fi;
+          curl --max-time 8 -fsSL --proxy "socks5h://127.0.0.1:$${NET_PORT}" "$$@"
+          https://www.cloudflare.com/cdn-cgi/trace | grep -qx 'warp=on'
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s

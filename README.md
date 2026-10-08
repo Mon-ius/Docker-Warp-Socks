@@ -18,6 +18,8 @@ Multi-platform: `linux/arm`, `linux/arm64`, `linux/amd64`,  `linux/ppc64le`, `li
 
 ### Quick Start
 
+The default image uses v8. Use the `:v8` tag to select this generation explicitly.
+
 ```sh
 docker run --restart=always -itd \
     --name warp-socks \
@@ -27,12 +29,22 @@ docker run --restart=always -itd \
 
 ### Docker Compose
 
-Run `docker-compose up -d` with the content for `docker-compose.yml`.
+Build and run v8 from this repository:
+
+```sh
+docker compose -f dev/v8/compose.yaml up -d --build
+```
+
+The Compose file supports `NET_PORT` (default `9091`), `SOCK_USER` and `SOCK_PWD` (set both to enable authentication), and `WARP_API`, `WARP_SERVER`, and `WARP_PORT` overrides. Its health check verifies `warp=on` through the proxy and uses the configured credentials.
+
+Set `LOG_LEVEL=debug` for detailed connection diagnostics in the container logs.
+
+To use a published image, run `docker compose up -d` with the following `compose.yaml`:
 
 ```yaml
 services:
     warp-socks:
-        image: ghcr.io/mon-ius/docker-warp-socks
+        image: ghcr.io/mon-ius/docker-warp-socks:v8
         container_name: warp-socks
         restart: always
         ports:
@@ -55,6 +67,19 @@ curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 
 ### Features
 
+<details open>
+<summary>V8</summary>
+
+- Provides HTTP and SOCKS5 proxies on port `9091`, with optional username and password authentication.
+- Runs without privileged mode, extra network capabilities, or host kernel modules.
+- Keeps private-network traffic local while sending other traffic through Cloudflare WARP.
+- Registers with Cloudflare automatically during startup.
+- Supports credentials containing special characters and keeps private keys and passwords out of startup logs.
+- Includes a Compose file with an authenticated proxy health check and builds for `amd64`, `arm64`, `arm/v7`, `ppc64le`, `s390x`, and `riscv64` on Alpine `3.24`.
+
+</details>
+
+<!--
 <details>
 <summary>V7</summary>
 
@@ -62,22 +87,27 @@ curl -x "http://127.0.0.1:9091" -fsSL "https://www.cloudflare.com/cdn-cgi/trace"
 - Light start without `NET_ADMIN`, `SYS_MODULE`, `/lib/modules`, and extra `net` deps.
 - More secure Bootstrap without `privileged` acquisition in docker container.
 - Self-contained WARP registration, no third-party redirector or remote bootstrap script is fetched at runtime.
-- Core upgraded to `SagerNet/sing-box` v1.13.x (stable), built on the WireGuard `endpoints` and the typed DNS engine.
-- Rule-action routing (`sniff` / `hijack-dns` / `route`) with `auto_detect_interface` and a `default_domain_resolver`.
-- New `1.13.x` capabilities: ICMP/ping over the tunnel, optimistic DNS cache (persistent `cache_file`), `bypass` rule action, and TLS fragment route options.
 - Support for mixed `http`, `https`, and `socks` protocols on the default port `9091`
 - Light core with alpine linux `3.24`.
 - Easy networking between containers.
-- Used call `Google Gemini 3.7 Flash`, `Google Gemini 3.6 Flash`, `Google Gemini 3.5 Pro` and `Google Gemini 3.5 Flash-Lite` API.
-- Used call `OpenAI-GPT-5.6`, `GPT-5.6 Sol`, `GPT-5.6 Cyber` and `OpenAI-Sora 2` API.
-- Used call `Grok-4.6`, and `Grok-4.5` API.
-- Used call `Claude Opus 5`, `Claude Sonnet 5` and `Claude Fable 5` API.
-- Used call `DeepSeek V4-Pro` and `DeepSeek V4-Flash` API.
-- Used call `Moonshot Kimi K3` and `Moonshot Kimi K2.7 Code` API.
-- Used call `MiniMax M3` and `MiniMax M2.7` API.
 - Support `GHCR` for more Security and Flexibility.
 
 </details>
+-->
+
+### AI API examples
+
+Current model examples for API clients using this HTTP/SOCKS5 proxy, checked against official provider documentation on **2026-10-08**:
+
+| Provider | Current models |
+| --- | --- |
+| [Google](https://ai.google.dev/gemini-api/docs/models) | Gemini 3.8 Flash, Gemini 3.5 Flash-Lite |
+| [OpenAI](https://developers.openai.com/api/docs/models/all) | GPT-6.1 Sol, GPT-6 Astra, GPT-6 Luna |
+| [Grok](https://docs.x.ai/developers/models) | Grok 4.7 |
+| [Anthropic](https://platform.claude.com/docs/en/models/overview) | Claude Opus 5.5, Claude Sonnet 5.5, Claude Haiku 5.5, Claude Fable 5.1 |
+| [DeepSeek](https://api-docs.deepseek.com/updates/) | DeepSeek V4.1 Flash, DeepSeek V4 Pro |
+| [Moonshot / Kimi Code](https://www.kimi.com/code/docs/en/kimi-code/models.html) | Kimi K3, Kimi K2.8 Preview, Kimi K2.7 Code HighSpeed |
+| [MiniMax](https://platform.minimax.io/docs/pricing/overview) | MiniMax M3, MiniMax M2.7, MiniMax M2.7 Highspeed |
 
 <!-- ## Why to use
 
@@ -470,7 +500,6 @@ curl --interface warp "https://www.cloudflare.com/cdn-cgi/trace"
 - The `v4` version will be kept and available at `monius/docker-warp-socks:v4`.
 - The `v5` version will be kept and available at `monius/docker-warp-socks:v5`.
 - The `v6` version will be kept and available at `monius/docker-warp-socks:v6`.
-- `v6` upgrades the core to `SagerNet/sing-box` v1.13.x; due to the Cloudflare Policy, we dont provide option for input license.
 - `v7` inlines the WARP registration into `entrypoint.sh`, so the container no longer depends on any external bootstrap script.
 -->
 

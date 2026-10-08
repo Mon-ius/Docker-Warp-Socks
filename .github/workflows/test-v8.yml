@@ -1,0 +1,106 @@
+name: test-v8
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/test-v8.yml"
+      - "dev/v8/**"
+      - "Dockerfile"
+      - "entrypoint.sh"
+  pull_request:
+    paths:
+      - ".github/workflows/test-v8.yml"
+      - "dev/v8/**"
+      - "Dockerfile"
+      - "entrypoint.sh"
+
+permissions:
+  contents: read
+
+jobs:
+  test-v8:
+    name: Build and test ${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
+          - linux/arm/v7
+          - linux/ppc64le
+          - linux/s390x
+          - linux/riscv64
+    env:
+      TEST_IMAGE: ghcr.io/mon-ius/docker-warp-socks:v8
+      TRACE: https://www.cloudflare.com/cdn-cgi/trace
+      NET_PORT: "9998"
+      LOG_LEVEL: debug
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+      - name: Build v8 from this commit
+        uses: docker/build-push-action@v7
+        with:
+          context: dev/v8
+          file: dev/v8/Dockerfile
+          platforms: ${{ matrix.platform }}
+          tags: ${{ env.TEST_IMAGE }}
+          load: true
+          push: false
+      - name: Check sing-box version
+        env:
+          TEST_PLATFORM: ${{ matrix.platform }}
+        run: |
+          docker run --rm --platform "$TEST_PLATFORM" --entrypoint sing-box "$TEST_IMAGE" version | tee /tmp/sing-box-version
+          grep -E '^sing-box version 1\.14\.[0-9]+$' /tmp/sing-box-version
+      - name: Check default build context
+        if: matrix.platform == 'linux/amd64'
+        run: docker buildx build --load --tag "$TEST_IMAGE" .
+      - name: Test Compose and WARP without authentication
+        if: matrix.platform == 'linux/amd64'
+        run: |
+          docker compose -f dev/v8/compose.yaml config --quiet
+          docker compose -f dev/v8/compose.yaml up -d --no-build --pull never --wait --wait-timeout 180
+          for protocol in socks5h http; do
+            curl --max-time 20 -fsSL --proxy "$protocol://127.0.0.1:$NET_PORT" "$TRACE" | grep -qx 'warp=on'
+            echo "$protocol: warp=on"
+          done
+          docker compose -f dev/v8/compose.yaml exec -T warp-socks sing-box check -c /etc/sing-box/config.json
+          docker compose -f dev/v8/compose.yaml logs --no-color
+      - name: Test Compose and WARP with authentication
+        if: matrix.platform == 'linux/amd64'
+        env:
+          NET_PORT: "9999"
+          SOCK_USER: 'ci-"user"'
+          SOCK_PWD: 'ci-"quoted"\password$with-symbols'
+        run: |
+          for attempt in 1 2 3 4 5; do
+            echo "Authenticated recreation $attempt"
+            if ! docker compose -f dev/v8/compose.yaml up -d --no-build --pull never --force-recreate --wait --wait-timeout 180; then
+              # A literal destination separates tunnel failure from DNS failure.
+              curl --max-time 20 -fsSL --proxy "socks5h://127.0.0.1:$NET_PORT" --proxy-user "$SOCK_USER:$SOCK_PWD" https://1.1.1.1/cdn-cgi/trace || true
+              exit 1
+            fi
+            for protocol in socks5h http; do
+              curl --max-time 20 -fsSL --proxy "$protocol://127.0.0.1:$NET_PORT" --proxy-user "$SOCK_USER:$SOCK_PWD" "$TRACE" | grep -qx 'warp=on'
+              echo "$protocol with authentication: warp=on"
+              if curl --max-time 10 -fsSL --proxy "$protocol://127.0.0.1:$NET_PORT" --proxy-user 'wrong:credentials' "$TRACE" >/dev/null 2>&1; then
+                echo "::error::$protocol accepted incorrect credentials"
+                exit 1
+              fi
+            done
+            docker compose -f dev/v8/compose.yaml exec -T warp-socks sing-box check -c /etc/sing-box/config.json
+            docker compose -f dev/v8/compose.yaml logs --no-color
+          done
+      - name: Container logs
+        if: always() && matrix.platform == 'linux/amd64'
+        run: |
+          docker compose -f dev/v8/compose.yaml logs --no-color
+          docker inspect --format '{{json .State.Health}}' warp-socks | jq .
+      - name: Cleanup
+        if: always() && matrix.platform == 'linux/amd64'
+        run: docker compose -f dev/v8/compose.yaml down --remove-orphans

@@ -12,7 +12,7 @@ env:
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["build-v7"]
+    workflows: ["build-v8"]
     types:
       - completed
 
@@ -81,22 +81,36 @@ jobs:
         ghcr_tag="ghcr.io/${{ github.repository }}"
         echo "dockerhub_tag=${dockerhub_tag,,}" >> $GITHUB_OUTPUT
         echo "ghcr_tag=${ghcr_tag,,}" >> $GITHUB_OUTPUT
-  v7:
+  v8:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     needs:
       - tag
     runs-on: ubuntu-latest
     env:
       name: ${{ github.job }}
-      port: 9997
+      port: 9998
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - run: |
-          sudo docker run --name $name -e NET_PORT=$port -p $port:$port --restart=always -itd ${{ needs.tag.outputs.ghcr_tag }}:v7
-          date && sleep 15 && docker ps -a && date && docker logs "$name"
-      - id: check
-        run: echo trace=$(curl -v -x "$HTTP:$port" -fsSL $TRACE | grep -w "warp=on") >> $GITHUB_OUTPUT
-      - run: echo "The proxy status is ${{ steps.check.outputs.trace }}"
-      - uses: lhotari/action-upterm@v1
-        if: ${{ steps.check.outputs.trace != 'warp=on' }}
-
+      - name: Start v8
+        run: docker run --name "$name" -e NET_PORT="$port" -p "$port:$port" -d ${{ needs.tag.outputs.ghcr_tag }}:v8
+      - name: Verify SOCKS5 and HTTP traffic uses WARP
+        run: |
+          for proxy in "$SOCKS:$port" "$HTTP:$port"; do
+            trace=""
+            for attempt in $(seq 1 12); do
+              if trace=$(curl --max-time 10 -x "$proxy" -fsSL "$TRACE") &&
+                  printf '%s\n' "$trace" | grep -qx 'warp=on'; then
+                break
+              fi
+              sleep 5
+            done
+            printf '%s\n' "$trace" | grep -qx 'warp=on'
+          done
+          docker exec "$name" sing-box check -c /etc/sing-box/config.json
+      - name: Container logs
+        if: always()
+        run: docker logs "$name"
+      - name: Cleanup
+        if: always()
+        run: docker rm -f "$name"
